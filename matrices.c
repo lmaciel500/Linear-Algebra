@@ -30,6 +30,11 @@ int main(void) {
 
     return 0;
 }
+void ScaleRow(int toScale, int c, int n, int matrix[n][n]) {
+    for (int i = 0; i < n; i++) {
+        matrix[toScale][i] *= c;
+    }
+}
 void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]) {
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
