@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 void PrintMatrix(int n, int matrix[n][n]);
 void MatrixAddition(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]);
@@ -12,6 +13,7 @@ void ScaleRow(int toScale, int c, int n, int matrix[n][n]);
 void RREF(int n, int matrix[n][n]);
 int FindPivot(int column, int n, int matrix[n][n]);
 void ScaleMatrix(int c, int n, int matrix[n][n]);
+bool CheckIdentity(int n, int matrix[n][n]);
 
 int main(void) {
     printf("\n");
@@ -22,19 +24,25 @@ int main(void) {
 
     int matrix1[n][n];
     GetMatrix(n, matrix1);
-    PrintMatrix(n, matrix1);
 
-    ScaleMatrix(2, n, matrix1);
-    PrintMatrix(n, matrix1);
+    //ScaleMatrix(2, n, matrix1);
+    CheckIdentity(n, matrix1);
 
     RREF(n, matrix1);
-    PrintMatrix(n, matrix1);
 
     return 0;
 }
 void RREF(int n, int matrix[n][n]) {
     printf("Gaussian Elimination...\n");
+    /*
+    while (!CheckIdentity(n, matrix)) {
+        //FIXME
+    }
+    */
     PrintMatrix(n, matrix);
+    for (int i = 0; i < n; i++) {
+
+    }
     int pivot = 0;
     if (FindPivot(0, n, matrix) != pivot) {
         SwapRows(0, pivot, n, matrix);
@@ -42,6 +50,21 @@ void RREF(int n, int matrix[n][n]) {
     for (int i = 1; i < n; i++) {
         ReplaceRow(i, 0, - matrix[i][0] / matrix[0][0], n, matrix);
     }
+}
+bool CheckRREF(int n, int matrix[n][n]) {
+    return true;
+}
+bool CheckIdentity(int n, int matrix[n][n]) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if ((i != j && matrix[i][j] != 0) ||
+                (i == j && matrix[i][j] != 1)) {
+                return false;
+            }
+        }
+    }
+    printf("This is the identity matrix...");
+    return true;
 }
 int FindPivot(int column, int n, int matrix[n][n]) {
     for (int i = 0; i < n; i++) {
