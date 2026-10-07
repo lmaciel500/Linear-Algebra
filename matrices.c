@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+void ZeroArray(int n, int array[n]);
+int ZeroRowsCount(int n, int matrix[n][n]);
 void PrintMatrix(int n, int matrix[n][n]);
 void MatrixAddition(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]);
 void MatrixMultiplication(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]);
@@ -33,6 +35,7 @@ int main(void) {
 
     return 0;
 }
+
 void RREF(int n, int matrix[n][n]) {
     printf("Gaussian Elimination...\n");
     /*
@@ -79,8 +82,30 @@ bool CheckRREF(int n, int matrix[n][n]) {
             }
         }
     }
+    int zeroRows = ZeroRowsCount(n, matrix);
+    for (int i = n - 1; i >= n - zeroRows; i--) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0) {
+                return false;
+            }
+        }
+    }
     printf("Matrix is in RREF.\n");
     return true;
+}
+int ZeroRowsCount(int n, int matrix[n][n]) {
+    int zeroRows = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0) {
+                break;
+            }
+            if (j == n - 1) {
+                zeroRows++;
+            }
+        }
+    }
+    return zeroRows;
 }
 bool CheckIdentity(int n, int matrix[n][n]) {
     for (int i = 0; i < n; i++) {
@@ -212,5 +237,10 @@ void ZeroMatrix(int n, int matrix[n][n]) {
         for (int j = 0; j < n; j++) {
             matrix[i][j] = 0;
         }
+    }
+}
+void ZeroArray(int n, int array[n]) {
+    for (int i = 0; i < n; i++) {
+        array[i] = 0;
     }
 }
