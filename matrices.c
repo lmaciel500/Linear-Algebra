@@ -11,7 +11,7 @@ void GetMatrix(int n, int matrix[n][n]);
 void ZeroMatrix(int n, int matrix[n][n]);
 void SwapRows(int row1, int row2, int n, int matrix1[n][n]);
 void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]);
-void ScaleRow(int toScale, int c, int n, int matrix[n][n]);
+void ScaleRow(int toScale, double c, int n, int matrix[n][n]);
 void RREF(int n, int matrix[n][n]);
 int FindPivot(int column, int n, int matrix[n][n]);
 void ScaleMatrix(int c, int n, int matrix[n][n]);
@@ -31,30 +31,65 @@ int main(void) {
     //ScaleMatrix(2, n, matrix1);
     //CheckIdentity(n, matrix1);
 
-    CheckRREF(n, matrix1);
+    RREF(n, matrix1);
 
     return 0;
 }
 
 void RREF(int n, int matrix[n][n]) {
     printf("Gaussian Elimination...\n");
-    /*
-    while (!CheckIdentity(n, matrix)) {
-        //FIXME
-    }
-    */
     PrintMatrix(n, matrix);
-    for (int i = 0; i < n; i++) {
-
-    }
-    int pivot = 0;
-    if (FindPivot(0, n, matrix) != pivot) {
-        SwapRows(0, pivot, n, matrix);
-    }
-    for (int i = 1; i < n; i++) {
-        ReplaceRow(i, 0, - matrix[i][0] / matrix[0][0], n, matrix);
+    int row = 0;
+    int column = 0;
+    while (!CheckRREF(n, matrix)) {
+        ScaleRow(row, (double) 1 / matrix[row][column], n, matrix);
+        for (int i = 0; i < n; i++) {
+            if (i == row) {
+                continue;
+            } else {
+                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], n, matrix);
+            }
+        }
+        column++;
+        row++;
     }
 }
+
+//elementary operations
+void ScaleRow(int toScale, double c, int n, int matrix[n][n]) {
+    printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
+    getchar();
+    for (int i = 0; i < n; i++) {
+        matrix[toScale][i] = (double) matrix[toScale][i] * c;
+    }
+    PrintMatrix(n, matrix);
+}
+void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]) {
+    printf("R%d —> R%d + (%d)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
+    getchar();
+    for (int i = 0; i < n; i++) {
+        matrix[toReplace][i] += matrix[replacer][i] * c;
+    }
+    PrintMatrix(n, matrix);
+}
+void SwapRows(int row1, int row2, int n, int matrix[n][n]) {
+    printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
+    getchar();
+    int temp[n];
+
+    for (int i = 0; i < n; i++) {
+        temp[i] = matrix[row1][i];
+    }
+    for (int i = 0; i < n; i++) {
+        matrix[row1][i] = matrix[row2][i];
+    }
+    for (int i = 0; i < n; i++) {
+        matrix[row2][i] = temp[i];
+    }
+    PrintMatrix(n, matrix);
+}
+
+//misc
 bool CheckRREF(int n, int matrix[n][n]) {
     int staircase = -1;
     for (int i = 0; i < n; i++) {
@@ -92,6 +127,7 @@ bool CheckRREF(int n, int matrix[n][n]) {
         }
     }
     printf("Matrix is in RREF.\n");
+    PrintMatrix(n, matrix);
     return true;
 }
 int ZeroRowsCount(int n, int matrix[n][n]) {
@@ -144,35 +180,8 @@ void ScaleMatrix(int c, int n, int matrix[n][n]) {
         }
     }
 }
-void ScaleRow(int toScale, int c, int n, int matrix[n][n]) {
-    printf("R%d —> %dR%d\n", toScale + 1, c, toScale + 1);
-    for (int i = 0; i < n; i++) {
-        matrix[toScale][i] *= c;
-    }
-    PrintMatrix(n, matrix);
-}
-void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]) {
-    printf("R%d —> R%d + (%d)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
-    for (int i = 0; i < n; i++) {
-        matrix[toReplace][i] += matrix[replacer][i] * c;
-    }
-    PrintMatrix(n, matrix);
-}
-void SwapRows(int row1, int row2, int n, int matrix[n][n]) {
-    printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
-    int temp[n];
 
-    for (int i = 0; i < n; i++) {
-        temp[i] = matrix[row1][i];
-    }
-    for (int i = 0; i < n; i++) {
-        matrix[row1][i] = matrix[row2][i];
-    }
-    for (int i = 0; i < n; i++) {
-        matrix[row2][i] = temp[i];
-    }
-    PrintMatrix(n, matrix);
-}
+//initials
 void MatrixMultiplication(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]) {
     PrintMatrix(n, matrix1);
     printf("X\n");
