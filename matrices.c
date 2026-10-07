@@ -3,13 +3,14 @@
 void PrintMatrix(int n, int matrix[n][n]);
 void MatrixAddition(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]);
 void MatrixMultiplication(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]);
-int GetInputN();
+int GetInput();
 void GetMatrix(int n, int matrix[n][n]);
 void ZeroMatrix(int n, int matrix[n][n]);
+void SwapRows(int n, int one, int two, int matrix1[n][n]);
 
 int main(void) {
     printf("\n");
-    int n = GetInputN();
+    int n = GetInput();
 
     int result[n][n];
     ZeroMatrix(n, result);
@@ -28,20 +29,21 @@ int main(void) {
 
     return 0;
 }
-void MatrixAddition(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]) {
-    PrintMatrix(n, matrix1);
-    printf("+\n");
-    PrintMatrix(n, matrix2);
-    printf("=\n");
+void SwapRows(int one, int two, int n, int matrix[n][n]) {
+    int row1 = one;
+    int row2 = two;
+
+    int temp[n];
 
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            result[i][j] = matrix1[i][j] + matrix2[i][j];
-        }
+        temp[i] = matrix[row1][i];
     }
-
-    PrintMatrix(n, result);
-    printf("\n");
+    for (int i = 0; i < n; i++) {
+        matrix[row1][i] = matrix[row2][i];
+    }
+    for (int i = 0; i < n; i++) {
+        matrix[row2][i] = temp[i];
+    }
 }
 void MatrixMultiplication(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]) {
     PrintMatrix(n, matrix1);
@@ -54,6 +56,21 @@ void MatrixMultiplication(int n, int matrix1[n][n], int matrix2[n][n], int resul
             for (int k = 0; k < n; k++) {
                 result[i][j] += matrix1[i][k] * matrix2[k][j];
             }
+        }
+    }
+
+    PrintMatrix(n, result);
+    printf("\n");
+}
+void MatrixAddition(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]) {
+    PrintMatrix(n, matrix1);
+    printf("+\n");
+    PrintMatrix(n, matrix2);
+    printf("=\n");
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            result[i][j] = matrix1[i][j] + matrix2[i][j];
         }
     }
 
