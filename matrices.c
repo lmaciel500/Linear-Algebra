@@ -10,7 +10,7 @@ void SwapRows(int row1, int row2, int n, int matrix1[n][n]);
 void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]);
 void ScaleRow(int toScale, int c, int n, int matrix[n][n]);
 void RREF(int n, int matrix[n][n]);
-int FindPivot(int n, int matrix[n][n]);
+int FindPivot(int column, int n, int matrix[n][n]);
 void ScaleMatrix(int c, int n, int matrix[n][n]);
 
 int main(void) {
@@ -27,43 +27,60 @@ int main(void) {
     ScaleMatrix(2, n, matrix1);
     PrintMatrix(n, matrix1);
 
+    RREF(n, matrix1);
+    PrintMatrix(n, matrix1);
+
+    return 0;
+}
+void RREF(int n, int matrix[n][n]) {
+    printf("Gaussian Elimination...\n");
+    PrintMatrix(n, matrix);
+    int pivot = 0;
+    if (FindPivot(0, n, matrix) != pivot) {
+        SwapRows(0, pivot, n, matrix);
+    }
+    for (int i = 1; i < n; i++) {
+        ReplaceRow(i, 0, - matrix[i][0] / matrix[0][0], n, matrix);
+    }
+}
+int FindPivot(int column, int n, int matrix[n][n]) {
+    for (int i = 0; i < n; i++) {
+        if (matrix[i][column] == 1) {
+            return i;
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        if (matrix[i][column] != 0) {
+            return i;
+        }
+    }
     return 0;
 }
 void ScaleMatrix(int c, int n, int matrix[n][n]) {
+    printf("Scale A by %d\n", c);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             matrix[i][j] *= c;
         }
     }
 }
-int FindPivot(int n, int matrix[n][n]) {
-    for (int i = 0; i < n; i++) {
-        if (matrix[i][0] == 1) {
-            return i + 1;
-            break;
-        }
-    }
-    return 1;
-}
 void ScaleRow(int toScale, int c, int n, int matrix[n][n]) {
-    printf("R%d —> %dR%d\n", toScale, c, toScale);
-    toScale--;
+    printf("R%d —> %dR%d\n", toScale + 1, c, toScale + 1);
     for (int i = 0; i < n; i++) {
         matrix[toScale][i] *= c;
     }
+    PrintMatrix(n, matrix);
 }
 void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]) {
-    printf("R%d —> R%d + (%d)R%d\n", toReplace, toReplace, c, replacer);
-    toReplace--;
-    replacer--;
+    printf("R%d —> R%d + (%d)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
+    PrintMatrix(n, matrix);
 }
 void SwapRows(int row1, int row2, int n, int matrix[n][n]) {
+    printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
     int temp[n];
-    row1--;
-    row2--;
 
     for (int i = 0; i < n; i++) {
         temp[i] = matrix[row1][i];
@@ -74,6 +91,7 @@ void SwapRows(int row1, int row2, int n, int matrix[n][n]) {
     for (int i = 0; i < n; i++) {
         matrix[row2][i] = temp[i];
     }
+    PrintMatrix(n, matrix);
 }
 void MatrixMultiplication(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n]) {
     PrintMatrix(n, matrix1);
@@ -126,13 +144,12 @@ void GetMatrix(int n, int matrix[n][n]) {
     printf("\n");
 }
 void PrintMatrix(int n, int matrix[n][n]) {
-    printf("\n");
     for (int i = 0; i < n; i++) {
-        printf("| ");
+        printf("%*c", n, '|');
         for (int j = 0; j < n; j++) {
-            printf("%d ", matrix[i][j]);
+            printf("%*d", n,  matrix[i][j]);
         }
-        printf("|\n");
+        printf("%*c\n", n, '|');
     }
     printf("\n");
 }
