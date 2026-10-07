@@ -8,6 +8,10 @@ void GetMatrix(int n, int matrix[n][n]);
 void ZeroMatrix(int n, int matrix[n][n]);
 void SwapRows(int row1, int row2, int n, int matrix1[n][n]);
 void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]);
+void ScaleRow(int toScale, int c, int n, int matrix[n][n]);
+void RREF(int n, int matrix[n][n]);
+int FindPivot(int n, int matrix[n][n]);
+void ScaleMatrix(int c, int n, int matrix[n][n]);
 
 int main(void) {
     printf("\n");
@@ -17,31 +21,49 @@ int main(void) {
     ZeroMatrix(n, result);
 
     int matrix1[n][n];
-    int matrix2[n][n];
-
     GetMatrix(n, matrix1);
     PrintMatrix(n, matrix1);
 
-    GetMatrix(n, matrix2);
-    PrintMatrix(n, matrix2);
-
-    //MatrixAddition(n, matrix1, matrix2, result);
-    MatrixMultiplication(n, matrix1, matrix2, result);
+    ScaleMatrix(2, n, matrix1);
+    PrintMatrix(n, matrix1);
 
     return 0;
 }
+void ScaleMatrix(int c, int n, int matrix[n][n]) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix[i][j] *= c;
+        }
+    }
+}
+int FindPivot(int n, int matrix[n][n]) {
+    for (int i = 0; i < n; i++) {
+        if (matrix[i][0] == 1) {
+            return i + 1;
+            break;
+        }
+    }
+    return 1;
+}
 void ScaleRow(int toScale, int c, int n, int matrix[n][n]) {
+    printf("R%d —> %dR%d\n", toScale, c, toScale);
+    toScale--;
     for (int i = 0; i < n; i++) {
         matrix[toScale][i] *= c;
     }
 }
 void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]) {
+    printf("R%d —> R%d + (%d)R%d\n", toReplace, toReplace, c, replacer);
+    toReplace--;
+    replacer--;
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
 }
 void SwapRows(int row1, int row2, int n, int matrix[n][n]) {
     int temp[n];
+    row1--;
+    row2--;
 
     for (int i = 0; i < n; i++) {
         temp[i] = matrix[row1][i];
