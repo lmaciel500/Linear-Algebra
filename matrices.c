@@ -14,6 +14,7 @@ void RREF(int n, int matrix[n][n]);
 int FindPivot(int column, int n, int matrix[n][n]);
 void ScaleMatrix(int c, int n, int matrix[n][n]);
 bool CheckIdentity(int n, int matrix[n][n]);
+bool CheckRREF(int n, int matrix[n][n]);
 
 int main(void) {
     printf("\n");
@@ -26,9 +27,9 @@ int main(void) {
     GetMatrix(n, matrix1);
 
     //ScaleMatrix(2, n, matrix1);
-    CheckIdentity(n, matrix1);
+    //CheckIdentity(n, matrix1);
 
-    RREF(n, matrix1);
+    CheckRREF(n, matrix1);
 
     return 0;
 }
@@ -52,6 +53,33 @@ void RREF(int n, int matrix[n][n]) {
     }
 }
 bool CheckRREF(int n, int matrix[n][n]) {
+    int staircase = -1;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0 && matrix[i][j] != 1) {
+                printf("Not RREF...\n");
+                return false;
+            }
+            if (matrix[i][j] == 1) {
+                if (j <= staircase) {
+                    printf("Not RREF...\n");
+                    return false;
+                }
+                for (int k = 0; k < n; k++) {
+                    if (i == k) {
+                        continue;
+                    }
+                    if (matrix[k][j] != 0) {
+                        printf("Not RREF...\n");
+                        return false;
+                    }
+                }
+                staircase = j;
+                break;
+            }
+        }
+    }
+    printf("Matrix is in RREF.\n");
     return true;
 }
 bool CheckIdentity(int n, int matrix[n][n]) {
