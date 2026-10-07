@@ -86,6 +86,7 @@ bool CheckRREF(int n, int matrix[n][n]) {
     for (int i = n - 1; i >= n - zeroRows; i--) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] != 0) {
+                printf("Not RREF...\n");
                 return false;
             }
         }
