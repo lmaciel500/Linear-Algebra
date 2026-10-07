@@ -59,11 +59,14 @@ bool CheckIdentity(int n, int matrix[n][n]) {
         for (int j = 0; j < n; j++) {
             if ((i != j && matrix[i][j] != 0) ||
                 (i == j && matrix[i][j] != 1)) {
+                printf("Not the identity matrix...\n");
+                PrintMatrix(n, matrix);
                 return false;
             }
         }
     }
-    printf("This is the identity matrix...");
+    printf("This is the identity matrix...\n");
+    PrintMatrix(n, matrix);
     return true;
 }
 int FindPivot(int column, int n, int matrix[n][n]) {
