@@ -6,7 +6,8 @@ void MatrixMultiplication(int n, int matrix1[n][n], int matrix2[n][n], int resul
 int GetInput();
 void GetMatrix(int n, int matrix[n][n]);
 void ZeroMatrix(int n, int matrix[n][n]);
-void SwapRows(int n, int one, int two, int matrix1[n][n]);
+void SwapRows(int row1, int row2, int n, int matrix1[n][n]);
+void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]);
 
 int main(void) {
     printf("\n");
@@ -29,10 +30,12 @@ int main(void) {
 
     return 0;
 }
-void SwapRows(int one, int two, int n, int matrix[n][n]) {
-    int row1 = one;
-    int row2 = two;
-
+void ReplaceRow(int toReplace, int replacer, int c, int n, int matrix[n][n]) {
+    for (int i = 0; i < n; i++) {
+        matrix[toReplace][i] += matrix[replacer][i] * c;
+    }
+}
+void SwapRows(int row1, int row2, int n, int matrix[n][n]) {
     int temp[n];
 
     for (int i = 0; i < n; i++) {
@@ -77,7 +80,7 @@ void MatrixAddition(int n, int matrix1[n][n], int matrix2[n][n], int result[n][n
     PrintMatrix(n, result);
     printf("\n");
 }
-int GetInputN() {
+int GetInput() {
     int n;
     printf("Enter n for nxn square matrix: ");
     scanf(" %d", &n);
