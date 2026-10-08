@@ -78,6 +78,14 @@ int FindPivot(int column, int m, int n, double matrix[m][n]) {
     }
     return 0;
 }
+bool ZeroColumn(int column, int m, int n, double matrix[m][n]) {
+    for (int i = 0; i < m; i++) {
+        if (matrix[i][column] != 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 //general
 void GetInput(int *m, int *n) {
@@ -217,12 +225,15 @@ bool CheckRREF(int m, int n, double matrix[m][n]) {
     return true;
 }
 void RREF(int m, int n, double matrix[m][n]) {
-    printf("Gaussian Elimination...\n\n");
-    getchar();
+    printf("Gaussian Elimination...\n");
     PrintMatrix(m, n, matrix);
     int row = 0;
     int column = 0;
     while (!CheckRREF(m, n, matrix)) {
+        if (ZeroColumn(column, m, n, matrix)) {
+            column++;
+            continue;
+        }
         if (matrix[row][column] == 0) {
             SwapRows(row, FindPivot(column, m, n, matrix), m, n, matrix);
         }
