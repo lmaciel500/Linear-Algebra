@@ -19,6 +19,8 @@ int FindPivot(int column, int n, double matrix[n][n]);
 void ScaleMatrix(int c, int n, double matrix[n][n]);
 bool CheckIdentity(int n, double matrix[n][n]);
 bool CheckRREF(int n, double matrix[n][n]);
+int FindLargest(int n, double matrix[n][n]);
+int DigitsAmount(int a);
 
 int main(void) {
     printf("\n");
@@ -239,17 +241,18 @@ void GetMatrix(int n, double matrix[n][n]) {
     printf("\n");
 }
 void PrintMatrix(int n, double matrix[n][n]) {
+    int s = DigitsAmount(FindLargest(n, matrix)) + 2;
     for (int i = 0; i < n; i++) {
-        printf("%*c", n, '|');
+        printf("%*c", s, '|');
         for (int j = 0; j < n; j++) {
             double x = matrix[i][j];
             if (x == (int) x) {
-                printf("%*d", n + 1, (int) x);
+                printf("%*d", s, (int) x);
             } else {
-                printf("%*.2lf", n * 2, x);
+                printf("%*.2lf", s, x);
             }
         }
-        printf("%*c\n", n, '|');
+        printf("%*c\n", s, '|');
     }
     printf("\n");
 }
@@ -264,4 +267,23 @@ void ZeroArray(int n, int array[n]) {
     for (int i = 0; i < n; i++) {
         array[i] = 0;
     }
+}
+int FindLargest(int n, double matrix[n][n]) {
+    int largest = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (fabs(matrix[i][j]) > largest) {
+                largest = fabs(matrix[i][j]);
+            }
+        }
+    }
+    return largest;
+}
+int DigitsAmount(int a) {
+    int digits = 0;
+    while (a != 0) {
+        a /= 10;
+        digits++;
+    }
+    return digits;
 }
