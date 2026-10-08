@@ -14,6 +14,7 @@ int main(void) {
         AUGMENT = true;
         n++;
     }
+    CheckSteps();
 
     double matrix1[m][n];
     GetMatrix(m, n, matrix1);

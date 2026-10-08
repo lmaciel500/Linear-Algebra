@@ -5,6 +5,7 @@
 #endif //CS_107_MATRICES_H
 
 static bool AUGMENT = false;
+static bool SHOW_STEPS = false;
 
 //helper
 void ZeroMatrix(int m, int n, double matrix[m][n]) {
@@ -118,24 +119,34 @@ void PrintMatrix(int m, int n, double matrix[m][n]) {
 
 //elementary operations
 void ScaleRow(int toScale, double c, int m, int n, double matrix[m][n]) {
-    printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
-    getchar();
+    if (SHOW_STEPS) {
+        printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
+        getchar();
+    }
     for (int i = 0; i < n; i++) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
     }
-    PrintMatrix(m, n, matrix);
+    if (SHOW_STEPS) {
+        (m, n, matrix);
+    }
 }
 void ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matrix[m][n]) {
-    printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
-    getchar();
+    if (SHOW_STEPS) {
+        printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
+        getchar();
+    }
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
-    PrintMatrix(m, n, matrix);
+   if (SHOW_STEPS) {
+       PrintMatrix(m, n, matrix);
+   }
 }
 void SwapRows(int row1, int row2, int m, int n, double matrix[m][n]) {
-    printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
-    getchar();
+    if (SHOW_STEPS) {
+        printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
+        getchar();
+    }
     double temp[n];
 
     for (int i = 0; i < n; i++) {
@@ -147,10 +158,14 @@ void SwapRows(int row1, int row2, int m, int n, double matrix[m][n]) {
     for (int i = 0; i < n; i++) {
         matrix[row2][i] = temp[i];
     }
-    PrintMatrix(m, n, matrix);
+    if (SHOW_STEPS) {
+        PrintMatrix(m, n, matrix);
+    }
 }
 void ScaleMatrix(int c, int m, int n, double matrix[m][n]) {
-    printf("Scale A by %d\n", c);
+    if (SHOW_STEPS) {
+        printf("Scale A by %d\n", c);
+    }
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             matrix[i][j] *= c;
@@ -245,6 +260,14 @@ bool CheckAugment() {
         return true;
     } else {
         return false;
+    }
+}
+void CheckSteps() {
+    char decision;
+    printf("Show steps? (y/n): ");
+    scanf(" %c", &decision);
+    if (decision == 'y') {
+        SHOW_STEPS = true;
     }
 }
 
