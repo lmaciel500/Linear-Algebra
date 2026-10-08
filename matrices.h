@@ -127,7 +127,7 @@ void ScaleRow(int toScale, double c, int m, int n, double matrix[m][n]) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
     }
     if (SHOW_STEPS) {
-        (m, n, matrix);
+        PrintMatrix(m, n, matrix);
     }
 }
 void ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matrix[m][n]) {
@@ -170,6 +170,9 @@ void ScaleMatrix(int c, int m, int n, double matrix[m][n]) {
         for (int j = 0; j < n; j++) {
             matrix[i][j] *= c;
         }
+    }
+    if (SHOW_STEPS) {
+        PrintMatrix(m, n, matrix);
     }
 }
 
