@@ -229,10 +229,7 @@ int main(void) {
     int m, n;
     GetInput(&m, &n);
 
-    double result[n][n];
-    ZeroMatrix(m, n, result);
-
-    double matrix1[n][n];
+    double matrix1[m][n];
     GetMatrix(m, n, matrix1);
 
     //ScaleMatrix(2, n, matrix1);
