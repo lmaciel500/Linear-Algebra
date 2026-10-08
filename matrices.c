@@ -285,5 +285,8 @@ int DigitsAmount(int a) {
         a /= 10;
         digits++;
     }
+    if (digits == 0) {
+        return 1;
+    }
     return digits;
 }
