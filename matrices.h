@@ -6,6 +6,7 @@
 
 static bool AUGMENT = false;
 static bool SHOW_STEPS = false;
+static bool DO_LU = false;
 
 //helper
 void ZeroMatrix(int m, int n, double matrix[m][n]) {
@@ -184,6 +185,7 @@ void ScaleMatrix(int c, int m, int n, double matrix[m][n]) {
     }
 }
 
+//algorithm checkers
 bool CheckRREF(int m, int n, double matrix[m][n]) {
     int staircase = -1;
     for (int i = 0; i < m; i++) {
@@ -224,33 +226,44 @@ bool CheckRREF(int m, int n, double matrix[m][n]) {
     PrintMatrix(m, n, matrix);
     return true;
 }
-void RREF(int m, int n, double matrix[m][n]) {
-    printf("Gaussian Elimination...\n\n");
-    PrintMatrix(m, n, matrix);
-    int row = 0;
-    int column = 0;
-    while (!CheckRREF(m, n, matrix)) {
-        if (ZeroColumn(column, m, n, matrix)) {
-            column++;
-            continue;
-        }
-        if (matrix[row][column] == 0) {
-            SwapRows(row, FindPivot(column, m, n, matrix), m, n, matrix);
-        }
-        if (matrix[row][column] != 1) {
-            ScaleRow(row, (double) 1 / matrix[row][column], m, n, matrix);
-        }
-        for (int i = 0; i < m; i++) {
-            if (i == row) {
-                continue;
-            } else if (matrix[i][column] != 0) {
-                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], m, n, matrix);
+bool CheckREF(int m, int n, double matrix[m][n]) {
+    int staircase = -1;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0) {
+                if (j <= staircase) {
+                    //printf("Not REF...\n");
+                    return false;
+                }
+                for (int k = i; k < m; k++) {
+                    if (i == k) {
+                        continue;
+                    }
+                    if (matrix[k][j] != 0) {
+                        //printf("Not REF...\n");
+                        return false;
+                    }
+                }
+                staircase = j;
+                break;
             }
         }
-        column++;
-        row++;
     }
+    int zeroRows = ZeroRowsCount(m, n, matrix);
+    for (int i = m - 1; i >= m - zeroRows; i--) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0) {
+                //printf("Not REF...\n");
+                return false;
+            }
+        }
+    }
+    printf("Matrix is in REF.\n\n");
+    PrintMatrix(m, n, matrix);
+    return true;
 }
+
+//checkers
 bool CheckIdentity(int m, int n, double matrix[m][n]) {
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -282,6 +295,75 @@ void CheckSteps() {
     scanf(" %c", &decision);
     if (decision == 'y') {
         SHOW_STEPS = true;
+    }
+}
+void CheckLU() {
+    char decision;
+    printf("LU matrix? (y/n): ");
+    scanf(" %c", &decision);
+    if (decision == 'y') {
+        DO_LU = true;
+    }
+}
+
+//algorithms
+void RREF(int m, int n, double matrix[m][n]) {
+    printf("Gaussian Elimination...\n\n");
+    PrintMatrix(m, n, matrix);
+    int row = 0;
+    int column = 0;
+    while (!CheckRREF(m, n, matrix)) {
+        if (ZeroColumn(column, m, n, matrix)) {
+            column++;
+            continue;
+        }
+        if (matrix[row][column] == 0) {
+            SwapRows(row, FindPivot(column, m, n, matrix), m, n, matrix);
+        }
+        if (matrix[row][column] != 1) {
+            ScaleRow(row, (double) 1 / matrix[row][column], m, n, matrix);
+        }
+        for (int i = 0; i < m; i++) {
+            if (i == row) {
+                continue;
+            }
+            if (matrix[i][column] != 0) {
+                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], m, n, matrix);
+            }
+        }
+        column++;
+        row++;
+    }
+}
+void REF(int m, int n, double matrix[m][n]) {
+    bool possibleLU = true;
+    printf("Begin REF operations...\n\n");
+    PrintMatrix(m, n, matrix);
+    int row = 0;
+    int column = 0;
+    while (!CheckREF(m, n, matrix)) {
+        if (!possibleLU) {
+            break;
+        }
+        if (ZeroColumn(column, m, n, matrix)) {
+            column++;
+            continue;
+        }
+        for (int i = row; i < m; i++) {
+            if (i == row) {
+                continue;
+            }
+            if (DO_LU && matrix[row][column] == 0 && matrix[i][column] != 0) {
+                printf("REF for LU impossible...\n");
+                possibleLU = false;
+                break;
+            }
+            if (matrix[i][column] != 0) {
+                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], m, n, matrix);
+            }
+        }
+        column++;
+        row++;
     }
 }
 

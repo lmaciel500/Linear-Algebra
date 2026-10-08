@@ -15,14 +15,12 @@ int main(void) {
         n++;
     }
     CheckSteps();
+    CheckLU();
 
     double matrix1[m][n];
     GetMatrix(m, n, matrix1);
 
-    //ScaleMatrix(2, n, matrix1);
-    //CheckIdentity(n, matrix1);
-
-    RREF(m, n, matrix1);
+    REF(m, n, matrix1);
 
     return 0;
 }
