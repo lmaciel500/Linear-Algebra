@@ -4,8 +4,8 @@
 #include <math.h>
 
 //helper
-void ZeroMatrix(int n, double matrix[n][n]) {
-    for (int i = 0; i < n; i++) {
+void ZeroMatrix(int m, int n, double matrix[m][n]) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             matrix[i][j] = 0;
         }
@@ -16,12 +16,12 @@ void ZeroArray(int n, int array[n]) {
         array[i] = 0;
     }
 }
-int FindLargest(int n, double matrix[n][n]) {
+int FindLargest(int m, int n, double matrix[m][n]) {
     int largest = 0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if (fabs(matrix[i][j]) > largest) {
-                largest = fabs(matrix[i][j]);
+                largest = (int) fabs(matrix[i][j]);
             }
         }
     }
@@ -40,9 +40,9 @@ int DigitsAmount(int a) {
 }
 
 //misc
-int ZeroRowsCount(int n, double matrix[n][n]) {
+int ZeroRowsCount(int m, int n, double matrix[m][n]) {
     int zeroRows = 0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] != 0) {
                 break;
@@ -54,13 +54,13 @@ int ZeroRowsCount(int n, double matrix[n][n]) {
     }
     return zeroRows;
 }
-int FindPivot(int column, int n, double matrix[n][n]) {
-    for (int i = 0; i < n; i++) {
+int FindPivot(int column, int m, int n, double matrix[n][n]) {
+    for (int i = 0; i < m; i++) {
         if (matrix[i][column] == 1) {
             return i;
         }
     }
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < m; i++) {
         if (matrix[i][column] != 0) {
             return i;
         }
@@ -69,16 +69,14 @@ int FindPivot(int column, int n, double matrix[n][n]) {
 }
 
 //general
-int GetInput() {
-    int n;
-    printf("Enter n for nxn square matrix: ");
-    scanf(" %d", &n);
+void GetInput(int *m, int *n) {
+    printf("Enter values for mxn matrix: ");
+    scanf(" %d %d", m, n);
     printf("\n");
-    return n;
 }
-void GetMatrix(int n, double matrix[n][n]) {
+void GetMatrix(int m, int n, double matrix[m][n]) {
     printf("Enter matrix row by row...\n");
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < m; i++) {
         printf("Row %d: ", i + 1);
         for (int j = 0; j < n; j++) {
             scanf(" %lf", &matrix[i][j]);
@@ -87,9 +85,9 @@ void GetMatrix(int n, double matrix[n][n]) {
     }
     printf("\n");
 }
-void PrintMatrix(int n, double matrix[n][n]) {
-    int s = DigitsAmount(FindLargest(n, matrix)) + 2;
-    for (int i = 0; i < n; i++) {
+void PrintMatrix(int m, int n, double matrix[m][n]) {
+    int s = DigitsAmount(FindLargest(m, n, matrix)) + 2;
+    for (int i = 0; i < m; i++) {
         printf("%*c", s, '|');
         for (int j = 0; j < n; j++) {
             double x = matrix[i][j];
@@ -105,23 +103,23 @@ void PrintMatrix(int n, double matrix[n][n]) {
 }
 
 //elementary operations
-void ScaleRow(int toScale, double c, int n, double matrix[n][n]) {
+void ScaleRow(int toScale, double c, int m, int n, double matrix[n][n]) {
     printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
     getchar();
     for (int i = 0; i < n; i++) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
     }
-    PrintMatrix(n, matrix);
+    PrintMatrix(m, n, matrix);
 }
-void ReplaceRow(int toReplace, int replacer, double c, int n, double matrix[n][n]) {
+void ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matrix[m][n]) {
     printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
     getchar();
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
-    PrintMatrix(n, matrix);
+    PrintMatrix(m, n, matrix);
 }
-void SwapRows(int row1, int row2, int n, double matrix[n][n]) {
+void SwapRows(int row1, int row2, int m, int n, double matrix[m][n]) {
     printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
     getchar();
     double temp[n];
@@ -135,20 +133,20 @@ void SwapRows(int row1, int row2, int n, double matrix[n][n]) {
     for (int i = 0; i < n; i++) {
         matrix[row2][i] = temp[i];
     }
-    PrintMatrix(n, matrix);
+    PrintMatrix(m, n, matrix);
 }
-void ScaleMatrix(int c, int n, double matrix[n][n]) {
+void ScaleMatrix(int c, int m, int n, double matrix[m][n]) {
     printf("Scale A by %d\n", c);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             matrix[i][j] *= c;
         }
     }
 }
 
-bool CheckRREF(int n, double matrix[n][n]) {
+bool CheckRREF(int m, int n, double matrix[n][n]) {
     int staircase = -1;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] != 0 && matrix[i][j] != 1) {
                 //printf("Not RREF...\n");
@@ -159,7 +157,7 @@ bool CheckRREF(int n, double matrix[n][n]) {
                     //printf("Not RREF...\n");
                     return false;
                 }
-                for (int k = 0; k < n; k++) {
+                for (int k = 0; k < m; k++) {
                     if (i == k) {
                         continue;
                     }
@@ -173,8 +171,8 @@ bool CheckRREF(int n, double matrix[n][n]) {
             }
         }
     }
-    int zeroRows = ZeroRowsCount(n, matrix);
-    for (int i = n - 1; i >= n - zeroRows; i--) {
+    int zeroRows = ZeroRowsCount(m, n, matrix);
+    for (int i = m - 1; i >= m - zeroRows; i--) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] != 0) {
                 //printf("Not RREF...\n");
@@ -183,49 +181,69 @@ bool CheckRREF(int n, double matrix[n][n]) {
         }
     }
     printf("Matrix is in RREF.\n\n");
-    PrintMatrix(n, matrix);
+    PrintMatrix(m, n, matrix);
     return true;
 }
-void RREF(int n, double matrix[n][n]) {
+void RREF(int m, int n, double matrix[n][n]) {
     printf("Gaussian Elimination...\n\n");
     getchar();
-    PrintMatrix(n, matrix);
+    PrintMatrix(m, n, matrix);
     int row = 0;
     int column = 0;
-    while (!CheckRREF(n, matrix)) {
+    while (!CheckRREF(m, n, matrix)) {
         if (matrix[row][column] == 0) {
-            SwapRows(row, FindPivot(column, n, matrix), n, matrix);
+            SwapRows(row, FindPivot(column, m, n, matrix), m, n, matrix);
         }
         if (matrix[row][column] != 1) {
-            ScaleRow(row, (double) 1 / matrix[row][column], n, matrix);
+            ScaleRow(row, (double) 1 / matrix[row][column], m, n, matrix);
         }
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             if (i == row) {
                 continue;
             } else if (matrix[i][column] != 0) {
-                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], n, matrix);
+                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], m, n, matrix);
             }
         }
         column++;
         row++;
     }
 }
-bool CheckIdentity(int n, double matrix[n][n]) {
-    for (int i = 0; i < n; i++) {
+bool CheckIdentity(int m, int n, double matrix[n][n]) {
+    for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if ((i != j && matrix[i][j] != 0) ||
                 (i == j && matrix[i][j] != 1)) {
                 printf("Not the identity matrix...\n");
-                PrintMatrix(n, matrix);
+                PrintMatrix(m, n, matrix);
                 return false;
                 }
         }
     }
     printf("This is the identity matrix...\n");
-    PrintMatrix(n, matrix);
+    PrintMatrix(m, n, matrix);
     return true;
 }
 
+int main(void) {
+    printf("\n");
+    int m, n;
+    GetInput(&m, &n);
+
+    double result[n][n];
+    ZeroMatrix(m, n, result);
+
+    double matrix1[n][n];
+    GetMatrix(m, n, matrix1);
+
+    //ScaleMatrix(2, n, matrix1);
+    //CheckIdentity(n, matrix1);
+
+    RREF(m, n, matrix1);
+
+    return 0;
+}
+
+/*
 //arithmetic
 void MatrixMultiplication(int n, double matrix1[n][n], double matrix2[n][n], double result[n][n]) {
     PrintMatrix(n, matrix1);
@@ -259,22 +277,4 @@ void MatrixAddition(int n, double matrix1[n][n], double matrix2[n][n], double re
     PrintMatrix(n, result);
     printf("\n");
 }
-
-int main(void) {
-    printf("\n");
-    int n = GetInput();
-
-    double result[n][n];
-    ZeroMatrix(n, result);
-
-    double matrix1[n][n];
-    GetMatrix(n, matrix1);
-
-    //ScaleMatrix(2, n, matrix1);
-    //CheckIdentity(n, matrix1);
-
-    RREF(n, matrix1);
-
-    return 0;
-}
-
+*/
