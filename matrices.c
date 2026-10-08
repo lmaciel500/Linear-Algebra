@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <math.h>
 
+static bool AUGMENT = false;
+
 //helper
 void ZeroMatrix(int m, int n, double matrix[m][n]) {
     for (int i = 0; i < m; i++) {
@@ -20,9 +22,16 @@ int FindLargest(int m, int n, double matrix[m][n]) {
     int largest = 0;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            if (fabs(matrix[i][j]) > largest) {
-                largest = (int) fabs(matrix[i][j]);
+            if (matrix[i][j] == (int) matrix[i][j]) {
+                if (snprintf(NULL, 0, "%d", (int) matrix[i][j]) > largest) {
+                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]);
+                }
+            } else {
+                if (snprintf(NULL, 0, "%.2lf", matrix[i][j]) > largest) {
+                    largest = snprintf(NULL, 0, "%.2lf", matrix[i][j]);
+                }
             }
+
         }
     }
     return largest;
@@ -54,7 +63,7 @@ int ZeroRowsCount(int m, int n, double matrix[m][n]) {
     }
     return zeroRows;
 }
-int FindPivot(int column, int m, int n, double matrix[n][n]) {
+int FindPivot(int column, int m, int n, double matrix[m][n]) {
     for (int i = 0; i < m; i++) {
         if (matrix[i][column] == 1) {
             return i;
@@ -86,10 +95,14 @@ void GetMatrix(int m, int n, double matrix[m][n]) {
     printf("\n");
 }
 void PrintMatrix(int m, int n, double matrix[m][n]) {
-    int s = DigitsAmount(FindLargest(m, n, matrix)) + 2;
+    int s = FindLargest(m, n, matrix);
     for (int i = 0; i < m; i++) {
-        printf("%*c", s, '|');
+        printf("%c", '|');
         for (int j = 0; j < n; j++) {
+            if (AUGMENT && j == n - 1) {
+                printf(" %c ", '|');
+                //s += 1;
+            }
             double x = matrix[i][j];
             if (x == (int) x) {
                 printf("%*d", s, (int) x);
@@ -97,13 +110,13 @@ void PrintMatrix(int m, int n, double matrix[m][n]) {
                 printf("%*.2lf", s, x);
             }
         }
-        printf("%*c\n", s, '|');
+        printf(" %c\n", '|');
     }
     printf("\n");
 }
 
 //elementary operations
-void ScaleRow(int toScale, double c, int m, int n, double matrix[n][n]) {
+void ScaleRow(int toScale, double c, int m, int n, double matrix[m][n]) {
     printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
     getchar();
     for (int i = 0; i < n; i++) {
@@ -144,7 +157,7 @@ void ScaleMatrix(int c, int m, int n, double matrix[m][n]) {
     }
 }
 
-bool CheckRREF(int m, int n, double matrix[n][n]) {
+bool CheckRREF(int m, int n, double matrix[m][n]) {
     int staircase = -1;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -184,7 +197,7 @@ bool CheckRREF(int m, int n, double matrix[n][n]) {
     PrintMatrix(m, n, matrix);
     return true;
 }
-void RREF(int m, int n, double matrix[n][n]) {
+void RREF(int m, int n, double matrix[m][n]) {
     printf("Gaussian Elimination...\n\n");
     getchar();
     PrintMatrix(m, n, matrix);
@@ -208,7 +221,7 @@ void RREF(int m, int n, double matrix[n][n]) {
         row++;
     }
 }
-bool CheckIdentity(int m, int n, double matrix[n][n]) {
+bool CheckIdentity(int m, int n, double matrix[m][n]) {
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if ((i != j && matrix[i][j] != 0) ||
@@ -223,11 +236,26 @@ bool CheckIdentity(int m, int n, double matrix[n][n]) {
     PrintMatrix(m, n, matrix);
     return true;
 }
+bool CheckAugment() {
+    char decision;
+    printf("Augmented matrix? (y/n): ");
+    scanf(" %c", &decision);
+    if (decision == 'y') {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 int main(void) {
     printf("\n");
     int m, n;
     GetInput(&m, &n);
+
+    if (CheckAugment()) {
+        AUGMENT = true;
+        n++;
+    }
 
     double matrix1[m][n];
     GetMatrix(m, n, matrix1);
