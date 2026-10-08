@@ -41,20 +41,22 @@ int main(void) {
 }
 
 void RREF(int n, double matrix[n][n]) {
-    printf("Gaussian Elimination...\n");
+    printf("Gaussian Elimination...\n\n");
+    getchar();
     PrintMatrix(n, matrix);
     int row = 0;
     int column = 0;
     while (!CheckRREF(n, matrix)) {
         if (matrix[row][column] == 0) {
             SwapRows(row, FindPivot(column, n, matrix), n, matrix);
-        } else {
+        }
+        if (matrix[row][column] != 1) {
             ScaleRow(row, (double) 1 / matrix[row][column], n, matrix);
         }
         for (int i = 0; i < n; i++) {
             if (i == row) {
                 continue;
-            } else {
+            } else if (matrix[i][column] != 0) {
                 ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], n, matrix);
             }
         }
@@ -67,12 +69,12 @@ bool CheckRREF(int n, double matrix[n][n]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] != 0 && matrix[i][j] != 1) {
-                printf("Not RREF...\n");
+                //printf("Not RREF...\n");
                 return false;
             }
             if (matrix[i][j] == 1) {
                 if (j <= staircase) {
-                    printf("Not RREF...\n");
+                    //printf("Not RREF...\n");
                     return false;
                 }
                 for (int k = 0; k < n; k++) {
@@ -80,7 +82,7 @@ bool CheckRREF(int n, double matrix[n][n]) {
                         continue;
                     }
                     if (matrix[k][j] != 0) {
-                        printf("Not RREF...\n");
+                        //printf("Not RREF...\n");
                         return false;
                     }
                 }
@@ -93,12 +95,12 @@ bool CheckRREF(int n, double matrix[n][n]) {
     for (int i = n - 1; i >= n - zeroRows; i--) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] != 0) {
-                printf("Not RREF...\n");
+                //printf("Not RREF...\n");
                 return false;
             }
         }
     }
-    printf("Matrix is in RREF.\n");
+    printf("Matrix is in RREF.\n\n");
     PrintMatrix(n, matrix);
     return true;
 }
