@@ -50,6 +50,15 @@ int DigitsAmount(int a) {
     }
     return digits;
 }
+void DiagonalOnes(int m, int n, double matrix[m][n]) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == j) {
+                matrix[i][j] = 1;
+            }
+        }
+    }
+}
 
 //misc
 int ZeroRowsCount(int m, int n, double matrix[m][n]) {
@@ -122,6 +131,44 @@ void PrintMatrix(int m, int n, double matrix[m][n]) {
             }
         }
         printf(" %c\n", '|');
+    }
+    printf("\n");
+}
+void PrintLU(int n, double matrixL[n][n], double matrixU[n][n]) {
+    int s;
+    int a = FindLargest(n, n, matrixL);
+    int b = FindLargest(n, n, matrixL);
+    if (a > b) {
+        s = a;
+    } else {
+        s = b;
+    }
+    for (int i = 0; i < n; i++) {
+        printf("%c", '|');
+        for (int j = 0; j < n; j++) {
+            double x = matrixL[i][j];
+            if (x == (int) x) {
+                printf("%*d", s, (int) x);
+            } else {
+                printf("%*.2lf", s, x);
+            }
+        }
+        printf("%*c", s, '|');
+        printf("%*c", s, '|');
+        for (int j = 0; j < n; j++) {
+            double x = matrixU[i][j];
+            if (x == (int) x) {
+                printf("%*d", s, (int) x);
+            } else {
+                printf("%*.2lf", s, x);
+            }
+        }
+        if (i + 1 == n) {
+            printf(" %c", '|');
+            printf(" = LU\n");
+        } else {
+            printf(" %c\n", '|');
+        }
     }
     printf("\n");
 }
@@ -335,7 +382,7 @@ void RREF(int m, int n, double matrix[m][n]) {
         row++;
     }
 }
-void REF(int m, int n, double matrix[m][n]) {
+void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
     bool possibleLU = true;
     printf("Begin REF operations...\n\n");
     PrintMatrix(m, n, matrix);
@@ -359,12 +406,17 @@ void REF(int m, int n, double matrix[m][n]) {
                 break;
             }
             if (matrix[i][column] != 0) {
-                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], m, n, matrix);
+                int c = - matrix[i][column] / matrix[row][column];
+                if (DO_LU) {
+                    matrixL[i][row] = - c;
+                }
+                ReplaceRow(i, row, c, m, n, matrix);
             }
         }
         column++;
         row++;
     }
+    DiagonalOnes(m, n, matrixL);
 }
 
 /*

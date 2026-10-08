@@ -10,17 +10,24 @@ int main(void) {
     int m, n;
     GetInput(&m, &n);
 
+    CheckSteps();
+    CheckLU();
+
     if (CheckAugment()) {
         AUGMENT = true;
         n++;
     }
-    CheckSteps();
-    CheckLU();
+    if (m != n) {
+        DO_LU = false;
+    }
 
-    double matrix1[m][n];
-    GetMatrix(m, n, matrix1);
+    double Umatrix[m][n];
+    double Lmatrix[m][n];
+    GetMatrix(m, n, Umatrix);
+    ZeroMatrix(m, n, Lmatrix);
 
-    REF(m, n, matrix1);
+    REF(m, n, Lmatrix, Umatrix);
+    PrintLU(n, Lmatrix, Umatrix);
 
     return 0;
 }
