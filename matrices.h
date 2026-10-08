@@ -26,7 +26,7 @@ int FindLargest(int m, int n, double matrix[m][n]) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] == (int) matrix[i][j]) {
                 if (snprintf(NULL, 0, "%d", (int) matrix[i][j]) > largest) {
-                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]);
+                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]) + 1;
                 }
             } else {
                 if (snprintf(NULL, 0, "%.2lf", matrix[i][j]) > largest) {
