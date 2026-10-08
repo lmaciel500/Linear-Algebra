@@ -225,7 +225,7 @@ bool CheckRREF(int m, int n, double matrix[m][n]) {
     return true;
 }
 void RREF(int m, int n, double matrix[m][n]) {
-    printf("Gaussian Elimination...\n");
+    printf("Gaussian Elimination...\n\n");
     PrintMatrix(m, n, matrix);
     int row = 0;
     int column = 0;
