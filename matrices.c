@@ -42,7 +42,11 @@ void RREF(int n, int matrix[n][n]) {
     int row = 0;
     int column = 0;
     while (!CheckRREF(n, matrix)) {
-        ScaleRow(row, (double) 1 / matrix[row][column], n, matrix);
+        if (matrix[row][column] == 0) {
+            SwapRows(row, FindPivot(column, n, matrix), n, matrix);
+        } else {
+            ScaleRow(row, (double) 1 / matrix[row][column], n, matrix);
+        }
         for (int i = 0; i < n; i++) {
             if (i == row) {
                 continue;
