@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 
 void ZeroArray(int n, int array[n]);
 int ZeroRowsCount(int n, double matrix[n][n]);
@@ -70,7 +71,7 @@ void ScaleRow(int toScale, double c, int n, double matrix[n][n]) {
     PrintMatrix(n, matrix);
 }
 void ReplaceRow(int toReplace, int replacer, double c, int n, double matrix[n][n]) {
-    printf("R%d —> R%d + (%.2lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
+    printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
     getchar();
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
@@ -241,7 +242,12 @@ void PrintMatrix(int n, double matrix[n][n]) {
     for (int i = 0; i < n; i++) {
         printf("%*c", n, '|');
         for (int j = 0; j < n; j++) {
-            printf("%*lf", n, matrix[i][j]);
+            double x = matrix[i][j];
+            if (x == (int) x) {
+                printf("%*d", n + 1, (int) x);
+            } else {
+                printf("%*.2lf", n * 2, x);
+            }
         }
         printf("%*c\n", n, '|');
     }
