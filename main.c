@@ -13,10 +13,14 @@ int main(void) {
     CheckSteps();
 
     if (CheckAugment()) {
-        AUGMENT = true;
         n++;
-    } else {
-        CheckLU();
+    } else if (CheckInverse()) {
+        if (m != n) {
+            DO_INVERSE = false;
+        } else {
+            n *= 2;
+        }
+    } else if (CheckLU()) {
         if (m != n) {
             DO_LU = false;
         }
@@ -24,10 +28,11 @@ int main(void) {
 
     double Umatrix[m][n];
     double Lmatrix[m][n];
+
     GetMatrix(m, n, Umatrix);
     ZeroMatrix(m, n, Lmatrix);
 
-    REF(m, n, Lmatrix, Umatrix);
+    RREF(m, n, Umatrix);
 
     return 0;
 }

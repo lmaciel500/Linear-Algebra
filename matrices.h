@@ -2,6 +2,7 @@
 static bool AUGMENT = false;
 static bool SHOW_STEPS = false;
 static bool DO_LU = false;
+static bool DO_INVERSE = false;
 
 //helper
 void ZeroMatrix(int m, int n, double matrix[m][n]) {
@@ -55,6 +56,17 @@ void DiagonalOnes(int m, int n, double matrix[m][n]) {
         }
     }
 }
+void PrepareInverse(int m, int n, double matrix[m][n]) {
+    for (int i = 0; i < m; i++) {
+        for (int j = n / 2; j < n; j++) {
+            if (j == n / 2 + i) {
+                matrix[i][j] = 1;
+            } else {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+}
 
 //misc
 int ZeroRowsCount(int m, int n, double matrix[m][n]) {
@@ -103,14 +115,31 @@ void GetMatrix(int m, int n, double matrix[m][n]) {
     printf("Enter matrix row by row...\n");
     for (int i = 0; i < m; i++) {
         printf("Row %d: ", i + 1);
-        for (int j = 0; j < n; j++) {
-            scanf(" %lf", &matrix[i][j]);
+        if (DO_INVERSE) {
+            for (int j = 0; j < n / 2; j++) {
+                scanf(" %lf", &matrix[i][j]);
+            }
+        } else {
+            for (int j = 0; j < n; j++) {
+                scanf(" %lf", &matrix[i][j]);
+            }
         }
         //printf("\n");
     }
 }
-void PrintMatrix(int m, int n, double matrix[m][n]) {
-    int s = FindLargest(m, n, matrix);
+void PrintMatrix(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
+    int a, b, s;
+    a = FindLargest(m, n, matrixL);
+    if (DO_LU) {
+        b = FindLargest(m, n, matrixU);
+    } else {
+        b = 0;
+    }
+    if (a > b) {
+        s = a;
+    } else {
+        s = b;
+    }
     for (int i = 0; i < m; i++) {
         printf("%c", '|');
         for (int j = 0; j < n; j++) {
@@ -118,14 +147,35 @@ void PrintMatrix(int m, int n, double matrix[m][n]) {
                 printf(" %c ", '|');
                 //s += 1;
             }
-            double x = matrix[i][j];
+            if (DO_INVERSE && j == n / 2) {
+                printf(" %c ", '|');
+            }
+            double x = matrixL[i][j];
             if (x == (int) x) {
                 printf("%*d", s, (int) x);
             } else {
                 printf("%*.2lf", s, x);
             }
         }
-        printf(" %c\n", '|');
+        if (DO_LU) {
+            //printf("%*c", s, ' ');
+            printf(" %c", '|');
+            //printf("%*c", s, ' ');
+            for (int j = 0; j < n; j++) {
+                double x = matrixU[i][j];
+                if (x == (int) x) {
+                    printf("%*d", s, (int) x);
+                } else {
+                    printf("%*.2lf", s, x);
+                }
+            }
+        }
+        if (i + 1 == n && DO_LU) {
+            printf(" %c", '|');
+            printf(" = LU\n");
+        } else {
+            printf(" %c\n", '|');
+        }
     }
     printf("\n");
 }
@@ -148,7 +198,7 @@ void PrintLU(int n, double matrixL[n][n], double matrixU[n][n]) {
                 printf("%*.2lf", s, x);
             }
         }
-        //rintf("%*c", s, ' ');
+        //printf("%*c", s, ' ');
         printf(" %c", '|');
         printf(" %c", '|');
         //printf("%*c", s, ' ');
@@ -180,7 +230,7 @@ void ScaleRow(int toScale, double c, int m, int n, double matrix[m][n]) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
     }
     if (SHOW_STEPS) {
-        PrintMatrix(m, n, matrix);
+        PrintMatrix(m, n, matrix, NULL);
     }
 }
 void ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matrix[m][n]) {
@@ -191,9 +241,9 @@ void ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matr
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
-   if (SHOW_STEPS) {
-       PrintMatrix(m, n, matrix);
-   }
+    if (SHOW_STEPS) {
+        PrintMatrix(m, n, matrix, NULL);
+    }
 }
 void SwapRows(int row1, int row2, int m, int n, double matrix[m][n]) {
     if (SHOW_STEPS) {
@@ -212,7 +262,7 @@ void SwapRows(int row1, int row2, int m, int n, double matrix[m][n]) {
         matrix[row2][i] = temp[i];
     }
     if (SHOW_STEPS) {
-        PrintMatrix(m, n, matrix);
+        PrintMatrix(m, n, matrix, NULL);
     }
 }
 void ScaleMatrix(int c, int m, int n, double matrix[m][n]) {
@@ -225,7 +275,7 @@ void ScaleMatrix(int c, int m, int n, double matrix[m][n]) {
         }
     }
     if (SHOW_STEPS) {
-        PrintMatrix(m, n, matrix);
+        PrintMatrix(m, n, matrix, NULL);
     }
 }
 
@@ -267,7 +317,6 @@ bool CheckRREF(int m, int n, double matrix[m][n]) {
         }
     }
     printf("Matrix is in RREF.\n\n");
-    PrintMatrix(m, n, matrix);
     return true;
 }
 bool CheckREF(int m, int n, double matrix[m][n]) {
@@ -313,13 +362,13 @@ bool CheckIdentity(int m, int n, double matrix[m][n]) {
             if ((i != j && matrix[i][j] != 0) ||
                 (i == j && matrix[i][j] != 1)) {
                 printf("Not the identity matrix...\n");
-                PrintMatrix(m, n, matrix);
+                PrintMatrix(m, n, matrix, NULL);
                 return false;
                 }
         }
     }
     printf("This is the identity matrix...\n");
-    PrintMatrix(m, n, matrix);
+    PrintMatrix(m, n, matrix, NULL);
     return true;
 }
 bool CheckAugment() {
@@ -340,19 +389,34 @@ void CheckSteps() {
         SHOW_STEPS = true;
     }
 }
-void CheckLU() {
+bool CheckLU() {
     char decision;
     printf("LU matrix? (y/n): ");
     scanf(" %c", &decision);
     if (decision == 'y') {
         DO_LU = true;
+        return true;
     }
+    return false;
+}
+bool CheckInverse() {
+    char decision;
+    printf("Inverse matrix? (y/n): ");
+    scanf(" %c", &decision);
+    if (decision == 'y') {
+        DO_INVERSE = true;
+        return true;
+    }
+    return false;
 }
 
 //algorithms
 void RREF(int m, int n, double matrix[m][n]) {
+    if (DO_INVERSE) {
+        PrepareInverse(m, n, matrix);
+    }
     printf("Gaussian Elimination...\n");
-    PrintMatrix(m, n, matrix);
+    PrintMatrix(m, n, matrix, NULL);
     int row = 0;
     int column = 0;
     while (!CheckRREF(m, n, matrix)) {
@@ -361,10 +425,12 @@ void RREF(int m, int n, double matrix[m][n]) {
             continue;
         }
         if (matrix[row][column] == 0) {
-            SwapRows(row, FindPivot(column, m, n, matrix), m, n, matrix);
+            int newRow = FindPivot(column, m, n, matrix);
+            SwapRows(row, newRow, m, n, matrix);
         }
         if (matrix[row][column] != 1) {
-            ScaleRow(row, (double) 1 / matrix[row][column], m, n, matrix);
+            double c = 1 / matrix[row][column];
+            ScaleRow(row, c, m, n, matrix);
         }
         for (int i = 0; i < m; i++) {
             if (i == row) {
@@ -378,11 +444,12 @@ void RREF(int m, int n, double matrix[m][n]) {
         column++;
         row++;
     }
+    PrintMatrix(m, n, matrix, NULL);
 }
 void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
     bool possibleLU = true;
     printf("Begin REF operations...\n");
-    PrintMatrix(m, n, matrix);
+    PrintMatrix(m, n, matrixL, matrix);
     int row = 0;
     int column = 0;
     while (!CheckREF(m, n, matrix)) {
@@ -413,12 +480,7 @@ void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
         column++;
         row++;
     }
-    DiagonalOnes(m, n, matrixL);
-    if (DO_LU) {
-        PrintLU(m, matrixL, matrix);
-    } else {
-        PrintMatrix(m, n, matrix);
-    }
+    PrintMatrix(m, n, matrixL, matrix);
 }
 
 /*
