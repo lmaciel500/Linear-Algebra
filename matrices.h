@@ -31,12 +31,11 @@ void ZeroMatrix(Matrix *A) {
         }
     }
 }
-double FindLargestEntry(Matrix *A) {
+int FindLargestEntry(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
 
-    double scale = 3;
     double largest = 0;
 
     for (int i = 0; i < m; i++) {
@@ -53,8 +52,7 @@ double FindLargestEntry(Matrix *A) {
 
         }
     }
-    largest *= scale;
-    return largest;
+    return (int) largest;
 }
 void DiagonalOnes(Matrix *A) {
     int m = (*A).rows;
@@ -147,6 +145,7 @@ bool ZeroColumn(int column, Matrix *A) {
 
 //general
 void GetInput(int *m, int *n) {
+    printf("\n");
     printf("Enter values for mxn matrix: ");
     scanf(" %d %d", m, n);
     //printf("\n");
@@ -176,74 +175,80 @@ void GetMatrix(Matrix *A) {
         //printf("\n");
     }
     printf("\n");
+
 }
-void PrintMatrix(Matrix *A, Matrix *B) {
+void PrintMatrixRow(int row, int s, Matrix *A) {
+    int m = (*A).rows;
+    int n = (*A).columns;
+    double (*matrix)[100] = (*A).matrix;
+
+    printf("%c", '|');
+    for (int i = 0; i < n; i++) {
+        if (AUGMENTED && i == n - 1) {
+            printf(" %c ", '|');
+            //s += 1;
+        }
+        if (DO_INVERSE && i == n / 2) {
+            printf(" %c ", '|');
+        }
+
+        double x = matrix[row][i];
+        if (x == (int) x) {
+            printf("%*d", s, (int) x);
+        } else {
+            printf("%*.2lf", s, x);
+        }
+    }
+    printf(" %c", '|');
+}
+void PrintMatrix(Matrix *A, Matrix *B, Matrix *C) {
     int m = (*A).rows;
     int n = (*A).columns;
     double (*matrix1)[100] = (*A).matrix;
 
-    int a, b, s;
-    a = FindLargestEntry(A);
+    double scale = 2;
+
+    int s = FindLargestEntry(A);
     if (B != NULL) {
-        b = FindLargestEntry(B);
-    } else {
-        b = 0;
-    }
-    if (a > b) {
-        s = a;
-    } else {
-        s = b;
-    }
-
-    for (int i = 0; i < m; i++) {
-        printf("%c", '|');
-        for (int j = 0; j < n; j++) {
-            if (AUGMENTED && j == n - 1) {
-                printf(" %c ", '|');
-                //s += 1;
-            }
-            if (DO_INVERSE && j == n / 2) {
-                printf(" %c ", '|');
-            }
-
-            double x = matrix1[i][j];
-            if (x == (int) x) {
-                printf("%*d", s, (int) x);
-            } else {
-                printf("%*.2lf", s, x);
+        int b = FindLargestEntry(B);
+        if (b > s) {
+            s = b;
+        }
+        if (C != NULL) {
+            int c = FindLargestEntry(C);
+            if (c > s) {
+                s = c;
             }
         }
+    }
+    s *= scale;
 
+    for (int i = 0; i < m; i++) {
+        PrintMatrixRow(i, s, A);
         if (B != NULL) {
-            double (*matrix2)[100] = (*B).matrix;
-
-            //printf("%*c", s, ' ');
-            printf(" %c", '|');
-            printf(" %c", '|');
-            //printf("%*c", s, ' ');
-            for (int j = 0; j < (*B).columns; j++) {
-                double x = matrix2[i][j];
-                if (x == (int) x) {
-                    printf("%*d", s, (int) x);
+            if (C != NULL) {
+                if (i == m / 2) {
+                    printf(" %*c ", s / scale, 'X');
                 } else {
-                    printf("%*.2lf", s, x);
+                    printf(" %*c ", s / scale, ' ');
+                }
+                PrintMatrixRow(i, s, B);
+                if (i == m / 2) {
+                    printf(" %*c ", s / scale, '=');
+                } else {
+                    printf(" %*c ", s / scale, ' ');
+                }
+                PrintMatrixRow(i, s, C);
+            } else {
+                PrintMatrixRow(i, s, B);
+                if (LU_DONE && i + 1 == m) {
+                    printf(" = LU");
                 }
             }
         }
-
-        if (i + 1 == m && B != NULL && (LU_DONE || !MULT_DONE)) {
-            printf(" %c", '|');
-            printf(" = ");
-            if (DO_LU) {
-                printf("LU");
-            }
-            printf("\n");
-        } else {
-            printf(" %c\n", '|');
-        }
+        printf("\n");
     }
     printf("\n");
-
 }
 
 //elementary operations
@@ -260,7 +265,7 @@ void ScaleRow(int toScale, double c, Matrix *A) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL);
+        PrintMatrix(A, NULL, NULL);
     }
 }
 void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
@@ -276,7 +281,7 @@ void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL);
+        PrintMatrix(A, NULL, NULL);
     }
 }
 void SwapRows(int row1, int row2, Matrix *A) {
@@ -300,7 +305,7 @@ void SwapRows(int row1, int row2, Matrix *A) {
         matrix[row2][i] = temp[i];
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL);
+        PrintMatrix(A, NULL, NULL);
     }
 }
 void ScaleMatrix(int c, Matrix *A) {
@@ -317,7 +322,7 @@ void ScaleMatrix(int c, Matrix *A) {
         }
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL);
+        PrintMatrix(A, NULL, NULL);
     }
 }
 
@@ -469,7 +474,7 @@ void RREF(Matrix *A) {
         PrepareInverse(A);
     }
     printf("Gaussian Elimination...\n");
-    PrintMatrix(A, NULL);
+    PrintMatrix(A, NULL, NULL);
     int row = 0;
     int column = 0;
     while (!CheckRREF(A)) {
@@ -497,7 +502,7 @@ void RREF(Matrix *A) {
         column++;
         row++;
     }
-    PrintMatrix(A, NULL);
+    PrintMatrix(A, NULL, NULL);
 }
 void REF(Matrix *A, Matrix *B) {
     int m = (*A).rows;
@@ -506,7 +511,7 @@ void REF(Matrix *A, Matrix *B) {
 
     bool possibleLU = true;
     printf("Begin REF operations...\n");
-    PrintMatrix(A, NULL);
+    PrintMatrix(A, B, NULL);
     int row = 0;
     int column = 0;
     while (!CheckREF(A)) {
@@ -538,12 +543,13 @@ void REF(Matrix *A, Matrix *B) {
         column++;
         row++;
     }
-    PrintMatrix(A, B);
+    PrintMatrix(A, B, NULL);
 }
 double DET(int m, int n, double matrix[m][n]) {
     if (m != n) {
         return 0;
     }
+    return 1;
     //WIP
 }
 
@@ -563,16 +569,15 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
     if (n != o) {
         printf("Matrix multiplication is not possible...\n");
     } else {
-        PrintMatrix(A, B);
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < p; j++) {
                 for (int k = 0; k < n; k++) {
                     result[i][j] += matrix1[i][k] * matrix2[k][j];
                 }
             }
         }
         MULT_DONE = true;
-        PrintMatrix(C, NULL);
+        PrintMatrix(A, B, C);
         printf("\n");
     }
 }
