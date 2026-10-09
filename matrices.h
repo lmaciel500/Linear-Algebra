@@ -1,6 +1,5 @@
 #include <stdbool.h>
 
-
 static bool AUGMENTED = false;
 static bool SHOW_STEPS = false;
 static bool DO_LU = false;
