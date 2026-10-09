@@ -4,6 +4,7 @@
 static bool AUGMENTED = false;
 static bool SHOW_STEPS = false;
 static bool DO_LU = false;
+static bool LU_DONE = false;
 static bool DO_INVERSE = false;
 
 //helper
@@ -118,7 +119,7 @@ void GetInput(int *m, int *n) {
 void GetMatrix(int m, int n, double matrix[m][n]) {
     printf("Enter matrix row by row...\n");
     for (int i = 0; i < m; i++) {
-        printf("Row %d: ", i + 1);
+        printf("%d: ", i + 1);
         if (DO_INVERSE) {
             for (int j = 0; j < n / 2; j++) {
                 scanf(" %lf", &matrix[i][j]);
@@ -131,11 +132,11 @@ void GetMatrix(int m, int n, double matrix[m][n]) {
         //printf("\n");
     }
 }
-void PrintMatrix(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
+void PrintMatrix(int m, int n, double matrix1[m][n], double matrix2[m][n]) {
     int a, b, s;
-    a = FindLargest(m, n, matrixL);
-    if (DO_LU) {
-        b = FindLargest(m, n, matrixU);
+    a = FindLargest(m, n, matrix1);
+    if (LU_DONE) {
+        b = FindLargest(m, n, matrix2);
     } else {
         b = 0;
     }
@@ -154,19 +155,20 @@ void PrintMatrix(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
             if (DO_INVERSE && j == n / 2) {
                 printf(" %c ", '|');
             }
-            double x = matrixL[i][j];
+            double x = matrix1[i][j];
             if (x == (int) x) {
                 printf("%*d", s, (int) x);
             } else {
                 printf("%*.2lf", s, x);
             }
         }
-        if (DO_LU) {
+        if (DO_LU && LU_DONE) {
             //printf("%*c", s, ' ');
+            printf(" %c", '|');
             printf(" %c", '|');
             //printf("%*c", s, ' ');
             for (int j = 0; j < n; j++) {
-                double x = matrixU[i][j];
+                double x = matrix2[i][j];
                 if (x == (int) x) {
                     printf("%*d", s, (int) x);
                 } else {
@@ -174,7 +176,7 @@ void PrintMatrix(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
                 }
             }
         }
-        if (i + 1 == n && DO_LU) {
+        if (i + 1 == n && DO_LU && LU_DONE) {
             printf(" %c", '|');
             printf(" = LU\n");
         } else {
@@ -356,6 +358,7 @@ bool CheckREF(int m, int n, double matrix[m][n]) {
         }
     }
     printf("Matrix is in REF.\n\n");
+    LU_DONE = true;
     return true;
 }
 
@@ -451,20 +454,17 @@ void RREF(int m, int n, double matrix[m][n]) {
     }
     PrintMatrix(m, n, matrix, NULL);
 }
-void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
-    if (DO_LU) {
-        DiagonalOnes(m, n, matrixL);
-    }
+void REF(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
     bool possibleLU = true;
     printf("Begin REF operations...\n");
-    PrintMatrix(m, n, matrixL, matrix);
+    PrintMatrix(m, n, matrixU, NULL);
     int row = 0;
     int column = 0;
-    while (!CheckREF(m, n, matrix)) {
+    while (!CheckREF(m, n, matrixU)) {
         if (!possibleLU) {
             break;
         }
-        if (ZeroColumn(column, m, n, matrix)) {
+        if (ZeroColumn(column, m, n, matrixU)) {
             column++;
             continue;
         }
@@ -472,23 +472,23 @@ void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
             if (i == row) {
                 continue;
             }
-            if (DO_LU && matrix[row][column] == 0 && matrix[i][column] != 0) {
+            if (DO_LU && matrixU[row][column] == 0 && matrixU[i][column] != 0) {
                 printf("REF for LU impossible...\n");
                 possibleLU = false;
                 break;
             }
-            if (matrix[i][column] != 0) {
-                double c = - matrix[i][column] / matrix[row][column];
+            if (matrixU[i][column] != 0) {
+                double c = - matrixU[i][column] / matrixU[row][column];
                 if (DO_LU) {
                     matrixL[i][row] = - c;
                 }
-                ReplaceRow(i, row, c, m, n, matrix);
+                ReplaceRow(i, row, c, m, n, matrixU);
             }
         }
         column++;
         row++;
     }
-    PrintMatrix(m, n, matrixL, matrix);
+    PrintMatrix(m, n, matrixL, matrixU);
 }
 
 void Start() {
@@ -515,6 +515,7 @@ void Start() {
         } else {
             double matrixL[m][n];
             double matrixU[m][n];
+            DiagonalOnes(m, n, matrixL);
             GetMatrix(m, n, matrixU);
             REF(m, n, matrixL, matrixU);
         }
