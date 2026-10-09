@@ -86,6 +86,15 @@ void PrepareInverse(Matrix *A) {
         }
     }
 }
+void ResetFlags() {
+    AUGMENTED = false;
+    SHOW_STEPS = false;
+    DO_LU = false;
+    LU_DONE = false;
+    DO_INVERSE = false;
+    DO_MULT = false;
+    MULT_DONE = false;
+}
 
 //misc
 int ZeroRowsCount(Matrix *A) {
@@ -546,7 +555,7 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
 
     int o = (*B).rows;
     int p = (*B).columns;
-    double (*matrix2)[100] = (*A).matrix;
+    double (*matrix2)[100] = (*B).matrix;
 
     double (*result)[100] = (*C).matrix;
 
@@ -658,13 +667,7 @@ bool Start() {
 
         RREF(&A);
     }
-    AUGMENTED = false;
-    SHOW_STEPS = false;
-    DO_LU = false;
-    LU_DONE = false;
-    DO_INVERSE = false;
-    DO_MULT = false;
-    MULT_DONE = false;
+    ResetFlags();
     return true;
 }
 
