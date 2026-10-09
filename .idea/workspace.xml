@@ -27,8 +27,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Modified augment variables.">
-      <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Just in case.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,6 +158,8 @@
     <MESSAGE value="Hey, where'd the code go?" />
     <MESSAGE value="Clean." />
     <MESSAGE value="Modified augment variables." />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified augment variables." />
+    <MESSAGE value="Out of bounds bug fix when in LU mode." />
+    <MESSAGE value="Just in case." />
+    <option name="LAST_COMMIT_MESSAGE" value="Just in case." />
   </component>
 </project>
