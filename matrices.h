@@ -21,17 +21,18 @@ void ZeroArray(int n, int array[n]) {
         array[i] = 0;
     }
 }
-int FindLargest(int m, int n, double matrix[m][n]) {
-    int largest = 0;
+double FindLargest(int m, int n, double matrix[m][n]) {
+    double scale = 3;
+    double largest = 0;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] == (int) matrix[i][j]) {
                 if (snprintf(NULL, 0, "%d", (int) matrix[i][j]) > largest) {
-                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]) + 2;
+                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]) * scale;
                 }
             } else {
                 if (snprintf(NULL, 0, "%.2lf", matrix[i][j]) > largest) {
-                    largest = snprintf(NULL, 0, "%.2lf", matrix[i][j]);
+                    largest = snprintf(NULL, 0, "%.2lf", matrix[i][j]) * scale / 1.6;
                 }
             }
 
@@ -101,7 +102,7 @@ bool ZeroColumn(int column, int m, int n, double matrix[m][n]) {
 void GetInput(int *m, int *n) {
     printf("Enter values for mxn matrix: ");
     scanf(" %d %d", m, n);
-    printf("\n");
+    //printf("\n");
 }
 void GetMatrix(int m, int n, double matrix[m][n]) {
     printf("Enter matrix row by row...\n");
@@ -152,8 +153,10 @@ void PrintLU(int n, double matrixL[n][n], double matrixU[n][n]) {
                 printf("%*.2lf", s, x);
             }
         }
-        printf("%*c", s, '|');
-        printf("%*c", s, '|');
+        //rintf("%*c", s, ' ');
+        printf(" %c", '|');
+        printf(" %c", '|');
+        //printf("%*c", s, ' ');
         for (int j = 0; j < n; j++) {
             double x = matrixU[i][j];
             if (x == (int) x) {
@@ -176,7 +179,7 @@ void PrintLU(int n, double matrixL[n][n], double matrixU[n][n]) {
 void ScaleRow(int toScale, double c, int m, int n, double matrix[m][n]) {
     if (SHOW_STEPS) {
         printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
-        getchar();
+        //getchar();
     }
     for (int i = 0; i < n; i++) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
@@ -188,7 +191,7 @@ void ScaleRow(int toScale, double c, int m, int n, double matrix[m][n]) {
 void ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matrix[m][n]) {
     if (SHOW_STEPS) {
         printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
-        getchar();
+        //getchar();
     }
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
@@ -200,7 +203,7 @@ void ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matr
 void SwapRows(int row1, int row2, int m, int n, double matrix[m][n]) {
     if (SHOW_STEPS) {
         printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
-        getchar();
+        //getchar();
     }
     double temp[n];
 
@@ -353,7 +356,7 @@ void CheckLU() {
 
 //algorithms
 void RREF(int m, int n, double matrix[m][n]) {
-    printf("Gaussian Elimination...\n\n");
+    printf("Gaussian Elimination...\n");
     PrintMatrix(m, n, matrix);
     int row = 0;
     int column = 0;
@@ -373,7 +376,8 @@ void RREF(int m, int n, double matrix[m][n]) {
                 continue;
             }
             if (matrix[i][column] != 0) {
-                ReplaceRow(i, row, - matrix[i][column] / matrix[row][column], m, n, matrix);
+                double c = - matrix[i][column] / matrix[row][column];
+                ReplaceRow(i, row, c, m, n, matrix);
             }
         }
         column++;
@@ -382,7 +386,7 @@ void RREF(int m, int n, double matrix[m][n]) {
 }
 void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
     bool possibleLU = true;
-    printf("Begin REF operations...\n\n");
+    printf("Begin REF operations...\n");
     PrintMatrix(m, n, matrix);
     int row = 0;
     int column = 0;
@@ -404,7 +408,7 @@ void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
                 break;
             }
             if (matrix[i][column] != 0) {
-                int c = - matrix[i][column] / matrix[row][column];
+                double c = - matrix[i][column] / matrix[row][column];
                 if (DO_LU) {
                     matrixL[i][row] = - c;
                 }
