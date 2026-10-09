@@ -358,7 +358,9 @@ bool CheckREF(int m, int n, double matrix[m][n]) {
         }
     }
     printf("Matrix is in REF.\n\n");
-    LU_DONE = true;
+    if (DO_LU) {
+        LU_DONE = true;
+    }
     return true;
 }
 
