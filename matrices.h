@@ -19,6 +19,8 @@ static bool DO_INVERSE = false;
 static bool DO_MULT = false;
 static bool MULT_DONE = false;
 
+static int matrices = 1;
+
 //helper
 void ZeroMatrix(Matrix *A) {
     int m = (*A).rows;
@@ -92,6 +94,7 @@ void ResetFlags() {
     DO_INVERSE = false;
     DO_MULT = false;
     MULT_DONE = false;
+    matrices = 1;
 }
 
 //misc
@@ -146,7 +149,8 @@ bool ZeroColumn(int column, Matrix *A) {
 //general
 void GetInput(int *m, int *n) {
     printf("\n");
-    printf("Enter values for mxn matrix: ");
+    printf("Enter values for Matrix %d (m x n): ", matrices);
+    matrices++;
     scanf(" %d %d", m, n);
     //printf("\n");
 }
@@ -175,7 +179,6 @@ void GetMatrix(Matrix *A) {
         //printf("\n");
     }
     printf("\n");
-
 }
 void PrintMatrixRow(int row, int s, Matrix *A) {
     int m = (*A).rows;
@@ -206,7 +209,7 @@ void PrintMatrix(Matrix *A, Matrix *B, Matrix *C) {
     int n = (*A).columns;
     double (*matrix1)[100] = (*A).matrix;
 
-    double scale = 2;
+    double scale = 3;
 
     int s = FindLargestEntry(A);
     if (B != NULL) {
@@ -221,22 +224,22 @@ void PrintMatrix(Matrix *A, Matrix *B, Matrix *C) {
             }
         }
     }
-    s *= scale;
+    s += scale;
 
     for (int i = 0; i < m; i++) {
         PrintMatrixRow(i, s, A);
         if (B != NULL) {
             if (C != NULL) {
                 if (i == m / 2) {
-                    printf(" %*c ", s / scale, 'X');
+                    printf(" %*c ", s - scale, 'X');
                 } else {
-                    printf(" %*c ", s / scale, ' ');
+                    printf(" %*c ", s - scale, ' ');
                 }
                 PrintMatrixRow(i, s, B);
                 if (i == m / 2) {
-                    printf(" %*c ", s / scale, '=');
+                    printf(" %*c ", s - scale, '=');
                 } else {
-                    printf(" %*c ", s / scale, ' ');
+                    printf(" %*c ", s - scale, ' ');
                 }
                 PrintMatrixRow(i, s, C);
             } else {
