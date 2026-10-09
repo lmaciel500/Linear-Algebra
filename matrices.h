@@ -1,9 +1,4 @@
 
-#ifndef CS_107_MATRICES_H
-#define CS_107_MATRICES_H
-
-#endif //CS_107_MATRICES_H
-
 static bool AUGMENT = false;
 static bool SHOW_STEPS = false;
 static bool DO_LU = false;
