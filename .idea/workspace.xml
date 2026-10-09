@@ -171,7 +171,23 @@
       <option name="project" value="LOCAL" />
       <updated>1791573427897</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Finished refactoring to struct-based matrices.">
+      <option name="closed" value="true" />
+      <created>1791584762463</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1791584762463</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixie fix.">
+      <option name="closed" value="true" />
+      <created>1791585048147</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1791585048147</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,6 +233,8 @@
     <MESSAGE value="Matrix multiplication works now?" />
     <MESSAGE value="Printing only works for square matrices." />
     <MESSAGE value="I decided to refactor the entire program around structs." />
-    <option name="LAST_COMMIT_MESSAGE" value="I decided to refactor the entire program around structs." />
+    <MESSAGE value="Finished refactoring to struct-based matrices." />
+    <MESSAGE value="Fixie fix." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixie fix." />
   </component>
 </project>

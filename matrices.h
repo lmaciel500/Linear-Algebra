@@ -558,6 +558,7 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
     double (*matrix2)[100] = (*B).matrix;
 
     double (*result)[100] = (*C).matrix;
+    ZeroMatrix(C);
 
     if (n != o) {
         printf("Matrix multiplication is not possible...\n");
