@@ -1,5 +1,11 @@
 #include <stdbool.h>
 
+typedef struct {
+    int rows;
+    int columns;
+    double matrix[100][100];
+} Matrix;
+
 static bool AUGMENTED = false;
 
 static bool SHOW_STEPS = false;

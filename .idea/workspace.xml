@@ -44,7 +44,13 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="355fe94f8b33935ca34730e9838a181e2acc0633" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="KEEP" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -52,12 +58,12 @@
     &quot;assignee&quot;: &quot;lmaciel500&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/lmaciel500/Linear-Algebra.git",
-    "accountId": "2b8b65e4-a571-4d33-82b1-a0058047df01"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/lmaciel500/Linear-Algebra.git&quot;,
+    &quot;accountId&quot;: &quot;2b8b65e4-a571-4d33-82b1-a0058047df01&quot;
   }
-}]]></component>
+}</component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="hARyBTgd" />
   </component>
@@ -84,7 +90,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "06a0d6b1",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -137,6 +143,7 @@
       <option name="presentableId" value="Default" />
       <updated>1791492617878</updated>
       <workItem from="1791564013695" duration="3504000" />
+      <workItem from="1791573258145" duration="299000" />
     </task>
     <task id="LOCAL-00001" summary="Matrix multiplication works now?">
       <option name="closed" value="true" />
@@ -154,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791567281207</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="I decided to refactor the entire program around structs.">
+      <option name="closed" value="true" />
+      <created>1791573427897</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1791573427897</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +214,7 @@
     <MESSAGE value="Multiple calculations." />
     <MESSAGE value="Matrix multiplication works now?" />
     <MESSAGE value="Printing only works for square matrices." />
-    <option name="LAST_COMMIT_MESSAGE" value="Printing only works for square matrices." />
+    <MESSAGE value="I decided to refactor the entire program around structs." />
+    <option name="LAST_COMMIT_MESSAGE" value="I decided to refactor the entire program around structs." />
   </component>
 </project>
