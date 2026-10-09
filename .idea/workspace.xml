@@ -136,7 +136,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791492617878</updated>
-      <workItem from="1791564013695" duration="3235000" />
+      <workItem from="1791564013695" duration="3504000" />
     </task>
     <task id="LOCAL-00001" summary="Matrix multiplication works now?">
       <option name="closed" value="true" />
@@ -146,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791566833945</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Printing only works for square matrices.">
+      <option name="closed" value="true" />
+      <created>1791567281207</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1791567281207</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +198,7 @@
     <MESSAGE value="A space." />
     <MESSAGE value="Multiple calculations." />
     <MESSAGE value="Matrix multiplication works now?" />
-    <option name="LAST_COMMIT_MESSAGE" value="Matrix multiplication works now?" />
+    <MESSAGE value="Printing only works for square matrices." />
+    <option name="LAST_COMMIT_MESSAGE" value="Printing only works for square matrices." />
   </component>
 </project>
