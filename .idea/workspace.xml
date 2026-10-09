@@ -27,8 +27,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Program can now do inverses.">
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Clean.">
       <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -155,6 +154,9 @@
     <MESSAGE value="Quality of life." />
     <MESSAGE value="Header." />
     <MESSAGE value="Program can now do inverses." />
-    <option name="LAST_COMMIT_MESSAGE" value="Program can now do inverses." />
+    <MESSAGE value="Slightly better menu." />
+    <MESSAGE value="Hey, where'd the code go?" />
+    <MESSAGE value="Clean." />
+    <option name="LAST_COMMIT_MESSAGE" value="Clean." />
   </component>
 </project>

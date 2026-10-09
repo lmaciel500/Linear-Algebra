@@ -1,5 +1,7 @@
+#include <stdbool.h>
 
-static bool AUGMENT = false;
+
+static bool AUGMENTED = false;
 static bool SHOW_STEPS = false;
 static bool DO_LU = false;
 static bool DO_INVERSE = false;
@@ -145,7 +147,7 @@ void PrintMatrix(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
     for (int i = 0; i < m; i++) {
         printf("%c", '|');
         for (int j = 0; j < n; j++) {
-            if (AUGMENT && j == n - 1) {
+            if (AUGMENTED && j == n - 1) {
                 printf(" %c ", '|');
                 //s += 1;
             }
@@ -378,6 +380,7 @@ bool CheckAugment() {
     printf("Augmented matrix? (y/n): ");
     scanf(" %c", &decision);
     if (decision == 'y') {
+        AUGMENTED = true;
         return true;
     } else {
         return false;
