@@ -1,0 +1,256 @@
+Index: main.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#include <stdio.h>\n#include \"matrices.h\"\n\nint main(void) {\n    printf(\"\\n\");\n    while (Start());\n    return 0;\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.c b/main.c
+--- a/main.c	(revision 355fe94f8b33935ca34730e9838a181e2acc0633)
++++ b/main.c	(date 1791574259572)
+@@ -1,5 +1,5 @@
+ #include <stdio.h>
+-#include "matrices.h"
++#include "old.h"
+ 
+ int main(void) {
+     printf("\n");
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"BackendCodeEditorMiscSettings\">\n    <option name=\"/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue\" value=\"true\" type=\"bool\" />\n    <option name=\"/Default/Housekeeping/RefactoringsMru/CppRenameRefactoring/DoRenameRelatedFiles/@EntryValue\" value=\"false\" type=\"bool\" />\n  </component>\n  <component name=\"CMakePresetLoader\">{\n  &quot;useNewFormat&quot;: true\n}</component>\n  <component name=\"CMakeProjectFlavorService\">\n    <option name=\"flavorId\" value=\"CMakePlainProjectFlavor\" />\n  </component>\n  <component name=\"CMakeReloadState\">\n    <option name=\"reloaded\" value=\"true\" />\n  </component>\n  <component name=\"CMakeRunConfigurationManager\">\n    <generated>\n      <config projectName=\"Linear-Algebra\" targetName=\"main\" />\n    </generated>\n  </component>\n  <component name=\"CMakeSettings\">\n    <configurations>\n      <configuration PROFILE_NAME=\"Debug\" ENABLED=\"true\" CONFIG_NAME=\"Debug\" />\n    </configurations>\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19\" name=\"Changes\" comment=\"Multiple calculations.\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/main.c\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/main.c\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ClangdSettings\">\n    <option name=\"formatViaClangd\" value=\"false\" />\n  </component>\n  <component name=\"CurrentDebugProfile\">\n    <option name=\"debugProfileId\" value=\"ee461948-edca-497d-8fdd-aaa0037c60ab\" />\n  </component>\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"CMakeBuildProfile:Debug\" />\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {\n    &quot;state&quot;: &quot;OPEN&quot;,\n    &quot;assignee&quot;: &quot;lmaciel500&quot;\n  }\n}</component>\n  <component name=\"GithubPullRequestsUISettings\">{\n  &quot;selectedUrlAndAccountId&quot;: {\n    &quot;url&quot;: &quot;https://github.com/lmaciel500/Linear-Algebra.git&quot;,\n    &quot;accountId&quot;: &quot;2b8b65e4-a571-4d33-82b1-a0058047df01&quot;\n  }\n}</component>\n  <component name=\"MacroExpansionManager\">\n    <option name=\"directoryName\" value=\"hARyBTgd\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 5\n}</component>\n  <component name=\"ProjectId\" id=\"3KQbDDpfJSuWB7O5E93lrMd34GE\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"C/C++ File.main.c.executor\": \"Run\",\n    \"CMake Application.main.executor\": \"Run\",\n    \"CidrDebugProfileConversion\": \"true\",\n    \"RunOnceActivity.RadMigrateCodeStyle\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.cidr.known.project.marker\": \"true\",\n    \"RunOnceActivity.git.unshallow\": \"true\",\n    \"RunOnceActivity.readMode.enableVisualFormatting\": \"true\",\n    \"RunOnceActivity.typescript.service.memoryLimit.init\": \"true\",\n    \"RunOnceActivity.west.config.association.type.startup.service\": \"true\",\n    \"cf.first.check.clang-format\": \"false\",\n    \"cidr.known.project.marker\": \"true\",\n    \"codeWithMe.voiceChat.enabledByDefault\": \"false\",\n    \"git-widget-placeholder\": \"structs\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  },\n  \"keyToStringList\": {\n    \"GitStage.ChangesTree.GroupingKeys\": [\n      \"directory\",\n      \"module\",\n      \"repository\"\n    ]\n  }\n}]]></component>\n  <component name=\"RunManager\" selected=\"C/C++ File.main.c\">\n    <configuration name=\"main\" type=\"CMakeRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"Linear-Algebra\" TARGET_NAME=\"main\" CONFIG_NAME=\"Debug\" RUN_TARGET_PROJECT_NAME=\"Linear-Algebra\" RUN_TARGET_NAME=\"main\">\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"main.c\" type=\"CppFileRunConfiguration\" factoryName=\"CppFileRunConfiguration\" temporary=\"true\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"Linear-Algebra\" TARGET_NAME=\"main.c\" CONFIG_NAME=\"main.c\">\n      <option name=\"sourceFile\" value=\"main.c\" />\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"matrices.c\" type=\"CppFileRunConfiguration\" factoryName=\"CppFileRunConfiguration\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"Linear-Algebra\" TARGET_NAME=\"matrices.c\" CONFIG_NAME=\"matrices.c\">\n      <option name=\"sourceFile\" value=\"matrices.c\" />\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <list>\n      <item itemvalue=\"C/C++ File.matrices.c\" />\n      <item itemvalue=\"C/C++ File.main.c\" />\n      <item itemvalue=\"CMake Application.main\" />\n    </list>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"C/C++ File.main.c\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19\" name=\"Changes\" comment=\"\" />\n      <created>1791492617878</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1791492617878</updated>\n      <workItem from=\"1791564013695\" duration=\"3504000\" />\n      <workItem from=\"1791573258145\" duration=\"299000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"Matrix multiplication works now?\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1791566833945</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1791566833945</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"Printing only works for square matrices.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1791567281207</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1791567281207</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"I decided to refactor the entire program around structs.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1791573427897</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1791573427897</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"4\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VCPKGProject\">\n    <isAutomaticCheckingOnLaunch value=\"false\" />\n    <isAutomaticFoundErrors value=\"true\" />\n    <isAutomaticReloadCMake value=\"true\" />\n    <isAutomaticBootstrapAfterUpdate value=\"false\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Hello.\" />\n    <MESSAGE value=\"Removed unnecessary files.\" />\n    <MESSAGE value=\"Removed unnecessary commit history.\" />\n    <MESSAGE value=\"Rename.\" />\n    <MESSAGE value=\"Rename?\" />\n    <MESSAGE value=\"Began constructing LU factorization solution.\" />\n    <MESSAGE value=\"LU factorization works!\" />\n    <MESSAGE value=\"Quality of life.\" />\n    <MESSAGE value=\"Header.\" />\n    <MESSAGE value=\"Program can now do inverses.\" />\n    <MESSAGE value=\"Slightly better menu.\" />\n    <MESSAGE value=\"Hey, where'd the code go?\" />\n    <MESSAGE value=\"Clean.\" />\n    <MESSAGE value=\"Modified augment variables.\" />\n    <MESSAGE value=\"Out of bounds bug fix when in LU mode.\" />\n    <MESSAGE value=\"Just in case.\" />\n    <MESSAGE value=\"...\" />\n    <MESSAGE value=\"A space.\" />\n    <MESSAGE value=\"Multiple calculations.\" />\n    <MESSAGE value=\"Matrix multiplication works now?\" />\n    <MESSAGE value=\"Printing only works for square matrices.\" />\n    <MESSAGE value=\"I decided to refactor the entire program around structs.\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"I decided to refactor the entire program around structs.\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 355fe94f8b33935ca34730e9838a181e2acc0633)
++++ b/.idea/workspace.xml	(date 1791575328299)
+@@ -142,7 +142,7 @@
+       <option name="presentableId" value="Default" />
+       <updated>1791492617878</updated>
+       <workItem from="1791564013695" duration="3504000" />
+-      <workItem from="1791573258145" duration="299000" />
++      <workItem from="1791573258145" duration="2039000" />
+     </task>
+     <task id="LOCAL-00001" summary="Matrix multiplication works now?">
+       <option name="closed" value="true" />
+@@ -168,7 +168,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1791573427897</updated>
+     </task>
+-    <option name="localTasksCounter" value="4" />
++    <task id="LOCAL-00004" summary="Well, C didn't like that..">
++      <option name="closed" value="true" />
++      <created>1791573776096</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1791573776096</updated>
++    </task>
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -214,6 +222,7 @@
+     <MESSAGE value="Matrix multiplication works now?" />
+     <MESSAGE value="Printing only works for square matrices." />
+     <MESSAGE value="I decided to refactor the entire program around structs." />
+-    <option name="LAST_COMMIT_MESSAGE" value="I decided to refactor the entire program around structs." />
++    <MESSAGE value="Well, C didn't like that.." />
++    <option name="LAST_COMMIT_MESSAGE" value="Well, C didn't like that.." />
+   </component>
+ </project>
+\ No newline at end of file
+Index: matrices.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#include <stdbool.h>\n\ntypedef struct {\n    int rows;\n    int columns;\n    double matrix[rows][columns];\n} Matrix;\n\nstatic bool AUGMENTED = false;\n\nstatic bool SHOW_STEPS = false;\n\nstatic bool DO_LU = false;\nstatic bool LU_DONE = false;\n\nstatic bool DO_INVERSE = false;\n\nstatic bool MULTIPLICATION = false;\nstatic bool MULT_DONE = false;\n\n//helper\nvoid ZeroMatrix(int m, int n, double matrix[m][n]) {\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            matrix[i][j] = 0;\n        }\n    }\n}\nvoid ZeroArray(int n, int array[n]) {\n    for (int i = 0; i < n; i++) {\n        array[i] = 0;\n    }\n}\ndouble FindLargest(int m, int n, double matrix[m][n]) {\n    double scale = 3;\n    double largest = 0;\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (matrix[i][j] == (int) matrix[i][j]) {\n                if (snprintf(NULL, 0, \"%d\", (int) matrix[i][j]) > largest) {\n                    largest = snprintf(NULL, 0, \"%d\", (int) matrix[i][j]) * scale;\n                }\n            } else {\n                if (snprintf(NULL, 0, \"%.2lf\", matrix[i][j]) > largest) {\n                    largest = snprintf(NULL, 0, \"%.2lf\", matrix[i][j]) * scale / 1.6;\n                }\n            }\n\n        }\n    }\n    return largest;\n}\nint DigitsAmount(int a) {\n    int digits = 0;\n    while (a != 0) {\n        a /= 10;\n        digits++;\n    }\n    if (digits == 0) {\n        return 1;\n    }\n    return digits;\n}\nvoid DiagonalOnes(int m, int n, double matrix[m][n]) {\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (i == j) {\n                matrix[i][j] = 1;\n            } else {\n                matrix[i][j] = 0;\n            }\n        }\n    }\n}\nvoid PrepareInverse(int m, int n, double matrix[m][n]) {\n    for (int i = 0; i < m; i++) {\n        for (int j = n / 2; j < n; j++) {\n            if (j == n / 2 + i) {\n                matrix[i][j] = 1;\n            } else {\n                matrix[i][j] = 0;\n            }\n        }\n    }\n}\n\n//misc\nint ZeroRowsCount(int m, int n, double matrix[m][n]) {\n    int zeroRows = 0;\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (matrix[i][j] != 0) {\n                break;\n            }\n            if (j == n - 1) {\n                zeroRows++;\n            }\n        }\n    }\n    return zeroRows;\n}\nint FindPivot(int column, int m, int n, double matrix[m][n]) {\n    for (int i = 0; i < m; i++) {\n        if (matrix[i][column] == 1) {\n            return i;\n        }\n    }\n    for (int i = 0; i < m; i++) {\n        if (matrix[i][column] != 0) {\n            return i;\n        }\n    }\n    return 0;\n}\nbool ZeroColumn(int column, int m, int n, double matrix[m][n]) {\n    for (int i = 0; i < m; i++) {\n        if (matrix[i][column] != 0) {\n            return false;\n        }\n    }\n    return true;\n}\n\n//general\nvoid GetInput(int *m, int *n) {\n    printf(\"Enter values for mxn matrix: \");\n    scanf(\" %d %d\", m, n);\n    //printf(\"\\n\");\n}\nvoid GetMatrix(int m, int n, double matrix[m][n]) {\n    printf(\"\\nEnter matrix row by row...\\n\");\n    if (DO_INVERSE) {\n        printf(\"(%d rows, %d columns)\\n\", m, n / 2);\n    } else {\n        printf(\"(%d rows, %d columns)\\n\", m, n);\n    }\n    for (int i = 0; i < m; i++) {\n        printf(\"%d: \", i + 1);\n        if (DO_INVERSE) {\n            for (int j = 0; j < n / 2; j++) {\n                scanf(\" %lf\", &matrix[i][j]);\n            }\n        } else {\n            for (int j = 0; j < n; j++) {\n                scanf(\" %lf\", &matrix[i][j]);\n            }\n        }\n        //printf(\"\\n\");\n    }\n    printf(\"\\n\");\n}\nvoid PrintMatrix(int m, int n, double matrix1[m][n], double matrix2[m][n]) {\n    int a, b, s;\n    a = FindLargest(m, n, matrix1);\n    if (LU_DONE) {\n        b = FindLargest(m, n, matrix2);\n    } else {\n        b = 0;\n    }\n    if (a > b) {\n        s = a;\n    } else {\n        s = b;\n    }\n    for (int i = 0; i < m; i++) {\n        printf(\"%c\", '|');\n        for (int j = 0; j < n; j++) {\n            if (AUGMENTED && j == n - 1) {\n                printf(\" %c \", '|');\n                //s += 1;\n            }\n            if (DO_INVERSE && j == n / 2) {\n                printf(\" %c \", '|');\n            }\n            double x = matrix1[i][j];\n            if (x == (int) x) {\n                printf(\"%*d\", s, (int) x);\n            } else {\n                printf(\"%*.2lf\", s, x);\n            }\n        }\n        if (DO_LU && LU_DONE || !MULT_DONE) {\n            //printf(\"%*c\", s, ' ');\n            printf(\" %c\", '|');\n            printf(\" %c\", '|');\n            //printf(\"%*c\", s, ' ');\n            for (int j = 0; j < n; j++) {\n                double x = matrix2[i][j];\n                if (x == (int) x) {\n                    printf(\"%*d\", s, (int) x);\n                } else {\n                    printf(\"%*.2lf\", s, x);\n                }\n            }\n        }\n        if (i + 1 == n && (LU_DONE || !MULT_DONE)) {\n            printf(\" %c\", '|');\n            printf(\" = \");\n            if (DO_LU) {\n                printf(\"LU\");\n            }\n            printf(\"\\n\");\n        } else {\n            printf(\" %c\\n\", '|');\n        }\n    }\n    printf(\"\\n\");\n}\nvoid PrintLU(int n, double matrixL[n][n], double matrixU[n][n]) {\n    int s;\n    int a = FindLargest(n, n, matrixL);\n    int b = FindLargest(n, n, matrixL);\n    if (a > b) {\n        s = a;\n    } else {\n        s = b;\n    }\n    for (int i = 0; i < n; i++) {\n        printf(\"%c\", '|');\n        for (int j = 0; j < n; j++) {\n            double x = matrixL[i][j];\n            if (x == (int) x) {\n                printf(\"%*d\", s, (int) x);\n            } else {\n                printf(\"%*.2lf\", s, x);\n            }\n        }\n        //printf(\"%*c\", s, ' ');\n        printf(\" %c\", '|');\n        printf(\" %c\", '|');\n        //printf(\"%*c\", s, ' ');\n        for (int j = 0; j < n; j++) {\n            double x = matrixU[i][j];\n            if (x == (int) x) {\n                printf(\"%*d\", s, (int) x);\n            } else {\n                printf(\"%*.2lf\", s, x);\n            }\n        }\n        if (i + 1 == n) {\n            printf(\" %c\", '|');\n            printf(\" = LU\\n\");\n        } else {\n            printf(\" %c\\n\", '|');\n        }\n    }\n    printf(\"\\n\");\n}\n\n//elementary operations\nvoid ScaleRow(int toScale, double c, int m, int n, double matrix[m][n]) {\n    if (SHOW_STEPS) {\n        printf(\"R%d —> (%.2lf)R%d\\n\", toScale + 1, c, toScale + 1);\n        //getchar();\n    }\n    for (int i = 0; i < n; i++) {\n        matrix[toScale][i] = (double) matrix[toScale][i] * c;\n    }\n    if (SHOW_STEPS) {\n        PrintMatrix(m, n, matrix, NULL);\n    }\n}\nvoid ReplaceRow(int toReplace, int replacer, double c, int m, int n, double matrix[m][n]) {\n    if (SHOW_STEPS) {\n        printf(\"R%d —> R%d + (%.1lf)R%d\\n\", toReplace + 1, toReplace + 1, c, replacer + 1);\n        //getchar();\n    }\n    for (int i = 0; i < n; i++) {\n        matrix[toReplace][i] += matrix[replacer][i] * c;\n    }\n    if (SHOW_STEPS) {\n        PrintMatrix(m, n, matrix, NULL);\n    }\n}\nvoid SwapRows(int row1, int row2, int m, int n, double matrix[m][n]) {\n    if (SHOW_STEPS) {\n        printf(\"R%d <—> R%d\\n\", row1 + 1, row2 + 1);\n        //getchar();\n    }\n    double temp[n];\n\n    for (int i = 0; i < n; i++) {\n        temp[i] = matrix[row1][i];\n    }\n    for (int i = 0; i < n; i++) {\n        matrix[row1][i] = matrix[row2][i];\n    }\n    for (int i = 0; i < n; i++) {\n        matrix[row2][i] = temp[i];\n    }\n    if (SHOW_STEPS) {\n        PrintMatrix(m, n, matrix, NULL);\n    }\n}\nvoid ScaleMatrix(int c, int m, int n, double matrix[m][n]) {\n    if (SHOW_STEPS) {\n        printf(\"Scale A by %d\\n\", c);\n    }\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            matrix[i][j] *= c;\n        }\n    }\n    if (SHOW_STEPS) {\n        PrintMatrix(m, n, matrix, NULL);\n    }\n}\n\n//algorithm checkers\nbool CheckRREF(int m, int n, double matrix[m][n]) {\n    int staircase = -1;\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (matrix[i][j] != 0 && matrix[i][j] != 1) {\n                //printf(\"Not RREF...\\n\");\n                return false;\n            }\n            if (matrix[i][j] == 1) {\n                if (j <= staircase) {\n                    //printf(\"Not RREF...\\n\");\n                    return false;\n                }\n                for (int k = 0; k < m; k++) {\n                    if (i == k) {\n                        continue;\n                    }\n                    if (matrix[k][j] != 0) {\n                        //printf(\"Not RREF...\\n\");\n                        return false;\n                    }\n                }\n                staircase = j;\n                break;\n            }\n        }\n    }\n    int zeroRows = ZeroRowsCount(m, n, matrix);\n    for (int i = m - 1; i >= m - zeroRows; i--) {\n        for (int j = 0; j < n; j++) {\n            if (matrix[i][j] != 0) {\n                //printf(\"Not RREF...\\n\");\n                return false;\n            }\n        }\n    }\n    printf(\"Matrix is in RREF.\\n\\n\");\n    return true;\n}\nbool CheckREF(int m, int n, double matrix[m][n]) {\n    int staircase = -1;\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (matrix[i][j] != 0) {\n                if (j <= staircase) {\n                    //printf(\"Not REF...\\n\");\n                    return false;\n                }\n                for (int k = i; k < m; k++) {\n                    if (i == k) {\n                        continue;\n                    }\n                    if (matrix[k][j] != 0) {\n                        //printf(\"Not REF...\\n\");\n                        return false;\n                    }\n                }\n                staircase = j;\n                break;\n            }\n        }\n    }\n    int zeroRows = ZeroRowsCount(m, n, matrix);\n    for (int i = m - 1; i >= m - zeroRows; i--) {\n        for (int j = 0; j < n; j++) {\n            if (matrix[i][j] != 0) {\n                //printf(\"Not REF...\\n\");\n                return false;\n            }\n        }\n    }\n    printf(\"Matrix is in REF.\\n\\n\");\n    if (DO_LU) {\n        LU_DONE = true;\n    }\n    return true;\n}\n\n//checkers\nbool CheckIdentity(int m, int n, double matrix[m][n]) {\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if ((i != j && matrix[i][j] != 0) ||\n                (i == j && matrix[i][j] != 1)) {\n                printf(\"Not the identity matrix...\\n\");\n                PrintMatrix(m, n, matrix, NULL);\n                return false;\n                }\n        }\n    }\n    printf(\"This is the identity matrix...\\n\");\n    PrintMatrix(m, n, matrix, NULL);\n    return true;\n}\nbool CheckAugment() {\n    char decision;\n    printf(\"Augmented matrix? (y/n): \");\n    scanf(\" %c\", &decision);\n    if (decision == 'y') {\n        AUGMENTED = true;\n        return true;\n    } else {\n        return false;\n    }\n}\nvoid CheckSteps() {\n    char decision;\n    printf(\"Show steps? (y/n): \");\n    scanf(\" %c\", &decision);\n    if (decision == 'y') {\n        SHOW_STEPS = true;\n    }\n}\nbool CheckLU() {\n    char decision;\n    printf(\"LU matrix? (y/n): \");\n    scanf(\" %c\", &decision);\n    if (decision == 'y') {\n        DO_LU = true;\n        return true;\n    }\n    return false;\n}\nbool CheckInverse() {\n    char decision;\n    printf(\"Inverse matrix? (y/n): \");\n    scanf(\" %c\", &decision);\n    if (decision == 'y') {\n        DO_INVERSE = true;\n        return true;\n    }\n    return false;\n}\nbool CheckMult() {\n    char decision;\n    printf(\"Multiply matrices? (y/n): \");\n    scanf(\" %c\", &decision);\n    if (decision == 'y') {\n        MULTIPLICATION = true;\n        return true;\n    }\n    return false;\n}\n\n//algorithms\nvoid RREF(int m, int n, double matrix[m][n]) {\n    if (DO_INVERSE) {\n        PrepareInverse(m, n, matrix);\n    }\n    printf(\"Gaussian Elimination...\\n\");\n    PrintMatrix(m, n, matrix, NULL);\n    int row = 0;\n    int column = 0;\n    while (!CheckRREF(m, n, matrix)) {\n        if (ZeroColumn(column, m, n, matrix)) {\n            column++;\n            continue;\n        }\n        if (matrix[row][column] == 0) {\n            int newRow = FindPivot(column, m, n, matrix);\n            SwapRows(row, newRow, m, n, matrix);\n        }\n        if (matrix[row][column] != 1) {\n            double c = 1 / matrix[row][column];\n            ScaleRow(row, c, m, n, matrix);\n        }\n        for (int i = 0; i < m; i++) {\n            if (i == row) {\n                continue;\n            }\n            if (matrix[i][column] != 0) {\n                double c = - matrix[i][column] / matrix[row][column];\n                ReplaceRow(i, row, c, m, n, matrix);\n            }\n        }\n        column++;\n        row++;\n    }\n    PrintMatrix(m, n, matrix, NULL);\n}\nvoid REF(int m, int n, double matrixL[m][n], double matrixU[m][n]) {\n    bool possibleLU = true;\n    printf(\"Begin REF operations...\\n\");\n    PrintMatrix(m, n, matrixU, NULL);\n    int row = 0;\n    int column = 0;\n    while (!CheckREF(m, n, matrixU)) {\n        if (!possibleLU) {\n            break;\n        }\n        if (ZeroColumn(column, m, n, matrixU)) {\n            column++;\n            continue;\n        }\n        for (int i = row; i < m; i++) {\n            if (i == row) {\n                continue;\n            }\n            if (DO_LU && matrixU[row][column] == 0 && matrixU[i][column] != 0) {\n                printf(\"REF for LU impossible...\\n\");\n                possibleLU = false;\n                break;\n            }\n            if (matrixU[i][column] != 0) {\n                double c = - matrixU[i][column] / matrixU[row][column];\n                if (DO_LU) {\n                    matrixL[i][row] = - c;\n                }\n                ReplaceRow(i, row, c, m, n, matrixU);\n            }\n        }\n        column++;\n        row++;\n    }\n    PrintMatrix(m, n, matrixL, matrixU);\n}\ndouble DET(int m, int n, double matrix[m][n]) {\n    if (m != n) {\n        return 0;\n    }\n    //WIP\n}\n\n//arithmetic\nvoid MultMatrix(int m, int n, int o, int p, double matrix1[m][n], double matrix2[o][p], double result[m][p]) {\n    if (n != o) {\n        printf(\"Matrix multiplication is not possible...\\n\");\n    } else {\n        PrintMatrix(m, n, matrix1, matrix2);\n        for (int i = 0; i < m; i++) {\n            for (int j = 0; j < n; j++) {\n                for (int k = 0; k < n; k++) {\n                    result[i][j] += matrix1[i][k] * matrix2[k][j];\n                }\n            }\n        }\n        MULT_DONE = true;\n        PrintMatrix(m, p, result, NULL);\n        printf(\"\\n\");\n    }\n}\n/*\nvoid AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[n][n]) {\n    PrintMatrix(n, matrix1);\n    printf(\"+\\n\");\n    PrintMatrix(n, matrix2);\n    printf(\"=\\n\");\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            result[i][j] = matrix1[i][j] + matrix2[i][j];\n        }\n    }\n\n    PrintMatrix(n, result);\n    printf(\"\\n\");\n}\n*/\n\nbool Start() {\n    int m, n;\n    GetInput(&m, &n);\n    if (m < 1 || n < 1) {\n        return false;\n    }\n    CheckSteps();\n    if (CheckAugment()) {\n        n++;\n        double matrix[m][n];\n        GetMatrix(m, n, matrix);\n        RREF(m, n, matrix);\n    } else if (CheckInverse()) {\n        if (m != n) {\n            DO_INVERSE = false;\n        } else {\n            n *= 2;\n            double matrix[m][n];\n            GetMatrix(m, n, matrix);\n            RREF(m, n, matrix);\n        }\n    } else if (CheckLU()) {\n        if (m != n) {\n            DO_LU = false;\n        } else {\n            double matrixL[m][n];\n            double matrixU[m][n];\n            DiagonalOnes(m, n, matrixL);\n            GetMatrix(m, n, matrixU);\n            REF(m, n, matrixL, matrixU);\n        }\n    } else if (CheckMult()) {\n        int o, p;\n        GetInput(&o, &p);\n\n        double matrix1[m][n];\n        double matrix2[o][p];\n        GetMatrix(m, n, matrix1);\n        GetMatrix(o, p, matrix2);\n\n        double result[m][p];\n        MultMatrix(m, n, o, p, matrix1, matrix2, result);\n    } else {\n        double matrix[m][n];\n        GetMatrix(m, n, matrix);\n        RREF(m, n, matrix);\n    }\n    AUGMENTED = false;\n    SHOW_STEPS = false;\n    DO_LU = false;\n    LU_DONE = false;\n    DO_INVERSE = false;\n    MULTIPLICATION = false;\n    MULT_DONE = false;\n    return true;\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/matrices.h b/matrices.h
+--- a/matrices.h	(revision 355fe94f8b33935ca34730e9838a181e2acc0633)
++++ b/matrices.h	(date 1791575435019)
+@@ -2,8 +2,8 @@
+ 
+ typedef struct {
+     int rows;
+-    int columns;
+-    double matrix[rows][columns];
++    int cols;
++    double matrix[100][100];
+ } Matrix;
+ 
+ static bool AUGMENTED = false;
+@@ -19,77 +19,66 @@
+ static bool MULT_DONE = false;
+ 
+ //helper
+-void ZeroMatrix(int m, int n, double matrix[m][n]) {
++void ZeroMatrix(Matrix *A) {
++    int m = (*A).rows;
++    int n = (*A).cols;
+     for (int i = 0; i < m; i++) {
+         for (int j = 0; j < n; j++) {
+-            matrix[i][j] = 0;
++            (*A).matrix[i][j] = 0;
+         }
+     }
+ }
+-void ZeroArray(int n, int array[n]) {
+-    for (int i = 0; i < n; i++) {
+-        array[i] = 0;
+-    }
+-}
+-double FindLargest(int m, int n, double matrix[m][n]) {
++double FindLargest(Matrix *A) {
++    int m = (*A).rows;
++    int n = (*A).cols;
+     double scale = 3;
+     double largest = 0;
+     for (int i = 0; i < m; i++) {
+         for (int j = 0; j < n; j++) {
+-            if (matrix[i][j] == (int) matrix[i][j]) {
+-                if (snprintf(NULL, 0, "%d", (int) matrix[i][j]) > largest) {
+-                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]) * scale;
++            if ((*A).matrix[i][j] == (int) (*A).matrix[i][j]) {
++                if (snprintf(NULL, 0, "%d", (int) (*A).matrix[i][j]) > largest) {
++                    largest = snprintf(NULL, 0, "%d", (int) (*A).matrix[i][j]);
+                 }
+             } else {
+-                if (snprintf(NULL, 0, "%.2lf", matrix[i][j]) > largest) {
+-                    largest = snprintf(NULL, 0, "%.2lf", matrix[i][j]) * scale / 1.6;
++                if (snprintf(NULL, 0, "%.2lf", (*A).matrix[i][j]) > largest) {
++                    largest = snprintf(NULL, 0, "%.2lf", (*A).matrix[i][j]);
+                 }
+             }
+ 
+         }
+     }
++    largest *= scale;
+     return largest;
+ }
+-int DigitsAmount(int a) {
+-    int digits = 0;
+-    while (a != 0) {
+-        a /= 10;
+-        digits++;
+-    }
+-    if (digits == 0) {
+-        return 1;
+-    }
+-    return digits;
+-}
+-void DiagonalOnes(int m, int n, double matrix[m][n]) {
+-    for (int i = 0; i < m; i++) {
+-        for (int j = 0; j < n; j++) {
++void DiagonalOnes(Matrix *A) {
++    for (int i = 0; i < (*A).rows; i++) {
++        for (int j = 0; j < (*A).cols; j++) {
+             if (i == j) {
+-                matrix[i][j] = 1;
++                (*A).matrix[i][j] = 1;
+             } else {
+-                matrix[i][j] = 0;
++                (*A).matrix[i][j] = 0;
+             }
+         }
+     }
+ }
+-void PrepareInverse(int m, int n, double matrix[m][n]) {
+-    for (int i = 0; i < m; i++) {
+-        for (int j = n / 2; j < n; j++) {
+-            if (j == n / 2 + i) {
+-                matrix[i][j] = 1;
++void PrepareInverse(Matrix *A) {
++    for (int i = 0; i < (*A).rows; i++) {
++        for (int j = (*A).cols / 2; j < (*A).cols; j++) {
++            if (j == (*A).cols / 2 + i) {
++                (*A).matrix[i][j] = 1;
+             } else {
+-                matrix[i][j] = 0;
++                (*A).matrix[i][j] = 0;
+             }
+         }
+     }
+ }
+ 
+ //misc
+-int ZeroRowsCount(int m, int n, double matrix[m][n]) {
++int ZeroRowsCount(Matrix *A) {
+     int zeroRows = 0;
+-    for (int i = 0; i < m; i++) {
+-        for (int j = 0; j < n; j++) {
+-            if (matrix[i][j] != 0) {
++    for (int i = 0; i < (*A).rows; i++) {
++        for (int j = 0; j < (*A).cols; j++) {
++            if ((*A).matrix[i][j] != 0) {
+                 break;
+             }
+             if (j == n - 1) {
+@@ -99,22 +88,22 @@
+     }
+     return zeroRows;
+ }
+-int FindPivot(int column, int m, int n, double matrix[m][n]) {
+-    for (int i = 0; i < m; i++) {
+-        if (matrix[i][column] == 1) {
++int FindPivot(int column, Matrix *A) {
++    for (int i = 0; i < (*A).rows; i++) {
++        if ((*A).matrix[i][column] == 1) {
+             return i;
+         }
+     }
+-    for (int i = 0; i < m; i++) {
+-        if (matrix[i][column] != 0) {
++    for (int i = 0; i < (*A).rows; i++) {
++        if ((*A).matrix[i][column] != 0) {
+             return i;
+         }
+     }
+     return 0;
+ }
+-bool ZeroColumn(int column, int m, int n, double matrix[m][n]) {
+-    for (int i = 0; i < m; i++) {
+-        if (matrix[i][column] != 0) {
++bool ZeroColumn(int column, Matrix *A) {
++    for (int i = 0; i < (*A).rows; i++) {
++        if ((*A).matrix[i][column] != 0) {
+             return false;
+         }
+     }
+@@ -127,7 +116,9 @@
+     scanf(" %d %d", m, n);
+     //printf("\n");
+ }
+-void GetMatrix(int m, int n, double matrix[m][n]) {
++void GetMatrix(Matrix *A) {
++    int m = (*A).rows;
++    int n = (*A).cols;
+     printf("\nEnter matrix row by row...\n");
+     if (DO_INVERSE) {
+         printf("(%d rows, %d columns)\n", m, n / 2);
+@@ -621,4 +612,22 @@
+     MULTIPLICATION = false;
+     MULT_DONE = false;
+     return true;
++}
++
++//unused
++void ZeroArray(int n, int array[n]) {
++    for (int i = 0; i < n; i++) {
++        array[i] = 0;
++    }
++}
++int DigitsAmount(int a) {
++    int digits = 0;
++    while (a != 0) {
++        a /= 10;
++        digits++;
++    }
++    if (digits == 0) {
++        return 1;
++    }
++    return digits;
+ }
+\ No newline at end of file
