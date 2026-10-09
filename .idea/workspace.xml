@@ -46,11 +46,10 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="355fe94f8b33935ca34730e9838a181e2acc0633" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="KEEP" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -71,6 +70,9 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="3KQbDDpfJSuWB7O5E93lrMd34GE" />
+  <component name="ProjectStatusUIService"><![CDATA[{
+  "uiKindId": "Widget"
+}]]></component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -90,7 +92,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "8b311077",
+    "git-widget-placeholder": "39af2025",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -169,15 +171,7 @@
       <option name="project" value="LOCAL" />
       <updated>1791573427897</updated>
     </task>
-    <task id="LOCAL-00004" summary="Started over.">
-      <option name="closed" value="true" />
-      <created>1791575813392</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1791575813392</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,7 +217,6 @@
     <MESSAGE value="Matrix multiplication works now?" />
     <MESSAGE value="Printing only works for square matrices." />
     <MESSAGE value="I decided to refactor the entire program around structs." />
-    <MESSAGE value="Started over." />
-    <option name="LAST_COMMIT_MESSAGE" value="Started over." />
+    <option name="LAST_COMMIT_MESSAGE" value="I decided to refactor the entire program around structs." />
   </component>
 </project>

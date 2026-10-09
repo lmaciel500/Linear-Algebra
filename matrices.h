@@ -175,7 +175,7 @@ void PrintMatrix(Matrix *A, Matrix *B) {
 
     int a, b, s;
     a = FindLargestEntry(A);
-    if (LU_DONE) {
+    if (B != NULL) {
         b = FindLargestEntry(B);
     } else {
         b = 0;
@@ -185,6 +185,7 @@ void PrintMatrix(Matrix *A, Matrix *B) {
     } else {
         s = b;
     }
+
     for (int i = 0; i < m; i++) {
         printf("%c", '|');
         for (int j = 0; j < n; j++) {
@@ -195,6 +196,7 @@ void PrintMatrix(Matrix *A, Matrix *B) {
             if (DO_INVERSE && j == n / 2) {
                 printf(" %c ", '|');
             }
+
             double x = matrix1[i][j];
             if (x == (int) x) {
                 printf("%*d", s, (int) x);
@@ -202,14 +204,15 @@ void PrintMatrix(Matrix *A, Matrix *B) {
                 printf("%*.2lf", s, x);
             }
         }
-        if (DO_LU && LU_DONE || !MULT_DONE) {
+
+        if (B != NULL) {
             double (*matrix2)[100] = (*B).matrix;
 
             //printf("%*c", s, ' ');
             printf(" %c", '|');
             printf(" %c", '|');
             //printf("%*c", s, ' ');
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < (*B).columns; j++) {
                 double x = matrix2[i][j];
                 if (x == (int) x) {
                     printf("%*d", s, (int) x);
@@ -218,7 +221,8 @@ void PrintMatrix(Matrix *A, Matrix *B) {
                 }
             }
         }
-        if (i + 1 == n && (LU_DONE || !MULT_DONE)) {
+
+        if (i + 1 == m && B != NULL && (LU_DONE || !MULT_DONE)) {
             printf(" %c", '|');
             printf(" = ");
             if (DO_LU) {
@@ -230,6 +234,7 @@ void PrintMatrix(Matrix *A, Matrix *B) {
         }
     }
     printf("\n");
+
 }
 
 //elementary operations
@@ -664,6 +669,7 @@ bool Start() {
 }
 
 //unused
+/*
 void ZeroArray(int n, int array[n]) {
     for (int i = 0; i < n; i++) {
         array[i] = 0;
@@ -739,3 +745,4 @@ bool CheckIdentity(Matrix *A) {
     PrintMatrix(m, n, matrix, NULL);
     return true;
 }
+*/
