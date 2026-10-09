@@ -11,14 +11,15 @@ int main(void) {
     GetInput(&m, &n);
 
     CheckSteps();
-    CheckLU();
 
     if (CheckAugment()) {
         AUGMENT = true;
         n++;
-    }
-    if (m != n) {
-        DO_LU = false;
+    } else {
+        CheckLU();
+        if (m != n) {
+            DO_LU = false;
+        }
     }
 
     double Umatrix[m][n];
@@ -27,7 +28,6 @@ int main(void) {
     ZeroMatrix(m, n, Lmatrix);
 
     REF(m, n, Lmatrix, Umatrix);
-    PrintLU(n, Lmatrix, Umatrix);
 
     return 0;
 }

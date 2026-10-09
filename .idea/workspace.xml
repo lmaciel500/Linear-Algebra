@@ -27,7 +27,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Began constructing LU factorization solution.">
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="LU factorization works!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
@@ -152,6 +152,7 @@
     <MESSAGE value="..." />
     <MESSAGE value="Rename?" />
     <MESSAGE value="Began constructing LU factorization solution." />
-    <option name="LAST_COMMIT_MESSAGE" value="Began constructing LU factorization solution." />
+    <MESSAGE value="LU factorization works!" />
+    <option name="LAST_COMMIT_MESSAGE" value="LU factorization works!" />
   </component>
 </project>

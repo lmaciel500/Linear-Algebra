@@ -27,7 +27,7 @@ int FindLargest(int m, int n, double matrix[m][n]) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] == (int) matrix[i][j]) {
                 if (snprintf(NULL, 0, "%d", (int) matrix[i][j]) > largest) {
-                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]) + 1;
+                    largest = snprintf(NULL, 0, "%d", (int) matrix[i][j]) + 2;
                 }
             } else {
                 if (snprintf(NULL, 0, "%.2lf", matrix[i][j]) > largest) {
@@ -112,7 +112,6 @@ void GetMatrix(int m, int n, double matrix[m][n]) {
         }
         //printf("\n");
     }
-    printf("\n");
 }
 void PrintMatrix(int m, int n, double matrix[m][n]) {
     int s = FindLargest(m, n, matrix);
@@ -306,7 +305,6 @@ bool CheckREF(int m, int n, double matrix[m][n]) {
         }
     }
     printf("Matrix is in REF.\n\n");
-    PrintMatrix(m, n, matrix);
     return true;
 }
 
@@ -417,6 +415,11 @@ void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
         row++;
     }
     DiagonalOnes(m, n, matrixL);
+    if (DO_LU) {
+        PrintLU(m, matrixL, matrix);
+    } else {
+        PrintMatrix(m, n, matrix);
+    }
 }
 
 /*
