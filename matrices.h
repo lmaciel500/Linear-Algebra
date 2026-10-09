@@ -1,10 +1,16 @@
 #include <stdbool.h>
 
 static bool AUGMENTED = false;
+
 static bool SHOW_STEPS = false;
+
 static bool DO_LU = false;
 static bool LU_DONE = false;
+
 static bool DO_INVERSE = false;
+
+static bool MULTIPLICATION = false;
+static bool MULT_DONE = false;
 
 //helper
 void ZeroMatrix(int m, int n, double matrix[m][n]) {
@@ -116,8 +122,12 @@ void GetInput(int *m, int *n) {
     //printf("\n");
 }
 void GetMatrix(int m, int n, double matrix[m][n]) {
-    printf("Enter matrix row by row...\n");
-    printf("(%d rows, %d columns)\n\n", m, n);
+    printf("\nEnter matrix row by row...\n");
+    if (DO_INVERSE) {
+        printf("(%d rows, %d columns)\n", m, n / 2);
+    } else {
+        printf("(%d rows, %d columns)\n", m, n);
+    }
     for (int i = 0; i < m; i++) {
         printf("%d: ", i + 1);
         if (DO_INVERSE) {
@@ -131,6 +141,7 @@ void GetMatrix(int m, int n, double matrix[m][n]) {
         }
         //printf("\n");
     }
+    printf("\n");
 }
 void PrintMatrix(int m, int n, double matrix1[m][n], double matrix2[m][n]) {
     int a, b, s;
@@ -162,7 +173,7 @@ void PrintMatrix(int m, int n, double matrix1[m][n], double matrix2[m][n]) {
                 printf("%*.2lf", s, x);
             }
         }
-        if (DO_LU && LU_DONE) {
+        if (DO_LU && LU_DONE || !MULT_DONE) {
             //printf("%*c", s, ' ');
             printf(" %c", '|');
             printf(" %c", '|');
@@ -419,6 +430,16 @@ bool CheckInverse() {
     }
     return false;
 }
+bool CheckMult() {
+    char decision;
+    printf("Multiply matrices? (y/n): ");
+    scanf(" %c", &decision);
+    if (decision == 'y') {
+        MULTIPLICATION = true;
+        return true;
+    }
+    return false;
+}
 
 //algorithms
 void RREF(int m, int n, double matrix[m][n]) {
@@ -492,6 +513,48 @@ void REF(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
     }
     PrintMatrix(m, n, matrixL, matrixU);
 }
+double DET(int m, int n, double matrix[m][n]) {
+    if (m != n) {
+        return 0;
+    }
+    //WIP
+}
+
+//arithmetic
+void MultMatrix(int m, int n, int o, int p, double matrix1[m][n], double matrix2[o][p], double result[m][p]) {
+    if (n != o) {
+        printf("Matrix multiplication is not possible...\n");
+    } else {
+        PrintMatrix(m, n, matrix1, matrix2);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i][j] += matrix1[i][k] * matrix2[k][j];
+                }
+            }
+        }
+        MULT_DONE = true;
+        PrintMatrix(m, p, result, NULL);
+        printf("\n");
+    }
+}
+/*
+void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[n][n]) {
+    PrintMatrix(n, matrix1);
+    printf("+\n");
+    PrintMatrix(n, matrix2);
+    printf("=\n");
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            result[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+
+    PrintMatrix(n, result);
+    printf("\n");
+}
+*/
 
 bool Start() {
     int m, n;
@@ -524,6 +587,17 @@ bool Start() {
             GetMatrix(m, n, matrixU);
             REF(m, n, matrixL, matrixU);
         }
+    } else if (CheckMult()) {
+        int o, p;
+        GetInput(&o, &p);
+
+        double matrix1[m][n];
+        double matrix2[o][p];
+        GetMatrix(m, n, matrix1);
+        GetMatrix(o, p, matrix2);
+
+        double result[m][p];
+        MultMatrix(m, n, o, p, matrix1, matrix2, result);
     } else {
         double matrix[m][n];
         GetMatrix(m, n, matrix);
@@ -534,41 +608,7 @@ bool Start() {
     DO_LU = false;
     LU_DONE = false;
     DO_INVERSE = false;
+    MULTIPLICATION = false;
+    MULT_DONE = false;
     return true;
 }
-
-/*
-//arithmetic
-void MatrixMultiplication(int n, double matrix1[n][n], double matrix2[n][n], double result[n][n]) {
-    PrintMatrix(n, matrix1);
-    printf("X\n");
-    PrintMatrix(n, matrix2);
-    printf("=\n");
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            for (int k = 0; k < n; k++) {
-                result[i][j] += matrix1[i][k] * matrix2[k][j];
-            }
-        }
-    }
-
-    PrintMatrix(n, result);
-    printf("\n");
-}
-void MatrixAddition(int n, double matrix1[n][n], double matrix2[n][n], double result[n][n]) {
-    PrintMatrix(n, matrix1);
-    printf("+\n");
-    PrintMatrix(n, matrix2);
-    printf("=\n");
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            result[i][j] = matrix1[i][j] + matrix2[i][j];
-        }
-    }
-
-    PrintMatrix(n, result);
-    printf("\n");
-}
-*/
