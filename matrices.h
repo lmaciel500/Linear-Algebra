@@ -52,6 +52,8 @@ void DiagonalOnes(int m, int n, double matrix[m][n]) {
         for (int j = 0; j < n; j++) {
             if (i == j) {
                 matrix[i][j] = 1;
+            } else {
+                matrix[i][j] = 0;
             }
         }
     }
@@ -447,6 +449,9 @@ void RREF(int m, int n, double matrix[m][n]) {
     PrintMatrix(m, n, matrix, NULL);
 }
 void REF(int m, int n, double matrixL[m][n], double matrix[m][n]) {
+    if (DO_LU) {
+        DiagonalOnes(m, n, matrixL);
+    }
     bool possibleLU = true;
     printf("Begin REF operations...\n");
     PrintMatrix(m, n, matrixL, matrix);

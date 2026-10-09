@@ -14,25 +14,31 @@ int main(void) {
 
     if (CheckAugment()) {
         n++;
+        double matrix[m][n];
+        GetMatrix(m, n, matrix);
+        RREF(m, n, matrix);
     } else if (CheckInverse()) {
         if (m != n) {
             DO_INVERSE = false;
         } else {
             n *= 2;
+            double matrix[m][n];
+            GetMatrix(m, n, matrix);
+            RREF(m, n, matrix);
         }
     } else if (CheckLU()) {
         if (m != n) {
             DO_LU = false;
+        } else {
+            double matrixL[m][n];
+            double matrixU[m][n];
+            GetMatrix(m, n, matrixU);
+            REF(m, n, matrixL, matrixU);
         }
+    } else {
+        double matrix[m][n];
+        GetMatrix(m, n, matrix);
+        RREF(m, n, matrix);
     }
-
-    double Umatrix[m][n];
-    double Lmatrix[m][n];
-
-    GetMatrix(m, n, Umatrix);
-    ZeroMatrix(m, n, Lmatrix);
-
-    RREF(m, n, Umatrix);
-
     return 0;
 }
