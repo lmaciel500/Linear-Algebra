@@ -187,9 +187,13 @@ void PrintMatrix(int m, int n, double matrix1[m][n], double matrix2[m][n]) {
                 }
             }
         }
-        if (i + 1 == n && DO_LU && LU_DONE) {
+        if (i + 1 == n && (LU_DONE || !MULT_DONE)) {
             printf(" %c", '|');
-            printf(" = LU\n");
+            printf(" = ");
+            if (DO_LU) {
+                printf("LU");
+            }
+            printf("\n");
         } else {
             printf(" %c\n", '|');
         }
