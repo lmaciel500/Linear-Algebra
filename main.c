@@ -4,6 +4,6 @@
 
 int main(void) {
     printf("\n");
-    Start();
+    while (Start());
     return 0;
 }

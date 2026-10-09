@@ -117,6 +117,7 @@ void GetInput(int *m, int *n) {
 }
 void GetMatrix(int m, int n, double matrix[m][n]) {
     printf("Enter matrix row by row...\n");
+    printf("(%d rows, %d columns)\n\n", m, n);
     for (int i = 0; i < m; i++) {
         printf("%d: ", i + 1);
         if (DO_INVERSE) {
@@ -492,9 +493,12 @@ void REF(int m, int n, double matrixL[m][n], double matrixU[m][n]) {
     PrintMatrix(m, n, matrixL, matrixU);
 }
 
-void Start() {
+bool Start() {
     int m, n;
     GetInput(&m, &n);
+    if (m < 1 || n < 1) {
+        return false;
+    }
     CheckSteps();
     if (CheckAugment()) {
         n++;
@@ -525,6 +529,12 @@ void Start() {
         GetMatrix(m, n, matrix);
         RREF(m, n, matrix);
     }
+    AUGMENTED = false;
+    SHOW_STEPS = false;
+    DO_LU = false;
+    LU_DONE = false;
+    DO_INVERSE = false;
+    return true;
 }
 
 /*

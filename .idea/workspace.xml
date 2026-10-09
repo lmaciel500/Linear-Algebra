@@ -27,8 +27,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Just in case.">
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="A space.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +149,6 @@
     <MESSAGE value="Removed unnecessary files." />
     <MESSAGE value="Removed unnecessary commit history." />
     <MESSAGE value="Rename." />
-    <MESSAGE value="..." />
     <MESSAGE value="Rename?" />
     <MESSAGE value="Began constructing LU factorization solution." />
     <MESSAGE value="LU factorization works!" />
@@ -160,6 +161,8 @@
     <MESSAGE value="Modified augment variables." />
     <MESSAGE value="Out of bounds bug fix when in LU mode." />
     <MESSAGE value="Just in case." />
-    <option name="LAST_COMMIT_MESSAGE" value="Just in case." />
+    <MESSAGE value="..." />
+    <MESSAGE value="A space." />
+    <option name="LAST_COMMIT_MESSAGE" value="A space." />
   </component>
 </project>
