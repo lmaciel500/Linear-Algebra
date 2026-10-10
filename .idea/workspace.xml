@@ -27,7 +27,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="PrintMatrix() is the most obnoxious function, so I'm trying to simplify it.">
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Nice print.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
     </list>
@@ -177,6 +177,7 @@
     <MESSAGE value="A space." />
     <MESSAGE value="Multiple calculations." />
     <MESSAGE value="PrintMatrix() is the most obnoxious function, so I'm trying to simplify it." />
-    <option name="LAST_COMMIT_MESSAGE" value="PrintMatrix() is the most obnoxious function, so I'm trying to simplify it." />
+    <MESSAGE value="Nice print." />
+    <option name="LAST_COMMIT_MESSAGE" value="Nice print." />
   </component>
 </project>

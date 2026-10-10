@@ -102,7 +102,7 @@ void ResetFlags() {
     GLOBAL = (Collection){0};
 }
 
-//misc
+//finder
 int ZeroRowsCount(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
@@ -150,6 +150,16 @@ bool ZeroColumn(int column, Matrix *A) {
     }
     return true;
 }
+int GreatestRows() {
+    int greatest = 0;
+    for (int i = 0; i < GLOBAL.amount; i++) {
+        int temp = (*GLOBAL.matrices[i]).rows;
+        if (greatest < temp) {
+            greatest = temp;
+        }
+    }
+    return greatest;
+}
 
 //general
 void GetInput(int *m, int *n) {
@@ -190,7 +200,7 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
 
-    printf("%c", '|');
+    printf(" %c", '|');
     for (int i = 0; i < n; i++) {
         if (AUGMENTED && i == n - 1) {
             printf(" %c ", '|');
@@ -209,6 +219,17 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
     }
     printf(" %c", '|');
 }
+void PrintBlankRow(int s, Matrix *A) {
+    int m = (*A).rows;
+    int n = (*A).columns;
+    double (*matrix)[100] = (*A).matrix;
+
+    printf(" %c", ' ');
+    for (int i = 0; i < n; i++) {
+        printf("%*c", s,  ' ');
+    }
+    printf(" %c", ' ');
+}
 void PrintMatrix() {
     double scale = 3;
     int s = 0;
@@ -220,9 +241,14 @@ void PrintMatrix() {
     }
     s += scale;
 
-    for (int i = 0; i < (*GLOBAL.matrices[0]).rows; i++) {
+    for (int i = 0; i < GreatestRows(); i++) {
         for (int j = 0; j < GLOBAL.amount; j++) {
-            PrintMatrixRow(i, s, GLOBAL.matrices[j]);
+            int offset = GreatestRows() - (*GLOBAL.matrices[j]).rows;
+            if (i < offset) {
+                PrintBlankRow(s, GLOBAL.matrices[j]);
+            } else {
+                PrintMatrixRow(i - offset, s, GLOBAL.matrices[j]);
+            }
         }
         printf("\n");
     }
