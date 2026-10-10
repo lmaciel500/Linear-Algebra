@@ -9,7 +9,7 @@ typedef struct {
 
 typedef struct {
     int amount;
-    Matrix matrices[10];
+    Matrix *matrices[10];
 } Collection;
 
 static Collection GLOBAL;
@@ -154,7 +154,7 @@ bool ZeroColumn(int column, Matrix *A) {
 //general
 void GetInput(int *m, int *n) {
     printf("\n");
-    printf("Enter values for Matrix %d (m x n): ", GLOBAL.amount + 1);
+    printf("Enter values for Matrix (m x n): ");
     scanf(" %d %d", m, n);
     //printf("\n");
 }
@@ -182,8 +182,7 @@ void GetMatrix(Matrix *A) {
         }
         //printf("\n");
     }
-    GLOBAL.matrices[GLOBAL.amount] = *A;
-    GLOBAL.amount++;
+    GLOBAL.matrices[GLOBAL.amount++] = A;
     printf("\n");
 }
 void PrintMatrixRow(int row, int s, Matrix *A) {
@@ -210,52 +209,24 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
     }
     printf(" %c", '|');
 }
-void PrintMatrix(Matrix *A, Matrix *B, Matrix *C) {
-    int m = (*A).rows;
-    int n = (*A).columns;
-    double (*matrix1)[100] = (*A).matrix;
-
+void PrintMatrix() {
     double scale = 3;
-
     int s = 0;
     for (int i = 0; i < GLOBAL.amount; i++) {
-        int temp = FindLargestEntry(&GLOBAL.matrices[i]);
+        int temp = FindLargestEntry(GLOBAL.matrices[i]);
         if (s < temp) {
             s = temp;
         }
     }
     s += scale;
 
-    //
-
-    /*
-    for (int i = 0; i < m; i++) {
-        PrintMatrixRow(i, s, A);
-        if (B != NULL) {
-            if (C != NULL) {
-                if (i == m / 2) {
-                    printf(" %*c ", s - scale, 'X');
-                } else {
-                    printf(" %*c ", s - scale, ' ');
-                }
-                PrintMatrixRow(i, s, B);
-                if (i == m / 2) {
-                    printf(" %*c ", s - scale, '=');
-                } else {
-                    printf(" %*c ", s - scale, ' ');
-                }
-                PrintMatrixRow(i, s, C);
-            } else {
-                PrintMatrixRow(i, s, B);
-                if (LU_DONE && i + 1 == m) {
-                    printf(" = LU");
-                }
-            }
+    for (int i = 0; i < (*GLOBAL.matrices[0]).rows; i++) {
+        for (int j = 0; j < GLOBAL.amount; j++) {
+            PrintMatrixRow(i, s, GLOBAL.matrices[j]);
         }
         printf("\n");
     }
     printf("\n");
-    */
 }
 
 //elementary operations
@@ -272,7 +243,7 @@ void ScaleRow(int toScale, double c, Matrix *A) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL, NULL);
+        PrintMatrix();
     }
 }
 void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
@@ -288,7 +259,7 @@ void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL, NULL);
+        PrintMatrix();
     }
 }
 void SwapRows(int row1, int row2, Matrix *A) {
@@ -312,7 +283,7 @@ void SwapRows(int row1, int row2, Matrix *A) {
         matrix[row2][i] = temp[i];
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL, NULL);
+        PrintMatrix();
     }
 }
 void ScaleMatrix(int c, Matrix *A) {
@@ -329,7 +300,7 @@ void ScaleMatrix(int c, Matrix *A) {
         }
     }
     if (SHOW_STEPS) {
-        PrintMatrix(A, NULL, NULL);
+        PrintMatrix();
     }
 }
 
@@ -481,7 +452,7 @@ void RREF(Matrix *A) {
         PrepareInverse(A);
     }
     printf("Gaussian Elimination...\n");
-    PrintMatrix(A, NULL, NULL);
+    PrintMatrix();
     int row = 0;
     int column = 0;
     while (!CheckRREF(A)) {
@@ -509,7 +480,7 @@ void RREF(Matrix *A) {
         column++;
         row++;
     }
-    PrintMatrix(A, NULL, NULL);
+    PrintMatrix();
 }
 void REF(Matrix *A, Matrix *B) {
     int m = (*A).rows;
@@ -518,7 +489,7 @@ void REF(Matrix *A, Matrix *B) {
 
     bool possibleLU = true;
     printf("Begin REF operations...\n");
-    PrintMatrix(A, B, NULL);
+    PrintMatrix();
     int row = 0;
     int column = 0;
     while (!CheckREF(A)) {
@@ -550,7 +521,7 @@ void REF(Matrix *A, Matrix *B) {
         column++;
         row++;
     }
-    PrintMatrix(A, B, NULL);
+    PrintMatrix();
 }
 double DET(int m, int n, double matrix[m][n]) {
     if (m != n) {
@@ -571,7 +542,6 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
     double (*matrix2)[100] = (*B).matrix;
 
     double (*result)[100] = (*C).matrix;
-    ZeroMatrix(C);
 
     if (n != o) {
         printf("Matrix multiplication is not possible...\n");
@@ -584,7 +554,7 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
             }
         }
         MULT_DONE = true;
-        PrintMatrix(A, B, C);
+        PrintMatrix();
         printf("\n");
     }
 }
@@ -649,6 +619,7 @@ bool Start() {
             L.rows = m;
             L.columns = n;
             DiagonalOnes(&L);
+            GLOBAL.matrices[GLOBAL.amount++] = &L;
 
             REF(&U, &L);
         }
@@ -670,6 +641,8 @@ bool Start() {
         Matrix C;
         C.rows = m;
         C.columns = p;
+        ZeroMatrix(&C);
+        GLOBAL.matrices[GLOBAL.amount++] = &C;
 
         MultMatrix(&A, &B, &C);
     } else {
