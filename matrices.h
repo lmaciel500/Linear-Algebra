@@ -719,7 +719,6 @@ bool Start() {
     return true;
 }
 
-//unused
 /*
 void ZeroArray(int n, int array[n]) {
     for (int i = 0; i < n; i++) {
