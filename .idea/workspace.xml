@@ -28,8 +28,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Multiple calculations.">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,11 +45,6 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -59,8 +55,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/lmaciel500/Linear-Algebra.git&quot;,
-    &quot;accountId&quot;: &quot;2b8b65e4-a571-4d33-82b1-a0058047df01&quot;
+    &quot;url&quot;: &quot;https://github.com/lmaciel500/Linear-Algebra&quot;,
+    &quot;accountId&quot;: &quot;0b16aa5a-4538-4265-a7d8-37ebf1df1167&quot;
   }
 }</component>
   <component name="MacroExpansionManager">
@@ -70,9 +66,6 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="3KQbDDpfJSuWB7O5E93lrMd34GE" />
-  <component name="ProjectStatusUIService">{
-  &quot;uiKindId&quot;: &quot;Widget&quot;
-}</component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -97,18 +90,15 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
-    ]
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
   <component name="RunManager" selected="C/C++ File.main.c">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="main" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Linear-Algebra" RUN_TARGET_NAME="main">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -144,66 +134,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791492617878</updated>
-      <workItem from="1791564013695" duration="3504000" />
-      <workItem from="1791573258145" duration="299000" />
     </task>
-    <task id="LOCAL-00001" summary="Matrix multiplication works now?">
-      <option name="closed" value="true" />
-      <created>1791566833945</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1791566833945</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Printing only works for square matrices.">
-      <option name="closed" value="true" />
-      <created>1791567281207</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1791567281207</updated>
-    </task>
-    <task id="LOCAL-00003" summary="I decided to refactor the entire program around structs.">
-      <option name="closed" value="true" />
-      <created>1791573427897</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1791573427897</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Finished refactoring to struct-based matrices.">
-      <option name="closed" value="true" />
-      <created>1791584762463</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1791584762463</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Fixie fix.">
-      <option name="closed" value="true" />
-      <created>1791585048147</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1791585048147</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Okay.">
-      <option name="closed" value="true" />
-      <created>1791585157823</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1791585157823</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Printing QOL.">
-      <option name="closed" value="true" />
-      <created>1791588028340</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1791588028340</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,6 +158,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Hello." />
     <MESSAGE value="Removed unnecessary files." />
     <MESSAGE value="Removed unnecessary commit history." />
     <MESSAGE value="Rename." />
@@ -245,13 +177,6 @@
     <MESSAGE value="..." />
     <MESSAGE value="A space." />
     <MESSAGE value="Multiple calculations." />
-    <MESSAGE value="Matrix multiplication works now?" />
-    <MESSAGE value="Printing only works for square matrices." />
-    <MESSAGE value="I decided to refactor the entire program around structs." />
-    <MESSAGE value="Finished refactoring to struct-based matrices." />
-    <MESSAGE value="Fixie fix." />
-    <MESSAGE value="Okay." />
-    <MESSAGE value="Printing QOL." />
-    <option name="LAST_COMMIT_MESSAGE" value="Printing QOL." />
+    <option name="LAST_COMMIT_MESSAGE" value="Multiple calculations." />
   </component>
 </project>

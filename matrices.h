@@ -7,6 +7,13 @@ typedef struct {
     double matrix[100][100];
 } Matrix;
 
+typedef struct {
+    int amount;
+    Matrix matrices[10];
+} Collection;
+
+static Collection GLOBAL;
+
 static bool AUGMENTED = false;
 
 static bool SHOW_STEPS = false;
@@ -18,8 +25,6 @@ static bool DO_INVERSE = false;
 
 static bool DO_MULT = false;
 static bool MULT_DONE = false;
-
-static int matrices = 1;
 
 //helper
 void ZeroMatrix(Matrix *A) {
@@ -94,7 +99,7 @@ void ResetFlags() {
     DO_INVERSE = false;
     DO_MULT = false;
     MULT_DONE = false;
-    matrices = 1;
+    GLOBAL = (Collection){0};
 }
 
 //misc
@@ -149,8 +154,7 @@ bool ZeroColumn(int column, Matrix *A) {
 //general
 void GetInput(int *m, int *n) {
     printf("\n");
-    printf("Enter values for Matrix %d (m x n): ", matrices);
-    matrices++;
+    printf("Enter values for Matrix %d (m x n): ", GLOBAL.amount + 1);
     scanf(" %d %d", m, n);
     //printf("\n");
 }
@@ -178,6 +182,8 @@ void GetMatrix(Matrix *A) {
         }
         //printf("\n");
     }
+    GLOBAL.matrices[GLOBAL.amount] = *A;
+    GLOBAL.amount++;
     printf("\n");
 }
 void PrintMatrixRow(int row, int s, Matrix *A) {
@@ -211,21 +217,18 @@ void PrintMatrix(Matrix *A, Matrix *B, Matrix *C) {
 
     double scale = 3;
 
-    int s = FindLargestEntry(A);
-    if (B != NULL) {
-        int b = FindLargestEntry(B);
-        if (b > s) {
-            s = b;
-        }
-        if (C != NULL) {
-            int c = FindLargestEntry(C);
-            if (c > s) {
-                s = c;
-            }
+    int s = 0;
+    for (int i = 0; i < GLOBAL.amount; i++) {
+        int temp = FindLargestEntry(&GLOBAL.matrices[i]);
+        if (s < temp) {
+            s = temp;
         }
     }
     s += scale;
 
+    //
+
+    /*
     for (int i = 0; i < m; i++) {
         PrintMatrixRow(i, s, A);
         if (B != NULL) {
@@ -252,6 +255,7 @@ void PrintMatrix(Matrix *A, Matrix *B, Matrix *C) {
         printf("\n");
     }
     printf("\n");
+    */
 }
 
 //elementary operations
