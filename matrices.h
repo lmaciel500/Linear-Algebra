@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <math.h>
 
 typedef struct {
     int rows;
@@ -15,7 +16,7 @@ typedef struct {
 static Collection GLOBAL;
 
 static bool AUGMENTED = false;
-static bool SHOW_STEPS = false;
+static bool SHOW_STEPS = true;
 static bool DO_LU = false;
 static bool DO_INVERSE = false;
 static bool DO_MULT = false;
@@ -180,6 +181,12 @@ void GetInput(int *m, int *n) {
     printf("\n");
     printf("Enter values for Matrix (m x n): ");
     scanf(" %d %d", m, n);
+    if (*m == 0 || *n == 0) {
+        *m += 2;
+        *n += 2;
+    }
+    *m = abs(*m);
+    *n = abs(*n);
     //printf("\n");
 }
 void GetMatrix(Matrix *A) {
@@ -267,15 +274,21 @@ void PrintMatrix() {
     }
     s += scale;
 
-    for (int i = 0; i < GreatestRows(); i++) {
+    int height = GreatestRows();
+    for (int i = 0; i < height; i++) {
         for (int j = 0; j < GLOBAL.amount; j++) {
-            int offset = GreatestRows() - (*GLOBAL.matrices[j]).rows;
+            int offset = height - (*GLOBAL.matrices[j]).rows;
             if (i < offset) {
                 PrintBlankRow(s, GLOBAL.matrices[j]);
             } else {
                 PrintMatrixRow(i - offset, s, GLOBAL.matrices[j]);
             }
             PrintSpacing(i, j);
+        }
+        if (i + 1 == height && DO_LU) {
+            printf(" = [L][U]");
+        } else if (i + 1 == height && DO_INVERSE) {
+            printf(" = [ I |A^-1]");
         }
         printf("\n");
     }
@@ -640,6 +653,7 @@ bool Start() {
             RREF(&R);
             break;
         case 'a':
+            AUGMENTED = true;
             GetInput(&m, &n);
             n++;
             Matrix A;
@@ -653,6 +667,7 @@ bool Start() {
             if (m != n) {
                 return false;
             }
+            DO_INVERSE = true;
             n *= 2;
             Matrix I;
             I.rows = m;
@@ -662,6 +677,10 @@ bool Start() {
             break;
         case 'u':
             GetInput(&m, &n);
+            if (m != n) {
+                return false;
+            }
+            DO_LU = true;
             Matrix L;
             Matrix U;
             U.rows = m;
@@ -674,6 +693,8 @@ bool Start() {
             REF(&U, &L);
             break;
         case 'm':
+            DO_MULT = true;
+            GetInput(&m, &n);
             GetInput(&o, &p);
             Matrix M1;
             M1.rows = m;
