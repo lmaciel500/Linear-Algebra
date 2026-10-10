@@ -15,16 +15,10 @@ typedef struct {
 static Collection GLOBAL;
 
 static bool AUGMENTED = false;
-
 static bool SHOW_STEPS = false;
-
 static bool DO_LU = false;
-static bool LU_DONE = false;
-
 static bool DO_INVERSE = false;
-
 static bool DO_MULT = false;
-static bool MULT_DONE = false;
 
 //helper
 void ZeroMatrix(Matrix *A) {
@@ -95,10 +89,8 @@ void ResetFlags() {
     AUGMENTED = false;
     SHOW_STEPS = false;
     DO_LU = false;
-    LU_DONE = false;
     DO_INVERSE = false;
     DO_MULT = false;
-    MULT_DONE = false;
     GLOBAL = (Collection){0};
 }
 
@@ -160,8 +152,30 @@ int GreatestRows() {
     }
     return greatest;
 }
+int SmallestRows() {
+    int smallest = (*GLOBAL.matrices[0]).rows;
+    for (int i = 0; i < GLOBAL.amount; i++) {
+        int temp = (*GLOBAL.matrices[i]).rows;
+        if (smallest > temp) {
+            smallest = temp;
+        }
+    }
+    return smallest;
+}
 
 //general
+void PrintMenu() {
+    printf("\n");
+    printf("Select operation...\n");
+    printf("\n");
+    printf("r) Reduced Row Echelon Form\n");
+    printf("a) Augmented Matrix\n");
+    printf("i) Inverse Matrix\n");
+    printf("u) LU Factorization\n");
+    printf("m) Matrix Multiplication\n");
+    printf("\n");
+    printf("Type Character (r, a, i, u, m): ");
+}
 void GetInput(int *m, int *n) {
     printf("\n");
     printf("Enter values for Matrix (m x n): ");
@@ -194,6 +208,18 @@ void GetMatrix(Matrix *A) {
     }
     GLOBAL.matrices[GLOBAL.amount++] = A;
     printf("\n");
+}
+void PrintSpacing(int row, int number) {
+    int spacing = GreatestRows() - 1;
+    if (DO_MULT) {
+        if (row == spacing && number == 0) {
+            printf("  X");
+        } else if (row == spacing && number == 1) {
+            printf("  =");
+        } else {
+            printf("   ");
+        }
+    }
 }
 void PrintMatrixRow(int row, int s, Matrix *A) {
     int m = (*A).rows;
@@ -231,7 +257,7 @@ void PrintBlankRow(int s, Matrix *A) {
     printf(" %c", ' ');
 }
 void PrintMatrix() {
-    double scale = 3;
+    double scale = 1;
     int s = 0;
     for (int i = 0; i < GLOBAL.amount; i++) {
         int temp = FindLargestEntry(GLOBAL.matrices[i]);
@@ -249,6 +275,7 @@ void PrintMatrix() {
             } else {
                 PrintMatrixRow(i - offset, s, GLOBAL.matrices[j]);
             }
+            PrintSpacing(i, j);
         }
         printf("\n");
     }
@@ -411,9 +438,6 @@ bool CheckREF(Matrix *A) {
         }
     }
     printf("Matrix is in REF.\n\n");
-    if (DO_LU) {
-        LU_DONE = true;
-    }
     return true;
 }
 
@@ -579,7 +603,6 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
                 }
             }
         }
-        MULT_DONE = true;
         PrintMatrix();
         printf("\n");
     }
@@ -603,81 +626,73 @@ void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[
 */
 
 bool Start() {
-    int m, n;
-    GetInput(&m, &n);
-    if (m < 1 || n < 1) {
-        return false;
-    }
-    CheckSteps();
-    if (CheckAugment()) {
-        n++;
-
-        Matrix A;
-        A.rows = m;
-        A.columns = n;
-        GetMatrix(&A);
-
-        RREF(&A);
-    } else if (CheckInverse()) {
-        if (m != n) {
-            DO_INVERSE = false;
-        } else {
-            n *= 2;
-
+    int m, n, o, p;
+    PrintMenu();
+    char decision;
+    scanf(" %c", &decision);
+    switch (decision) {
+        case 'r':
+            GetInput(&m, &n);
+            Matrix R;
+            R.rows = m;
+            R.columns = n;
+            GetMatrix(&R);
+            RREF(&R);
+            break;
+        case 'a':
+            GetInput(&m, &n);
+            n++;
             Matrix A;
             A.rows = m;
             A.columns = n;
             GetMatrix(&A);
-
             RREF(&A);
-        }
-    } else if (CheckLU()) {
-        if (m != n) {
-            DO_LU = false;
-        } else {
+            break;
+        case 'i':
+            GetInput(&m, &n);
+            if (m != n) {
+                return false;
+            }
+            n *= 2;
+            Matrix I;
+            I.rows = m;
+            I.columns = n;
+            GetMatrix(&I);
+            RREF(&I);
+            break;
+        case 'u':
+            GetInput(&m, &n);
             Matrix L;
             Matrix U;
-
             U.rows = m;
             U.columns = n;
             GetMatrix(&U);
-
             L.rows = m;
             L.columns = n;
             DiagonalOnes(&L);
             GLOBAL.matrices[GLOBAL.amount++] = &L;
-
             REF(&U, &L);
-        }
-    } else if (CheckMult()) {
-        int o, p;
-        GetInput(&o, &p);
-
-        Matrix A;
-        A.rows = m;
-        A.columns = n;
-
-        Matrix B;
-        B.rows = o;
-        B.columns = p;
-
-        GetMatrix(&A);
-        GetMatrix(&B);
-
-        Matrix C;
-        C.rows = m;
-        C.columns = p;
-        ZeroMatrix(&C);
-        GLOBAL.matrices[GLOBAL.amount++] = &C;
-
-        MultMatrix(&A, &B, &C);
-    } else {
-        Matrix A;
-        A.rows = m;
-        A.columns = n;
-        GetMatrix(&A);
-
-        RREF(&A);
+            break;
+        case 'm':
+            GetInput(&o, &p);
+            Matrix M1;
+            M1.rows = m;
+            M1.columns = n;
+            Matrix M2;
+            M2.rows = o;
+            M2.columns = p;
+            GetMatrix(&M1);
+            GetMatrix(&M2);
+            Matrix C;
+            C.rows = m;
+            C.columns = p;
+            ZeroMatrix(&C);
+            GLOBAL.matrices[GLOBAL.amount++] = &C;
+            MultMatrix(&M1, &M2, &C);
+            break;
+        default:
+            return false;
+            break;
     }
     ResetFlags();
     return true;
