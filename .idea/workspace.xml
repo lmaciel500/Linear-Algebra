@@ -28,10 +28,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Nice.">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Refactoring. I'm leaving this commit as a marker of the most stable version before the refactor." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +43,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="MIXED" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -113,9 +110,9 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="C/C++ File.matrices.c" />
-      <item itemvalue="C/C++ File.main.c" />
       <item itemvalue="CMake Application.main" />
+      <item itemvalue="C/C++ File.main.c" />
+      <item itemvalue="C/C++ File.matrices.c" />
     </list>
     <recent_temporary>
       <list>
@@ -154,7 +151,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Removed unnecessary files." />
     <MESSAGE value="Removed unnecessary commit history." />
     <MESSAGE value="Rename." />
     <MESSAGE value="Rename?" />
@@ -179,6 +175,7 @@
     <MESSAGE value="Pretty stable now." />
     <MESSAGE value="Very unstable." />
     <MESSAGE value="Nice." />
-    <option name="LAST_COMMIT_MESSAGE" value="Nice." />
+    <MESSAGE value="Refactoring. I'm leaving this commit as a marker of the most stable version before the refactor." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactoring. I'm leaving this commit as a marker of the most stable version before the refactor." />
   </component>
 </project>
