@@ -26,16 +26,13 @@ typedef struct {
     bool LU;
     bool INVERSE;
     bool MULT;
+    bool REF;
+    bool RREF;
 } State;
 
 static Collection GLOBAL = {0};
-static State STATE = {true, false, false, false, false};
+static State STATE = {true, false, false, false, false, false, false};
 
-static bool AUGMENTED = false;
-static bool SHOW_STEPS = true;
-static bool DO_LU = false;
-static bool DO_INVERSE = false;
-static bool DO_MULT = false;
 
 //helper
 void ZeroMatrix(Matrix *A) {
@@ -88,6 +85,7 @@ void DiagonalOnes(Matrix *A) {
     }
 }
 void PrepareInverse(Matrix *A) {
+    (*A).columns *= 2;
     int m = (*A).rows;
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
@@ -102,20 +100,20 @@ void PrepareInverse(Matrix *A) {
         }
     }
 }
-void ResetFlags() {
-    AUGMENTED = false;
-    SHOW_STEPS = false;
-    DO_LU = false;
-    DO_INVERSE = false;
-    DO_MULT = false;
-    GLOBAL = (Collection){0};
+void AddAugment(Matrix *A) {
+    int m = (*A).rows;
+    double augment[m];
+    printf("Enter augment...\n");
+    printf("(%d values): ", m);
+    for (int i = 0; i < m; i++) {
+        scanf(" %lf", &augment[i]);
+    }
+    (*A).columns++;
+    for (int i = 0; i < m; i++) {
+        (*A).matrix[i][(*A).columns - 1] = augment[i];
+    }
 }
-void ResetState() {
-    STATE.AUGMENTED = false;
-    STATE.LU = false;
-    STATE.INVERSE = false;
-    STATE.MULT = false;
-}
+
 
 //finders
 int ToIndex(char name) {
@@ -124,6 +122,7 @@ int ToIndex(char name) {
 char ToChar(int index) {
     return 'A' + index;
 }
+
 int ZeroRowsCount(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
@@ -171,6 +170,7 @@ bool ZeroColumn(int column, Matrix *A) {
     }
     return true;
 }
+
 int GreatestRows(Collection *collection) {
     int greatest = 0;
     for (int i = 0; i < GLOBAL.amount; i++) {
@@ -208,6 +208,7 @@ int FindAvailableIndex() {
     return -1;
 }
 
+
 //general
 void GetInput(int *m, int *n) {
     printf("\n");
@@ -220,33 +221,6 @@ void GetInput(int *m, int *n) {
         *n += 1;
     }
     //printf("\n");
-}
-void GetMatrix(Matrix *A) {
-    int m = (*A).rows;
-    int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
-
-    printf("\nEnter matrix row by row...\n");
-    if (DO_INVERSE) {
-        printf("(%d rows, %d columns)\n", m, n / 2);
-    } else {
-        printf("(%d rows, %d columns)\n", m, n);
-    }
-    for (int i = 0; i < m; i++) {
-        printf("%d: ", i + 1);
-        if (DO_INVERSE) {
-            for (int j = 0; j < n / 2; j++) {
-                scanf(" %lf", &matrix[i][j]);
-            }
-        } else {
-            for (int j = 0; j < n; j++) {
-                scanf(" %lf", &matrix[i][j]);
-            }
-        }
-        //printf("\n");
-    }
-    GLOBAL.matrices[GLOBAL.amount++] = *A;
-    printf("\n");
 }
 void DeleteMatrix(char name) {
     int index = ToIndex(name);
@@ -281,7 +255,8 @@ void CreateMatrix() {
     printf("\n");
 }
 
-//matrix printers
+
+//printers
 void PrintSpacing(int row, int number, Collection *collection) {
     int spacing = GreatestRows(collection) - 1;
     if (STATE.MULT) {
@@ -301,11 +276,11 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
 
     printf(" %c", '|');
     for (int i = 0; i < n; i++) {
-        if (AUGMENTED && i == n - 1) {
+        if (STATE.AUGMENTED && i == n - 1) {
             printf(" %c ", '|');
             //s += 1;
         }
-        if (DO_INVERSE && i == n / 2) {
+        if (STATE.INVERSE && i == n / 2) {
             printf(" %c ", '|');
         }
 
@@ -330,21 +305,6 @@ void PrintBlankRow(int s, Matrix *A) {
     printf(" %c", ' ');
 }
 
-void PrintCollection() {
-    int offset = 'A';
-    if (GLOBAL.amount > 0) {
-        for (int i = 0; i < GLOBAL.amount; i++) {
-            if (GLOBAL.matrices[i].occupied) {
-                int rows = GLOBAL.matrices[i].rows;
-                int columns = GLOBAL.matrices[i].columns;
-                printf("%c: %dx%d\n", i + offset, rows, columns);
-            }
-        }
-    } else {
-        printf("There are no stored matrices.");
-    }
-    printf("\n");
-}
 void PrintMatrices(Collection *collection) {
     double scale = 1;
     int s = 0;
@@ -369,8 +329,6 @@ void PrintMatrices(Collection *collection) {
         }
         if (i + 1 == height && STATE.LU) {
             printf(" = [L][U]");
-        } else if (i + 1 == height && STATE.INVERSE) {
-            printf(" = [ I |A^-1]");
         }
         printf("\n");
     }
@@ -384,12 +342,30 @@ void PrintMatrix(Matrix *A) {
     s += scale;
     for (int i = 0; i < m; i++) {
         PrintMatrixRow(i, s, A);
-        printf("\n");
+        if (STATE.INVERSE && i == m - 1 && STATE.RREF) {
+            printf(" = [ I | A`]\n");
+        } else {
+            printf("\n");
+        }
+    }
+    printf("\n");
+}
+void PrintCollection() {
+    int offset = 'A';
+    if (GLOBAL.amount > 0) {
+        for (int i = 0; i < GLOBAL.amount; i++) {
+            if (GLOBAL.matrices[i].occupied) {
+                int rows = GLOBAL.matrices[i].rows;
+                int columns = GLOBAL.matrices[i].columns;
+                printf("%c: %dx%d\n", i + offset, rows, columns);
+            }
+        }
+    } else {
+        printf("There are no stored matrices.");
     }
     printf("\n");
 }
 
-//menu printers
 void PrintOperations() {
     printf("\n");
     printf("Select operation...\n");
@@ -422,6 +398,7 @@ void PrintSettings() {
     printf("\n");
     printf("Type Character (s; other to leave): ");
 }
+
 
 //elementary operations
 void ScaleRow(int toScale, double c, Matrix *A) {
@@ -498,7 +475,8 @@ void ScaleMatrix(int c, Matrix *A) {
     }
 }
 
-//algorithm checkers
+
+//algorithms
 bool CheckRREF(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
@@ -539,7 +517,6 @@ bool CheckRREF(Matrix *A) {
             }
         }
     }
-    printf("Matrix is in RREF.\n\n");
     return true;
 }
 bool CheckREF(Matrix *A) {
@@ -578,31 +555,13 @@ bool CheckREF(Matrix *A) {
             }
         }
     }
-    printf("Matrix is in REF.\n\n");
     return true;
 }
 
-//checkers
-bool Confirm() {
-    printf("Are you sure? (y/n): " );
-    char decision;
-    scanf(" %c", &decision);
-    if (decision == 'y') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-//algorithms
 void RREF(Matrix A) {
     int m = A.rows;
     int n = A.columns;
     double (*matrix)[100] = A.matrix;
-
-    if (DO_INVERSE) {
-        PrepareInverse(&A);
-    }
     printf("Gaussian Elimination...\n");
     PrintMatrix(&A);
     int row = 0;
@@ -632,6 +591,8 @@ void RREF(Matrix A) {
         column++;
         row++;
     }
+    STATE.RREF = true;
+    printf("Matrix is in RREF.\n");
     PrintMatrix(&A);
 }
 void REF(Matrix A, Matrix B) {
@@ -677,6 +638,7 @@ void REF(Matrix A, Matrix B) {
     L_U.matrices[0] = A;
     L_U.matrices[1] = B;
     L_U.amount = 2;
+    printf("Matrix is in REF.\n");
     PrintMatrices(&L_U);
 }
 double DET(int m, int n, double matrix[m][n]) {
@@ -686,6 +648,7 @@ double DET(int m, int n, double matrix[m][n]) {
     return 1;
     //WIP
 }
+
 
 //arithmetic
 void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
@@ -726,6 +689,28 @@ void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[
 }
 */
 
+
+//logic
+bool Confirm() {
+    printf("Are you sure? (y/n): " );
+    char decision;
+    scanf(" %c", &decision);
+    if (decision == 'y') {
+        return true;
+    } else {
+        return false;
+    }
+}
+void ResetState() {
+    STATE.AUGMENTED = false;
+    STATE.LU = false;
+    STATE.INVERSE = false;
+    STATE.MULT = false;
+    STATE.REF = false;
+    STATE.RREF = false;
+}
+
+
 void StartSettings() {
     PrintSettings();
     char decision;
@@ -756,21 +741,26 @@ char StartSelector() {
     return -1;
 }
 bool StartOperations(char name) {
-    //it somehow crashses before this next print???
     int index = ToIndex(name);
     PrintOperations();
     char decision;
     scanf(" %c", &decision);
     switch (decision) {
         case 'r':
-            Matrix A = GLOBAL.matrices[index];
-            RREF(A);
+            Matrix R = GLOBAL.matrices[index];
+            RREF(R);
             break;
         case 'a':
-
+            STATE.AUGMENTED = true;
+            Matrix A = GLOBAL.matrices[index];
+            AddAugment(&A);
+            RREF(A);
             break;
         case 'i':
-
+            STATE.INVERSE = true;
+            Matrix I = GLOBAL.matrices[index];
+            PrepareInverse(&I);
+            RREF(I);
             break;
         case 'u':
             STATE.LU = true;
@@ -824,6 +814,8 @@ bool StartOperations(char name) {
     }
     ResetState();
 }
+
+
 bool Start() {
     char name;
     PrintMenu();
@@ -936,4 +928,3 @@ bool CheckIdentity(Matrix *A) {
     return true;
 }
 */
-//Hello

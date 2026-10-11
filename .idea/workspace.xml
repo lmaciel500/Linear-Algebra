@@ -28,7 +28,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Improvements. Menu works with multiplication.">
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Stick it in main, I guess.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.exe" beforeDir="false" afterPath="$PROJECT_DIR$/main.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
@@ -155,8 +155,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="LU factorization works!" />
-    <MESSAGE value="Quality of life." />
     <MESSAGE value="Header." />
     <MESSAGE value="Program can now do inverses." />
     <MESSAGE value="Slightly better menu." />
@@ -180,6 +178,8 @@
     <MESSAGE value="It's coming together." />
     <MESSAGE value="Can now delete matrices." />
     <MESSAGE value="Improvements. Menu works with multiplication." />
-    <option name="LAST_COMMIT_MESSAGE" value="Improvements. Menu works with multiplication." />
+    <MESSAGE value="I made a lot of progress." />
+    <MESSAGE value="Stick it in main, I guess." />
+    <option name="LAST_COMMIT_MESSAGE" value="Stick it in main, I guess." />
   </component>
 </project>
