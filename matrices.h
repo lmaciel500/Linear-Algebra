@@ -258,8 +258,9 @@ void GetMatrix(Matrix *A) {
     GLOBAL.matrices[GLOBAL.amount++] = *A;
     printf("\n");
 }
-void DeleteMatrix() {
-    //WIP
+void DeleteMatrix(char name) {
+    int index = ToIndex(name);
+    GLOBAL.matrices[index].occupied = false;
 }
 void AddMatrix(Matrix A) {
     int index = FindAvailableIndex();
@@ -355,9 +356,11 @@ void PrintCollection() {
     int offset = 'A';
     if (GLOBAL.amount > 0) {
         for (int i = 0; i < GLOBAL.amount; i++) {
-            int rows = GLOBAL.matrices[i].rows;
-            int columns = GLOBAL.matrices[i].columns;
-            printf("%c: %dx%d\n", i + offset, rows, columns);
+            if (GLOBAL.matrices[i].occupied) {
+                int rows = GLOBAL.matrices[i].rows;
+                int columns = GLOBAL.matrices[i].columns;
+                printf("%c: %dx%d\n", i + offset, rows, columns);
+            }
         }
     } else {
         printf("There are no stored matrices.");
@@ -823,30 +826,36 @@ bool StartOperations(char name) {
     }
 }
 bool Start() {
-        PrintMenu();
-        char decision;
-        scanf(" %c", &decision);
-        switch (decision) {
-            case 'v':
-                PrintCollection();
-                StartSelector();
-                break;
-            case 'c':
-                CreateMatrix();
-                break;
-            case 'p':
-                PrintCollection();
-                char name = StartSelector();
-                if (CheckExists(name) && Confirm()) {
-                    //it makes it into this function
-                    StartOperations(name);
-                }
-                break;
-            case 'd':
-                break;
-            default:
-                break;
-        }
+    char name;
+    PrintMenu();
+    char decision;
+    scanf(" %c", &decision);
+    switch (decision) {
+        case 'v':
+            PrintCollection();
+            StartSelector();
+            break;
+        case 'c':
+            CreateMatrix();
+            break;
+        case 'p':
+            PrintCollection();
+            name = StartSelector();
+            if (CheckExists(name) && Confirm()) {
+                //it makes it into this function
+                StartOperations(name);
+            }
+            break;
+        case 'd':
+            PrintCollection();
+            name = StartSelector();
+            if (CheckExists(name) && Confirm()) {
+                DeleteMatrix(name);
+            }
+            break;
+        default:
+            break;
+    }
     ResetState();
     return true;
 }
