@@ -518,7 +518,7 @@ void RREF(Matrix *A) {
     PrintMatrix();
     int row = 0;
     int column = 0;
-    while (!CheckRREF(A)) {
+    while (!CheckRREF(A) && row < m && column < n) {
         if (ZeroColumn(column, A)) {
             column++;
             continue;
@@ -555,7 +555,7 @@ void REF(Matrix *A, Matrix *B) {
     PrintMatrix();
     int row = 0;
     int column = 0;
-    while (!CheckREF(A)) {
+    while (!CheckREF(A) && row < m && column < n) {
         if (!possibleLU) {
             break;
         }
