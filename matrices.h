@@ -304,6 +304,18 @@ void PrintSpacing(int row, int number) {
         }
     }
 }
+void PrintSpacingNew(int row, int number, Collection *collection) {
+    int spacing = GreatestRowsNew(collection) - 1;
+    if (STATE.MULT) {
+        if (row == spacing && number == 0) {
+            printf("  X");
+        } else if (row == spacing && number == 1) {
+            printf("  =");
+        } else {
+            printf("   ");
+        }
+    }
+}
 void PrintMatrixRow(int row, int s, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
@@ -418,7 +430,7 @@ void PrintMatrixNew(Collection *collection) {
             } else {
                 PrintMatrixRow(i - offset, s, &collection->matrices[j]);
             }
-            PrintSpacing(i, j);
+            PrintSpacingNew(i, j, collection);
         }
         if (i + 1 == height && STATE.LU) {
             printf(" = [L][U]");
@@ -771,7 +783,6 @@ char StartSelector() {
 }
 bool StartOperations(char name) {
     //it somehow crashses before this next print???
-    printf("I got here\n");
     int matrix = ToIndex(name);
     PrintOperations();
     char decision;
@@ -787,9 +798,13 @@ bool StartOperations(char name) {
 
             break;
         case 'u':
-
+            Matrix L;
             break;
         case 'm':
+            printf("Select matrix to multiply with %c (%dx%d)...\n\n",
+                name,
+                GLOBAL.matrices[matrix].rows,
+                GLOBAL.matrices[matrix].columns);
             PrintCollection();
             char m = StartSelector();
             int other = ToIndex(m);
@@ -824,6 +839,7 @@ bool StartOperations(char name) {
             break;
             return false;
     }
+    ResetState();
 }
 bool Start() {
     char name;
