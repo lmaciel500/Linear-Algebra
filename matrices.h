@@ -635,8 +635,8 @@ void REF(Matrix A, Matrix B) {
         row++;
     }
     static Collection L_U;
-    L_U.matrices[0] = A;
-    L_U.matrices[1] = B;
+    L_U.matrices[0] = B;
+    L_U.matrices[1] = A;
     L_U.amount = 2;
     printf("Matrix is in REF.\n");
     PrintMatrices(&L_U);
