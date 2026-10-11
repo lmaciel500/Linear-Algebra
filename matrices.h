@@ -171,17 +171,7 @@ bool ZeroColumn(int column, Matrix *A) {
     }
     return true;
 }
-int GreatestRows() {
-    int greatest = 0;
-    for (int i = 0; i < GLOBAL.amount; i++) {
-        int temp = GLOBAL.matrices[i].rows;
-        if (greatest < temp) {
-            greatest = temp;
-        }
-    }
-    return greatest;
-}
-int GreatestRowsNew(Collection *collection) {
+int GreatestRows(Collection *collection) {
     int greatest = 0;
     for (int i = 0; i < GLOBAL.amount; i++) {
         int temp = collection->matrices[i].rows;
@@ -203,7 +193,7 @@ int SmallestRows() {
 }
 
 bool CheckExists(char name) {
-    if (ToIndex(name) >= 0 && ToIndex(name) < GLOBAL.amount) {
+    if (ToIndex(name) >= 0 && ToIndex(name) < GLOBAL.amount && GLOBAL.matrices[ToIndex(name)].occupied) {
         return true;
     } else {
         return false;
@@ -292,20 +282,8 @@ void CreateMatrix() {
 }
 
 //matrix printers
-void PrintSpacing(int row, int number) {
-    int spacing = GreatestRows() - 1;
-    if (STATE.MULT) {
-        if (row == spacing && number == 0) {
-            printf("  X");
-        } else if (row == spacing && number == 1) {
-            printf("  =");
-        } else {
-            printf("   ");
-        }
-    }
-}
-void PrintSpacingNew(int row, int number, Collection *collection) {
-    int spacing = GreatestRowsNew(collection) - 1;
+void PrintSpacing(int row, int number, Collection *collection) {
+    int spacing = GreatestRows(collection) - 1;
     if (STATE.MULT) {
         if (row == spacing && number == 0) {
             printf("  X");
@@ -351,19 +329,7 @@ void PrintBlankRow(int s, Matrix *A) {
     }
     printf(" %c", ' ');
 }
-void PrintMatrixName(char name) {
-    Matrix A = GLOBAL.matrices[ToIndex(name)];
-    int m = A.rows;
-    int n = A.columns;
-    double scale = 1;
-    int s = FindLargestEntry(&A);
-    s += scale;
-    for (int i = 0; i < m; i++) {
-        PrintMatrixRow(i, s, &A);
-        printf("\n");
-    }
-    printf("\n");
-}
+
 void PrintCollection() {
     int offset = 'A';
     if (GLOBAL.amount > 0) {
@@ -379,38 +345,7 @@ void PrintCollection() {
     }
     printf("\n");
 }
-void PrintMatrix() {
-    double scale = 1;
-    int s = 0;
-    for (int i = 0; i < GLOBAL.amount; i++) {
-        int temp = FindLargestEntry(&GLOBAL.matrices[i]);
-        if (s < temp) {
-            s = temp;
-        }
-    }
-    s += scale;
-
-    int height = GreatestRows();
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < GLOBAL.amount; j++) {
-            int offset = height - GLOBAL.matrices[j].rows;
-            if (i < offset) {
-                PrintBlankRow(s, &GLOBAL.matrices[j]);
-            } else {
-                PrintMatrixRow(i - offset, s, &GLOBAL.matrices[j]);
-            }
-            PrintSpacing(i, j);
-        }
-        if (i + 1 == height && DO_LU) {
-            printf(" = [L][U]");
-        } else if (i + 1 == height && DO_INVERSE) {
-            printf(" = [ I |A^-1]");
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-void PrintMatrixNew(Collection *collection) {
+void PrintMatrices(Collection *collection) {
     double scale = 1;
     int s = 0;
     for (int i = 0; i < collection->amount; i++) {
@@ -421,7 +356,7 @@ void PrintMatrixNew(Collection *collection) {
     }
     s += scale;
 
-    int height = GreatestRowsNew(collection);
+    int height = GreatestRows(collection);
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < collection->amount; j++) {
             int offset = height - collection->matrices[j].rows;
@@ -430,13 +365,25 @@ void PrintMatrixNew(Collection *collection) {
             } else {
                 PrintMatrixRow(i - offset, s, &collection->matrices[j]);
             }
-            PrintSpacingNew(i, j, collection);
+            PrintSpacing(i, j, collection);
         }
         if (i + 1 == height && STATE.LU) {
             printf(" = [L][U]");
         } else if (i + 1 == height && STATE.INVERSE) {
             printf(" = [ I |A^-1]");
         }
+        printf("\n");
+    }
+    printf("\n");
+}
+void PrintMatrix(Matrix *A) {
+    int m = A->rows;
+    int n = A->columns;
+    double scale = 1;
+    int s = FindLargestEntry(A);
+    s += scale;
+    for (int i = 0; i < m; i++) {
+        PrintMatrixRow(i, s, A);
         printf("\n");
     }
     printf("\n");
@@ -463,8 +410,17 @@ void PrintMenu() {
     printf("v) View stored matrices\n");
     printf("p) Perform operation on matrix\n");
     printf("d) Delete matrix\n");
+    printf("s) Settings\n");
     printf("\n");
-    printf("Type Character (c, v, p, d): ");
+    printf("Type Character (c, v, p, d, s): ");
+}
+void PrintSettings() {
+    printf("\n");
+    printf("Settings...\n");
+    printf("\n");
+    printf("s) Show steps = %d\n", STATE.SHOW_STEPS);
+    printf("\n");
+    printf("Type Character (s; other to leave): ");
 }
 
 //elementary operations
@@ -473,15 +429,15 @@ void ScaleRow(int toScale, double c, Matrix *A) {
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
 
-    if (SHOW_STEPS) {
+    if (STATE.SHOW_STEPS) {
         printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
         //getchar();
     }
     for (int i = 0; i < n; i++) {
         matrix[toScale][i] = (double) matrix[toScale][i] * c;
     }
-    if (SHOW_STEPS) {
-        PrintMatrix();
+    if (STATE.SHOW_STEPS) {
+        PrintMatrix(A);
     }
 }
 void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
@@ -489,15 +445,15 @@ void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
 
-    if (SHOW_STEPS) {
+    if (STATE.SHOW_STEPS) {
         printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
         //getchar();
     }
     for (int i = 0; i < n; i++) {
         matrix[toReplace][i] += matrix[replacer][i] * c;
     }
-    if (SHOW_STEPS) {
-        PrintMatrix();
+    if (STATE.SHOW_STEPS) {
+        PrintMatrix(A);
     }
 }
 void SwapRows(int row1, int row2, Matrix *A) {
@@ -505,7 +461,7 @@ void SwapRows(int row1, int row2, Matrix *A) {
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
 
-    if (SHOW_STEPS) {
+    if (STATE.SHOW_STEPS) {
         printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
         //getchar();
     }
@@ -520,8 +476,8 @@ void SwapRows(int row1, int row2, Matrix *A) {
     for (int i = 0; i < n; i++) {
         matrix[row2][i] = temp[i];
     }
-    if (SHOW_STEPS) {
-        PrintMatrix();
+    if (STATE.SHOW_STEPS) {
+        PrintMatrix(A);
     }
 }
 void ScaleMatrix(int c, Matrix *A) {
@@ -529,7 +485,7 @@ void ScaleMatrix(int c, Matrix *A) {
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
 
-    if (SHOW_STEPS) {
+    if (STATE.SHOW_STEPS) {
         printf("Scale A by %d\n", c);
     }
     for (int i = 0; i < m; i++) {
@@ -537,8 +493,8 @@ void ScaleMatrix(int c, Matrix *A) {
             matrix[i][j] *= c;
         }
     }
-    if (SHOW_STEPS) {
-        PrintMatrix();
+    if (STATE.SHOW_STEPS) {
+        PrintMatrix(A);
     }
 }
 
@@ -639,30 +595,30 @@ bool Confirm() {
 }
 
 //algorithms
-void RREF(Matrix *A) {
-    int m = (*A).rows;
-    int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+void RREF(Matrix A) {
+    int m = A.rows;
+    int n = A.columns;
+    double (*matrix)[100] = A.matrix;
 
     if (DO_INVERSE) {
-        PrepareInverse(A);
+        PrepareInverse(&A);
     }
     printf("Gaussian Elimination...\n");
-    PrintMatrix();
+    PrintMatrix(&A);
     int row = 0;
     int column = 0;
-    while (!CheckRREF(A) && row < m && column < n) {
-        if (ZeroColumn(column, A)) {
+    while (!CheckRREF(&A) && row < m && column < n) {
+        if (ZeroColumn(column, &A)) {
             column++;
             continue;
         }
         if (matrix[row][column] == 0) {
-            int newRow = FindPivot(column, A);
-            SwapRows(row, newRow, A);
+            int newRow = FindPivot(column, &A);
+            SwapRows(row, newRow, &A);
         }
         if (matrix[row][column] != 1) {
             double c = 1 / matrix[row][column];
-            ScaleRow(row, c, A);
+            ScaleRow(row, c, &A);
         }
         for (int i = 0; i < m; i++) {
             if (i == row) {
@@ -670,29 +626,30 @@ void RREF(Matrix *A) {
             }
             if (matrix[i][column] != 0) {
                 double c = - matrix[i][column] / matrix[row][column];
-                ReplaceRow(i, row, c, A);
+                ReplaceRow(i, row, c, &A);
             }
         }
         column++;
         row++;
     }
-    PrintMatrix();
+    PrintMatrix(&A);
 }
-void REF(Matrix *A, Matrix *B) {
-    int m = (*A).rows;
-    int n = (*A).columns;
-    double (*matrixU)[100] = (*A).matrix;
+void REF(Matrix A, Matrix B) {
+    int m = A.rows;
+    int n = A.columns;
+    double (*matrixU)[100] = A.matrix;
+    double (*matrixL)[100] = B.matrix;
 
     bool possibleLU = true;
     printf("Begin REF operations...\n");
-    PrintMatrix();
+    PrintMatrix(&A);
     int row = 0;
     int column = 0;
-    while (!CheckREF(A) && row < m && column < n) {
+    while (!CheckREF(&A) && row < m && column < n) {
         if (!possibleLU) {
             break;
         }
-        if (ZeroColumn(column, A)) {
+        if (ZeroColumn(column, &A)) {
             column++;
             continue;
         }
@@ -700,24 +657,27 @@ void REF(Matrix *A, Matrix *B) {
             if (i == row) {
                 continue;
             }
-            if (DO_LU && matrixU[row][column] == 0 && matrixU[i][column] != 0) {
+            if (STATE.LU && matrixU[row][column] == 0 && matrixU[i][column] != 0) {
                 printf("REF for LU impossible...\n");
                 possibleLU = false;
                 break;
             }
             if (matrixU[i][column] != 0) {
                 double c = - matrixU[i][column] / matrixU[row][column];
-                if (DO_LU) {
-                    double (*matrixL)[100] = (*B).matrix;
+                if (STATE.LU) {
                     matrixL[i][row] = - c;
                 }
-                ReplaceRow(i, row, c, A);
+                ReplaceRow(i, row, c, &A);
             }
         }
         column++;
         row++;
     }
-    PrintMatrix();
+    static Collection L_U;
+    L_U.matrices[0] = A;
+    L_U.matrices[1] = B;
+    L_U.amount = 2;
+    PrintMatrices(&L_U);
 }
 double DET(int m, int n, double matrix[m][n]) {
     if (m != n) {
@@ -766,13 +726,27 @@ void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[
 }
 */
 
+void StartSettings() {
+    PrintSettings();
+    char decision;
+    scanf(" %c", &decision);
+    switch (decision) {
+        case 's':
+            STATE.SHOW_STEPS = !STATE.SHOW_STEPS;
+            break;
+        default:
+            break;
+    }
+}
 char StartSelector() {
+    PrintCollection();
     char decision;
     if (GLOBAL.amount > 0) {
         printf("Select matrix: ");
         scanf(" %c", &decision);
         if (CheckExists(decision)) {
-            PrintMatrixName(decision);
+            Matrix A = GLOBAL.matrices[ToIndex(decision)];
+            PrintMatrix(&A);
             return decision;
         } else {
             printf("Matrix does not exist.\n");
@@ -783,13 +757,14 @@ char StartSelector() {
 }
 bool StartOperations(char name) {
     //it somehow crashses before this next print???
-    int matrix = ToIndex(name);
+    int index = ToIndex(name);
     PrintOperations();
     char decision;
     scanf(" %c", &decision);
     switch (decision) {
         case 'r':
-
+            Matrix A = GLOBAL.matrices[index];
+            RREF(A);
             break;
         case 'a':
 
@@ -798,20 +773,28 @@ bool StartOperations(char name) {
 
             break;
         case 'u':
+            STATE.LU = true;
             Matrix L;
+            DiagonalOnes(&L);
+            Matrix U = GLOBAL.matrices[index];
+            REF(U, L);
             break;
         case 'm':
             printf("Select matrix to multiply with %c (%dx%d)...\n\n",
                 name,
-                GLOBAL.matrices[matrix].rows,
-                GLOBAL.matrices[matrix].columns);
+                GLOBAL.matrices[index].rows,
+                GLOBAL.matrices[index].columns);
             PrintCollection();
             char m = StartSelector();
+            if (m == -1) {
+                printf("Invalid matrix.\n");
+                break;
+            }
             int other = ToIndex(m);
-            if (GLOBAL.matrices[matrix].columns == GLOBAL.matrices[other].rows) {
+            if (GLOBAL.matrices[index].columns == GLOBAL.matrices[other].rows) {
                 printf("Multiplying %c with %c...", name, m);
 
-                Matrix A = GLOBAL.matrices[matrix];
+                Matrix A = GLOBAL.matrices[index];
                 Matrix B = GLOBAL.matrices[other];
 
                 Matrix result;
@@ -830,7 +813,7 @@ bool StartOperations(char name) {
 
                 STATE.MULT = true;
 
-                PrintMatrixNew(&multiplication);
+                PrintMatrices(&multiplication);
             } else {
                 printf("Matrix multiplication is impossible.\n");
             }
@@ -848,14 +831,12 @@ bool Start() {
     scanf(" %c", &decision);
     switch (decision) {
         case 'v':
-            PrintCollection();
             StartSelector();
             break;
         case 'c':
             CreateMatrix();
             break;
         case 'p':
-            PrintCollection();
             name = StartSelector();
             if (CheckExists(name) && Confirm()) {
                 //it makes it into this function
@@ -863,11 +844,13 @@ bool Start() {
             }
             break;
         case 'd':
-            PrintCollection();
             name = StartSelector();
             if (CheckExists(name) && Confirm()) {
                 DeleteMatrix(name);
             }
+            break;
+        case 's':
+            StartSettings();
             break;
         default:
             break;
