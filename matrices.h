@@ -1,19 +1,35 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
+typedef enum {
+    STANDARD,
+    AUGMENT,
+    LU,
+    INVERSE,
+} MatrixType;
 typedef struct {
+    bool occupied;
+    MatrixType type;
     int rows;
     int columns;
     double matrix[100][100];
 } Matrix;
-
 typedef struct {
     int amount;
-    Matrix *matrices[10];
+    Matrix matrices[50];
 } Collection;
+typedef struct {
+    bool SHOW_STEPS;
+    bool AUGMENTED;
+    bool LU;
+    bool INVERSE;
+    bool MULT;
+} State;
 
-static Collection GLOBAL;
+static Collection GLOBAL = {0};
+static State STATE = {true, false, false, false, false};
 
 static bool AUGMENTED = false;
 static bool SHOW_STEPS = true;
@@ -94,8 +110,20 @@ void ResetFlags() {
     DO_MULT = false;
     GLOBAL = (Collection){0};
 }
+void ResetState() {
+    STATE.AUGMENTED = false;
+    STATE.LU = false;
+    STATE.INVERSE = false;
+    STATE.MULT = false;
+}
 
-//finder
+//finders
+int ToIndex(char name) {
+    return name - 'A';
+}
+char ToChar(int index) {
+    return 'A' + index;
+}
 int ZeroRowsCount(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
@@ -146,7 +174,17 @@ bool ZeroColumn(int column, Matrix *A) {
 int GreatestRows() {
     int greatest = 0;
     for (int i = 0; i < GLOBAL.amount; i++) {
-        int temp = (*GLOBAL.matrices[i]).rows;
+        int temp = GLOBAL.matrices[i].rows;
+        if (greatest < temp) {
+            greatest = temp;
+        }
+    }
+    return greatest;
+}
+int GreatestRowsNew(Collection *collection) {
+    int greatest = 0;
+    for (int i = 0; i < GLOBAL.amount; i++) {
+        int temp = collection->matrices[i].rows;
         if (greatest < temp) {
             greatest = temp;
         }
@@ -154,9 +192,9 @@ int GreatestRows() {
     return greatest;
 }
 int SmallestRows() {
-    int smallest = (*GLOBAL.matrices[0]).rows;
+    int smallest = GLOBAL.matrices[0].rows;
     for (int i = 0; i < GLOBAL.amount; i++) {
-        int temp = (*GLOBAL.matrices[i]).rows;
+        int temp = GLOBAL.matrices[i].rows;
         if (smallest > temp) {
             smallest = temp;
         }
@@ -164,29 +202,33 @@ int SmallestRows() {
     return smallest;
 }
 
-//general
-void PrintMenu() {
-    printf("\n");
-    printf("Select operation...\n");
-    printf("\n");
-    printf("r) Reduced Row Echelon Form\n");
-    printf("a) Augmented Matrix\n");
-    printf("i) Inverse Matrix\n");
-    printf("u) LU Factorization\n");
-    printf("m) Matrix Multiplication\n");
-    printf("\n");
-    printf("Type Character (r, a, i, u, m): ");
+bool CheckExists(char name) {
+    if (ToIndex(name) >= 0 && ToIndex(name) < GLOBAL.amount) {
+        return true;
+    } else {
+        return false;
+    }
 }
+int FindAvailableIndex() {
+    for (int i = 0; i <= GLOBAL.amount; i++) {
+        if (!GLOBAL.matrices[i].occupied) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+//general
 void GetInput(int *m, int *n) {
     printf("\n");
     printf("Enter values for Matrix (m x n): ");
     scanf(" %d %d", m, n);
-    if (*m == 0 || *n == 0) {
-        *m += 2;
-        *n += 2;
-    }
     *m = abs(*m);
     *n = abs(*n);
+    if (*m == 0 || *n == 0) {
+        *m += 1;
+        *n += 1;
+    }
     //printf("\n");
 }
 void GetMatrix(Matrix *A) {
@@ -213,12 +255,45 @@ void GetMatrix(Matrix *A) {
         }
         //printf("\n");
     }
-    GLOBAL.matrices[GLOBAL.amount++] = A;
+    GLOBAL.matrices[GLOBAL.amount++] = *A;
     printf("\n");
 }
+void DeleteMatrix() {
+    //WIP
+}
+void AddMatrix(Matrix A) {
+    int index = FindAvailableIndex();
+    if (index == -1) {
+        printf("Collection is full.\n");
+    } else {
+        GLOBAL.matrices[index] = A;
+        GLOBAL.matrices[index].occupied = true;
+        printf("Created matrix %c.\n", ToChar(index));
+        GLOBAL.amount++;
+    }
+}
+void CreateMatrix() {
+    int m, n;
+    GetInput(&m, &n);
+    Matrix A = {0};
+    A.rows = m;
+    A.columns = n;
+    printf("\nEnter matrix row by row...\n");
+    printf("(%d rows, %d columns)\n", m, n);
+    for (int i = 0; i < m; i++) {
+        printf("%d: ", i + 1);
+        for (int j = 0; j < n; j++) {
+            scanf(" %lf", &A.matrix[i][j]);
+        }
+    }
+    AddMatrix(A);
+    printf("\n");
+}
+
+//matrix printers
 void PrintSpacing(int row, int number) {
     int spacing = GreatestRows() - 1;
-    if (DO_MULT) {
+    if (STATE.MULT) {
         if (row == spacing && number == 0) {
             printf("  X");
         } else if (row == spacing && number == 1) {
@@ -263,11 +338,37 @@ void PrintBlankRow(int s, Matrix *A) {
     }
     printf(" %c", ' ');
 }
+void PrintMatrixName(char name) {
+    Matrix A = GLOBAL.matrices[ToIndex(name)];
+    int m = A.rows;
+    int n = A.columns;
+    double scale = 1;
+    int s = FindLargestEntry(&A);
+    s += scale;
+    for (int i = 0; i < m; i++) {
+        PrintMatrixRow(i, s, &A);
+        printf("\n");
+    }
+    printf("\n");
+}
+void PrintCollection() {
+    int offset = 'A';
+    if (GLOBAL.amount > 0) {
+        for (int i = 0; i < GLOBAL.amount; i++) {
+            int rows = GLOBAL.matrices[i].rows;
+            int columns = GLOBAL.matrices[i].columns;
+            printf("%c: %dx%d\n", i + offset, rows, columns);
+        }
+    } else {
+        printf("There are no stored matrices.");
+    }
+    printf("\n");
+}
 void PrintMatrix() {
     double scale = 1;
     int s = 0;
     for (int i = 0; i < GLOBAL.amount; i++) {
-        int temp = FindLargestEntry(GLOBAL.matrices[i]);
+        int temp = FindLargestEntry(&GLOBAL.matrices[i]);
         if (s < temp) {
             s = temp;
         }
@@ -277,11 +378,11 @@ void PrintMatrix() {
     int height = GreatestRows();
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < GLOBAL.amount; j++) {
-            int offset = height - (*GLOBAL.matrices[j]).rows;
+            int offset = height - GLOBAL.matrices[j].rows;
             if (i < offset) {
-                PrintBlankRow(s, GLOBAL.matrices[j]);
+                PrintBlankRow(s, &GLOBAL.matrices[j]);
             } else {
-                PrintMatrixRow(i - offset, s, GLOBAL.matrices[j]);
+                PrintMatrixRow(i - offset, s, &GLOBAL.matrices[j]);
             }
             PrintSpacing(i, j);
         }
@@ -293,6 +394,62 @@ void PrintMatrix() {
         printf("\n");
     }
     printf("\n");
+}
+void PrintMatrixNew(Collection *collection) {
+    double scale = 1;
+    int s = 0;
+    for (int i = 0; i < collection->amount; i++) {
+        int temp = FindLargestEntry(&collection->matrices[i]);
+        if (s < temp) {
+            s = temp;
+        }
+    }
+    s += scale;
+
+    int height = GreatestRowsNew(collection);
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < collection->amount; j++) {
+            int offset = height - collection->matrices[j].rows;
+            if (i < offset) {
+                PrintBlankRow(s, &collection->matrices[j]);
+            } else {
+                PrintMatrixRow(i - offset, s, &collection->matrices[j]);
+            }
+            PrintSpacing(i, j);
+        }
+        if (i + 1 == height && STATE.LU) {
+            printf(" = [L][U]");
+        } else if (i + 1 == height && STATE.INVERSE) {
+            printf(" = [ I |A^-1]");
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+//menu printers
+void PrintOperations() {
+    printf("\n");
+    printf("Select operation...\n");
+    printf("\n");
+    printf("r) Reduced Row Echelon Form\n");
+    printf("a) Augmented Matrix\n");
+    printf("i) Inverse Matrix\n");
+    printf("u) LU Factorization\n");
+    printf("m) Matrix Multiplication\n");
+    printf("\n");
+    printf("Type character (r, a, i, u, m): ");
+}
+void PrintMenu() {
+    printf("\n");
+    printf("Main Menu...\n");
+    printf("\n");
+    printf("c) Create matrix\n");
+    printf("v) View stored matrices\n");
+    printf("p) Perform operation on matrix\n");
+    printf("d) Delete matrix\n");
+    printf("\n");
+    printf("Type Character (c, v, p, d): ");
 }
 
 //elementary operations
@@ -455,54 +612,15 @@ bool CheckREF(Matrix *A) {
 }
 
 //checkers
-bool CheckAugment() {
+bool Confirm() {
+    printf("Are you sure? (y/n): " );
     char decision;
-    printf("Augmented matrix? (y/n): ");
     scanf(" %c", &decision);
     if (decision == 'y') {
-        AUGMENTED = true;
         return true;
     } else {
         return false;
     }
-}
-void CheckSteps() {
-    char decision;
-    printf("Show steps? (y/n): ");
-    scanf(" %c", &decision);
-    if (decision == 'y') {
-        SHOW_STEPS = true;
-    }
-}
-bool CheckLU() {
-    char decision;
-    printf("LU matrix? (y/n): ");
-    scanf(" %c", &decision);
-    if (decision == 'y') {
-        DO_LU = true;
-        return true;
-    }
-    return false;
-}
-bool CheckInverse() {
-    char decision;
-    printf("Inverse matrix? (y/n): ");
-    scanf(" %c", &decision);
-    if (decision == 'y') {
-        DO_INVERSE = true;
-        return true;
-    }
-    return false;
-}
-bool CheckMult() {
-    char decision;
-    printf("Multiply matrices? (y/n): ");
-    scanf(" %c", &decision);
-    if (decision == 'y') {
-        DO_MULT = true;
-        return true;
-    }
-    return false;
 }
 
 //algorithms
@@ -605,20 +723,15 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
     double (*matrix2)[100] = (*B).matrix;
 
     double (*result)[100] = (*C).matrix;
-
-    if (n != o) {
-        printf("Matrix multiplication is not possible...\n");
-    } else {
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < p; j++) {
-                for (int k = 0; k < n; k++) {
-                    result[i][j] += matrix1[i][k] * matrix2[k][j];
-                }
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < p; j++) {
+            for (int k = 0; k < n; k++) {
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
             }
         }
-        PrintMatrix();
-        printf("\n");
     }
+    //PrintMatrix();
+    printf("\n");
 }
 /*
 void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[n][n]) {
@@ -638,87 +751,105 @@ void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[
 }
 */
 
-bool Start() {
-    int m, n, o, p;
-    PrintMenu();
+char StartSelector() {
+    char decision;
+    if (GLOBAL.amount > 0) {
+        printf("Select matrix: ");
+        scanf(" %c", &decision);
+        if (CheckExists(decision)) {
+            PrintMatrixName(decision);
+            return decision;
+        } else {
+            printf("Matrix does not exist.\n");
+            return -1;
+        }
+    }
+    return -1;
+}
+bool StartOperations(char name) {
+    //it somehow crashses before this next print???
+    printf("I got here\n");
+    int matrix = ToIndex(name);
+    PrintOperations();
     char decision;
     scanf(" %c", &decision);
     switch (decision) {
         case 'r':
-            GetInput(&m, &n);
-            Matrix R;
-            R.rows = m;
-            R.columns = n;
-            GetMatrix(&R);
-            RREF(&R);
+
             break;
         case 'a':
-            AUGMENTED = true;
-            GetInput(&m, &n);
-            n++;
-            Matrix A;
-            A.rows = m;
-            A.columns = n;
-            GetMatrix(&A);
-            RREF(&A);
+
             break;
         case 'i':
-            GetInput(&m, &n);
-            if (m != n) {
-                return false;
-            }
-            DO_INVERSE = true;
-            n *= 2;
-            Matrix I;
-            I.rows = m;
-            I.columns = n;
-            GetMatrix(&I);
-            RREF(&I);
+
             break;
         case 'u':
-            GetInput(&m, &n);
-            if (m != n) {
-                return false;
-            }
-            DO_LU = true;
-            Matrix L;
-            Matrix U;
-            U.rows = m;
-            U.columns = n;
-            GetMatrix(&U);
-            L.rows = m;
-            L.columns = n;
-            DiagonalOnes(&L);
-            GLOBAL.matrices[GLOBAL.amount++] = &L;
-            REF(&U, &L);
+
             break;
         case 'm':
-            DO_MULT = true;
-            GetInput(&m, &n);
-            GetInput(&o, &p);
-            Matrix M1;
-            M1.rows = m;
-            M1.columns = n;
-            Matrix M2;
-            M2.rows = o;
-            M2.columns = p;
-            GetMatrix(&M1);
-            GetMatrix(&M2);
-            Matrix C;
-            C.rows = m;
-            C.columns = p;
-            ZeroMatrix(&C);
-            GLOBAL.matrices[GLOBAL.amount++] = &C;
-            MultMatrix(&M1, &M2, &C);
+            PrintCollection();
+            char m = StartSelector();
+            int other = ToIndex(m);
+            if (GLOBAL.matrices[matrix].columns == GLOBAL.matrices[other].rows) {
+                printf("Multiplying %c with %c...", name, m);
+
+                Matrix A = GLOBAL.matrices[matrix];
+                Matrix B = GLOBAL.matrices[other];
+
+                Matrix result;
+                result.rows = A.rows;
+                result.columns = B.columns;
+                ZeroMatrix(&result);
+
+                MultMatrix(&A, &B, &result);
+                static Collection multiplication;
+
+                multiplication.matrices[0] = A;
+                multiplication.matrices[1] = B;
+                multiplication.matrices[2] = result;
+
+                multiplication.amount = 3;
+
+                STATE.MULT = true;
+
+                PrintMatrixNew(&multiplication);
+            } else {
+                printf("Matrix multiplication is impossible.\n");
+            }
             break;
         default:
-            return false;
             break;
+            return false;
     }
-    ResetFlags();
+}
+bool Start() {
+        PrintMenu();
+        char decision;
+        scanf(" %c", &decision);
+        switch (decision) {
+            case 'v':
+                PrintCollection();
+                StartSelector();
+                break;
+            case 'c':
+                CreateMatrix();
+                break;
+            case 'p':
+                PrintCollection();
+                char name = StartSelector();
+                if (CheckExists(name) && Confirm()) {
+                    //it makes it into this function
+                    StartOperations(name);
+                }
+                break;
+            case 'd':
+                break;
+            default:
+                break;
+        }
+    ResetState();
     return true;
 }
-//Hello
 
 /*
 void ZeroArray(int n, int array[n]) {
