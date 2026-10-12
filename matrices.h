@@ -5,7 +5,7 @@
 
 typedef enum {
     STANDARD,
-    AUGMENT,
+    AUGMENTED,
     LU,
     INVERSE,
 } MatrixType;
@@ -22,7 +22,7 @@ typedef struct {
 } Collection;
 typedef struct {
     bool SHOW_STEPS;
-    bool AUGMENTED;
+    bool AUGMENT;
     bool LU;
     bool INVERSE;
     bool MULT;
@@ -247,12 +247,16 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
 
     printf(" %c", '|');
     for (int i = 0; i < n; i++) {
-        if (STATE.AUGMENTED && i == n - 1) {
+        if ((*A).type == AUGMENTED && i == n - 1) {
             printf(" %c ", '|');
             //s += 1;
         }
-        if (STATE.INVERSE && i == n / 2) {
+        if ((*A).type == INVERSE && i == n / 2) {
             printf(" %c ", '|');
+        }
+        if ((*A).type == LU && i == n / 2) {
+            printf(" %c", '|');
+            printf(" %c", '|');
         }
 
         double x = matrix[row][i];
@@ -772,7 +776,7 @@ bool Confirm() {
     }
 }
 void ResetState() {
-    STATE.AUGMENTED = false;
+    STATE.AUGMENT = false;
     STATE.LU = false;
     STATE.INVERSE = false;
     STATE.MULT = false;
@@ -831,9 +835,9 @@ bool StartOperations(char name) {
             break;
         case 'a':
             PrintLine();
-            STATE.AUGMENTED = true;
+            STATE.AUGMENT = true;
             Matrix A = GLOBAL.matrices[index];
-            A.type = AUGMENT;
+            A.type = AUGMENTED;
             AddAugment(&A);
             RREF(&A);
             StoreMatrix(&A);
