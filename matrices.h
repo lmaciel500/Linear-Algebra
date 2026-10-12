@@ -372,11 +372,12 @@ void PrintOperations() {
     printf("\n");
     printf("r) Reduced Row Echelon Form\n");
     printf("a) Augmented Matrix\n");
+	printf("d) Determinant\n");
     printf("i) Inverse Matrix\n");
     printf("u) LU Factorization\n");
     printf("m) Matrix Multiplication\n");
     printf("\n");
-    printf("Type character (r, a, i, u, m): ");
+    printf("Type character (r, a, d, i, u, m): ");
 }
 void PrintMenu() {
     printf("\n");
@@ -641,12 +642,51 @@ void REF(Matrix A, Matrix B) {
     printf("Matrix is in REF.\n");
     PrintMatrices(&L_U);
 }
-double DET(int m, int n, double matrix[m][n]) {
+double DET(Matrix *A) {
+	double determinant = 0;
+
+	int m = (*A).rows;
+	int n = (*A).columns;
+
     if (m != n) {
-        return 0;
+		printf("Matrix must be square.");
+		return 0;
     }
-    return 1;
-    //WIP
+
+	if (m == 2) {
+		determinant = (*A).matrix[0][0] * (*A).matrix[1][1] - (*A).matrix[0][1] * (*A).matrix[1][0];
+	} else {
+		double coefficients[n];
+		for(int i = 0; i < n; i++) {
+			coefficients[i] = (*A).matrix[0][i];
+		}
+		for (int excluded = 0; excluded < n; excluded++) {
+			Matrix B = {0};
+			B.rows = m - 1;
+			B.columns = n - 1;
+
+			int o = B.rows;
+			int p = B.columns;
+			for (int i = 0; i < o; i++) {
+				for (int j = 0; j < p; j++) {
+					int shift = 0;
+					if (!(j < excluded)) {
+						shift++;
+					}
+					B.matrix[i][j] = (*A).matrix[i + 1][j + shift];
+				}
+			}
+			PrintMatrix(&B);
+			if (excluded % 2 == 0) {
+				determinant += coefficients[excluded] * DET(&B);
+				printf("%lf\n", determinant);
+			} else {
+				determinant -= coefficients[excluded] * DET(&B);
+				printf("%lf\n", determinant);
+			}
+		}
+	}
+    return determinant;
 }
 
 
@@ -756,6 +796,11 @@ bool StartOperations(char name) {
             AddAugment(&A);
             RREF(A);
             break;
+			case 'd':
+			Matrix D = GLOBAL.matrices[index];
+			PrintMatrix(&D);
+			printf("Det(%c) = %ld\n", ToChar(index), DET(&D));
+			break;
         case 'i':
             STATE.INVERSE = true;
             Matrix I = GLOBAL.matrices[index];
