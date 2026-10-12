@@ -113,6 +113,24 @@ void AddAugment(Matrix *A) {
         (*A).matrix[i][(*A).columns - 1] = augment[i];
     }
 }
+Matrix CombineMatrix(Matrix *A, Matrix *B) {
+    Matrix combined;
+    int columns = (*A).columns + (*B).columns;
+    int rows = (*A).rows;
+    combined.rows = rows;
+    combined.columns = columns;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < (*A).columns; j++) {
+            combined.matrix[i][j] = (*A).matrix[i][j];
+        }
+    }
+    for (int i = 0; i < rows; i++) {
+        for (int j = (*A).columns; j < columns; j++) {
+            combined.matrix[i][j] = (*B).matrix[i][j - (*A).columns];
+        }
+    }
+    return combined;
+}
 
 
 //finders
@@ -605,22 +623,22 @@ void RREF(Matrix A) {
     printf("Matrix is in RREF.\n");
     PrintMatrix(&A);
 }
-void REF(Matrix A, Matrix B) {
-    int m = A.rows;
-    int n = A.columns;
-    double (*matrixU)[100] = A.matrix;
-    double (*matrixL)[100] = B.matrix;
+void REF(Matrix *A, Matrix *B) {
+    int m = (*A).rows;
+    int n = (*A).columns;
+    double (*matrixU)[100] = (*A).matrix;
+    double (*matrixL)[100] = (*B).matrix;
 
     bool possibleLU = true;
     printf("Begin REF operations...\n");
-    PrintMatrix(&A);
+    PrintMatrix(A);
     int row = 0;
     int column = 0;
-    while (!CheckREF(&A) && row < m && column < n) {
+    while (!CheckREF(A) && row < m && column < n) {
         if (!possibleLU) {
             break;
         }
-        if (ZeroColumn(column, &A)) {
+        if (ZeroColumn(column, A)) {
             column++;
             continue;
         }
@@ -638,15 +656,15 @@ void REF(Matrix A, Matrix B) {
                 if (STATE.LU) {
                     matrixL[i][row] = - c;
                 }
-                ReplaceRow(i, row, c, &A);
+                ReplaceRow(i, row, c, A);
             }
         }
         column++;
         row++;
     }
     static Collection L_U;
-    L_U.matrices[0] = B;
-    L_U.matrices[1] = A;
+    L_U.matrices[0] = *B;
+    L_U.matrices[1] = *A;
     L_U.amount = 2;
     printf("Matrix is in REF.\n");
     PrintMatrices(&L_U);
@@ -804,12 +822,14 @@ bool StartOperations(char name) {
     switch (decision) {
         case 'r':
             Matrix R = GLOBAL.matrices[index];
+            R.type = STANDARD;
             RREF(R);
             StoreMatrix(&R);
             break;
         case 'a':
             STATE.AUGMENTED = true;
             Matrix A = GLOBAL.matrices[index];
+            A.type = AUGMENT;
             AddAugment(&A);
             RREF(A);
             StoreMatrix(&A);
@@ -830,7 +850,10 @@ bool StartOperations(char name) {
             Matrix L;
             DiagonalOnes(&L);
             Matrix U = GLOBAL.matrices[index];
-            REF(U, L);
+            REF(&U, &L);
+            Matrix combinedLU = CombineMatrix(&U, &L);
+            combinedLU.type = LU;
+            StoreMatrix(&combinedLU);
             break;
         case 'm':
             printf("Select matrix to multiply with %c (%dx%d)...\n\n",
@@ -850,6 +873,7 @@ bool StartOperations(char name) {
                 Matrix B = GLOBAL.matrices[other];
 
                 Matrix result;
+                result.type = STANDARD;
                 result.rows = A.rows;
                 result.columns = B.columns;
                 ZeroMatrix(&result);
