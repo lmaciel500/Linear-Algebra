@@ -736,6 +736,14 @@ void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[
 
 
 //logic
+void StoreMatrix(Matrix *A) {
+    char decision;
+    printf("Store this matrix? (y/n): ");
+    scanf(" %c", &decision);
+    if (decision == 'y') {
+        AddMatrix(*A);
+    }
+}
 bool Confirm() {
     printf("Are you sure? (y/n): " );
     char decision;
@@ -796,12 +804,14 @@ bool StartOperations(char name) {
         case 'r':
             Matrix R = GLOBAL.matrices[index];
             RREF(R);
+            StoreMatrix(&R);
             break;
         case 'a':
             STATE.AUGMENTED = true;
             Matrix A = GLOBAL.matrices[index];
             AddAugment(&A);
             RREF(A);
+            StoreMatrix(&A);
             break;
         case 'd':
 			Matrix D = GLOBAL.matrices[index];
@@ -812,6 +822,7 @@ bool StartOperations(char name) {
             Matrix I = GLOBAL.matrices[index];
             PrepareInverse(&I);
             RREF(I);
+            StoreMatrix(&I);
             break;
         case 'u':
             STATE.LU = true;
@@ -854,6 +865,7 @@ bool StartOperations(char name) {
                 STATE.MULT = true;
 
                 PrintMatrices(&multiplication);
+                StoreMatrix(&result);
             } else {
                 printf("Matrix multiplication is impossible.\n");
             }
