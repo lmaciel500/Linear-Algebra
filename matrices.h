@@ -380,7 +380,6 @@ void PrintLine() {
 
 //general
 void GetInput(int *m, int *n) {
-    printf("\n");
     printf("Enter values for Matrix (m x n): ");
     scanf(" %d %d", m, n);
     *m = abs(*m);
@@ -585,26 +584,26 @@ bool CheckREF(Matrix *A) {
     return true;
 }
 
-void RREF(Matrix A) {
-    int m = A.rows;
-    int n = A.columns;
-    double (*matrix)[100] = A.matrix;
+void RREF(Matrix *A) {
+    int m = (*A).rows;
+    int n = (*A).columns;
+    double (*matrix)[100] = (*A).matrix;
     printf("Gaussian Elimination...\n");
-    PrintMatrix(&A);
+    PrintMatrix(A);
     int row = 0;
     int column = 0;
-    while (!CheckRREF(&A) && row < m && column < n) {
-        if (ZeroColumn(column, &A)) {
+    while (!CheckRREF(A) && row < m && column < n) {
+        if (ZeroColumn(column, A)) {
             column++;
             continue;
         }
         if (matrix[row][column] == 0) {
-            int newRow = FindPivot(column, &A);
-            SwapRows(row, newRow, &A);
+            int newRow = FindPivot(column, A);
+            SwapRows(row, newRow, A);
         }
         if (matrix[row][column] != 1) {
             double c = 1 / matrix[row][column];
-            ScaleRow(row, c, &A);
+            ScaleRow(row, c, A);
         }
         for (int i = 0; i < m; i++) {
             if (i == row) {
@@ -612,7 +611,7 @@ void RREF(Matrix A) {
             }
             if (matrix[i][column] != 0) {
                 double c = - matrix[i][column] / matrix[row][column];
-                ReplaceRow(i, row, c, &A);
+                ReplaceRow(i, row, c, A);
             }
         }
         column++;
@@ -620,7 +619,7 @@ void RREF(Matrix A) {
     }
     STATE.RREF = true;
     printf("Matrix is in RREF.\n");
-    PrintMatrix(&A);
+    PrintMatrix(A);
 }
 void REF(Matrix *A, Matrix *B) {
     int m = (*A).rows;
@@ -827,7 +826,7 @@ bool StartOperations(char name) {
             PrintLine();
             Matrix R = GLOBAL.matrices[index];
             R.type = STANDARD;
-            RREF(R);
+            RREF(&R);
             StoreMatrix(&R);
             break;
         case 'a':
@@ -836,7 +835,7 @@ bool StartOperations(char name) {
             Matrix A = GLOBAL.matrices[index];
             A.type = AUGMENT;
             AddAugment(&A);
-            RREF(A);
+            RREF(&A);
             StoreMatrix(&A);
             break;
         case 'd':
@@ -849,7 +848,7 @@ bool StartOperations(char name) {
             STATE.INVERSE = true;
             Matrix I = GLOBAL.matrices[index];
             PrepareInverse(&I);
-            RREF(I);
+            RREF(&I);
             StoreMatrix(&I);
             break;
         case 'u':
