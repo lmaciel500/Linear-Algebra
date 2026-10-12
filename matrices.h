@@ -3,8 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-
-FILE* inFile = NULL;
+#include <windows.h>
 
 typedef enum {
     STANDARD,
@@ -35,7 +34,7 @@ typedef struct {
     bool RREF;
 } State;
 
-static Collection GLOBAL = {0};
+Collection GLOBAL = {0};
 static State STATE = {true, false, false, false, false, false, false};
 
 
@@ -385,6 +384,7 @@ void PrintOperations() {
     printf("i) Inverse Matrix\n");
     printf("u) LU Factorization\n");
     printf("m) Matrix Multiplication\n");
+    printf("s) Scale Matrix\n");
     printf("d) Determinant\n");
     printf("c) Rank\n");
     printf("\n");
@@ -523,14 +523,11 @@ void SwapRows(int row1, int row2, Matrix *A) {
         PrintMatrix(A);
     }
 }
-void ScaleMatrix(int c, Matrix *A) {
+void ScaleMatrix(double c, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
     double (*matrix)[100] = (*A).matrix;
 
-    if (STATE.SHOW_STEPS) {
-        printf("Scale A by %d\n", c);
-    }
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             matrix[i][j] *= c;
@@ -967,6 +964,18 @@ bool StartOperations(char name) {
                 printf("Matrix multiplication is impossible.\n");
             }
             break;
+        case 's':
+            PrintLine();
+            Matrix S = GLOBAL.matrices[index];
+            double scalar;
+            printf("Enter scalar (c): ");
+            scanf(" %lf", &scalar);
+            if (STATE.SHOW_STEPS) {
+                printf("Scaled %c by %.2lf\n", name, scalar);
+            }
+            ScaleMatrix(scalar, &S);
+            StoreMatrix(&S);
+            break;
         case 'd':
             PrintLine();
             Matrix D = GLOBAL.matrices[index];
@@ -1022,6 +1031,108 @@ bool Start() {
     ResetState();
     return true;
 
+}
+
+
+//data writing and parsing
+void ReadData() {
+    printf("Loading data from disk...\n");
+    Sleep(1000);
+    FILE* inFile = fopen("data.txt", "r");
+    if (inFile == NULL) {
+        printf("Error reading data from disk.\n");
+        return;
+    }
+    fscanf(inFile, "%d\n", &GLOBAL.amount);
+    for (int k = 0; k < GLOBAL.amount; k++) {
+        Matrix A;
+        int occupied;
+        fscanf(inFile, "%d ", &occupied);
+        if (occupied) {
+            A.occupied = true;
+        } else {
+            A.occupied = false;
+        }
+        char type;
+        fscanf(inFile, "%c ", &type);
+        switch (type) {
+            case 'r':
+                A.type = REDUCED;
+                break;
+            case 'a':
+                A.type = AUGMENTED;
+                break;
+            case 'i':
+                A.type = INVERSE;
+                break;
+            case 'u':
+                A.type = LU;
+                break;
+            default:
+                A.type = STANDARD;
+                break;
+        }
+        int rows, columns;
+        fscanf(inFile, "%d ", &rows);
+        fscanf(inFile, "%d ", &columns);
+
+        A.rows = rows;
+        A.columns = columns;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                double temp;
+                fscanf(inFile, "%lf ", &temp);
+                A.matrix[i][j] = temp;
+            }
+        }
+        GLOBAL.matrices[k] = A;
+        fscanf(inFile, "\n");
+    }
+    fclose(inFile);
+}
+void WriteData() {
+    printf("Writing data to disk...\n");
+    Sleep(1000);
+    FILE* inFile = fopen("data.txt", "w");
+    if (inFile == NULL) {
+        printf("Error writing data to disk.\n");
+        return;
+    }
+    fprintf(inFile, "%d\n", GLOBAL.amount);
+    for (int k = 0; k < GLOBAL.amount; k++) {
+        if (GLOBAL.matrices[k].occupied) {
+            fprintf(inFile, "%d ", 1);
+        } else {
+            fprintf(inFile, "%d ", 0);
+        }
+        switch (GLOBAL.matrices[k].type) {
+            case REDUCED:
+                fprintf(inFile, "%c ", 'r');
+                break;
+            case AUGMENTED:
+                fprintf(inFile, "%c ", 'a');
+                break;
+            case INVERSE:
+                fprintf(inFile, "%c ", 'i');
+                break;
+            case LU:
+                fprintf(inFile, "%c ", 'u');
+                break;
+            default:
+                fprintf(inFile, "%c ", 's');
+                break;
+        }
+        fprintf(inFile, "%d ", GLOBAL.matrices[k].rows);
+        fprintf(inFile, "%d ", GLOBAL.matrices[k].columns);
+        for (int i = 0; i < GLOBAL.matrices[k].rows; i++) {
+            for (int j = 0; j < GLOBAL.matrices[k].columns; j++) {
+                fprintf(inFile, "%lf ", GLOBAL.matrices[k].matrix[i][j]);
+            }
+        }
+        fprintf(inFile, "\n");
+    }
+    fclose(inFile);
 }
 
 /*

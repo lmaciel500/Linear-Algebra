@@ -28,9 +28,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Fixes.">
-      <change beforePath="$PROJECT_DIR$/.idea/Linear-Algebra.cpp.iml" beforeDir="false" />
+    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="Began implementing persistent data.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.exe" beforeDir="false" afterPath="$PROJECT_DIR$/main.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
     </list>
@@ -156,7 +156,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="A space." />
     <MESSAGE value="Multiple calculations." />
     <MESSAGE value="PrintMatrix() is the most obnoxious function, so I'm trying to simplify it." />
     <MESSAGE value="Nice print." />
@@ -181,6 +180,7 @@
     <MESSAGE value="Polish!" />
     <MESSAGE value="Polish." />
     <MESSAGE value="Fixes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixes." />
+    <MESSAGE value="Began implementing persistent data." />
+    <option name="LAST_COMMIT_MESSAGE" value="Began implementing persistent data." />
   </component>
 </project>
