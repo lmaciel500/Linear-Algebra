@@ -370,13 +370,12 @@ void PrintSettings() {
     printf("\n");
     printf("Type Character (s; other to leave): ");
 }
-void PrintSeparator(Matrix *A) {
-    int scale = 4;
-    double length = pow(FindLargestEntry(A), scale);
-    for (int i = 0; i < length; i++) {
+void PrintLine() {
+    int n = 20;
+    for (int i = 0; i < n; i++) {
         printf("~");
     }
-    printf("\n\n");
+    printf("\n");
 }
 
 
@@ -410,6 +409,7 @@ void AddMatrix(Matrix A) {
     }
 }
 void CreateMatrix() {
+    PrintLine();
     int m, n;
     GetInput(&m, &n);
     Matrix A = {0};
@@ -784,6 +784,7 @@ void ResetState() {
 
 
 void StartSettings() {
+    PrintLine();
     PrintSettings();
     char decision;
     scanf(" %c", &decision);
@@ -796,6 +797,7 @@ void StartSettings() {
     }
 }
 char StartSelector() {
+    PrintLine();
     PrintCollection();
     char decision;
     if (GLOBAL.amount > 0) {
@@ -813,6 +815,8 @@ char StartSelector() {
     return -1;
 }
 bool StartOperations(char name) {
+    PrintLine();
+    printf("Current matrix: %c\n\n", name);
     int index = ToIndex(name);
     //PrintSeparator(&GLOBAL.matrices[index]);
     PrintMatrix(&GLOBAL.matrices[index]);
@@ -821,12 +825,14 @@ bool StartOperations(char name) {
     scanf(" %c", &decision);
     switch (decision) {
         case 'r':
+            PrintLine();
             Matrix R = GLOBAL.matrices[index];
             R.type = STANDARD;
             RREF(R);
             StoreMatrix(&R);
             break;
         case 'a':
+            PrintLine();
             STATE.AUGMENTED = true;
             Matrix A = GLOBAL.matrices[index];
             A.type = AUGMENT;
@@ -835,10 +841,12 @@ bool StartOperations(char name) {
             StoreMatrix(&A);
             break;
         case 'd':
+            PrintLine();
 			Matrix D = GLOBAL.matrices[index];
 			printf("Det(%c) = %ld\n\n", ToChar(index), DET(&D));
 			break;
         case 'i':
+            PrintLine();
             STATE.INVERSE = true;
             Matrix I = GLOBAL.matrices[index];
             PrepareInverse(&I);
@@ -846,16 +854,20 @@ bool StartOperations(char name) {
             StoreMatrix(&I);
             break;
         case 'u':
+            PrintLine();
             STATE.LU = true;
             Matrix L;
+            L.rows = GLOBAL.matrices[index].rows;
+            L.columns = GLOBAL.matrices[index].columns;
             DiagonalOnes(&L);
             Matrix U = GLOBAL.matrices[index];
             REF(&U, &L);
-            Matrix combinedLU = CombineMatrix(&U, &L);
+            Matrix combinedLU = CombineMatrix(&L, &U);
             combinedLU.type = LU;
             StoreMatrix(&combinedLU);
             break;
         case 'm':
+            PrintLine();
             printf("Select matrix to multiply with %c (%dx%d)...\n\n",
                 name,
                 GLOBAL.matrices[index].rows,
@@ -905,6 +917,7 @@ bool StartOperations(char name) {
 
 
 bool Start() {
+    PrintLine();
     char name;
     PrintMenu();
     char decision;
@@ -938,6 +951,7 @@ bool Start() {
     }
     ResetState();
     return true;
+
 }
 
 /*
