@@ -676,13 +676,10 @@ double DET(Matrix *A) {
 					B.matrix[i][j] = (*A).matrix[i + 1][j + shift];
 				}
 			}
-			PrintMatrix(&B);
 			if (excluded % 2 == 0) {
 				determinant += coefficients[excluded] * DET(&B);
-				printf("%lf\n", determinant);
 			} else {
 				determinant -= coefficients[excluded] * DET(&B);
-				printf("%lf\n", determinant);
 			}
 		}
 	}
