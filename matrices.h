@@ -351,7 +351,6 @@ void PrintOperations() {
     printf("Type character (r, a, d, i, u, m): ");
 }
 void PrintMenu() {
-    printf("\n");
     printf("Main Menu...\n");
     printf("\n");
     printf("c) Create matrix\n");
