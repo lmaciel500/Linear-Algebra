@@ -191,6 +191,10 @@ bool ZeroColumn(int column, Matrix *A) {
     }
     return true;
 }
+Collection FindVectors(Matrix *A) {
+    Collection vectors;
+    return vectors;
+}
 
 int GreatestRows(Collection *collection) {
     int greatest = 0;
