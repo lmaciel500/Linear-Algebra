@@ -399,6 +399,14 @@ void PrintSettings() {
     printf("\n");
     printf("Type Character (s; other to leave): ");
 }
+void PrintSeparator(Matrix *A) {
+    int scale = 4;
+    double length = pow(FindLargestEntry(A), scale);
+    for (int i = 0; i < length; i++) {
+        printf("~");
+    }
+    printf("\n\n");
+}
 
 
 //elementary operations
@@ -779,6 +787,8 @@ char StartSelector() {
 }
 bool StartOperations(char name) {
     int index = ToIndex(name);
+    //PrintSeparator(&GLOBAL.matrices[index]);
+    PrintMatrix(&GLOBAL.matrices[index]);
     PrintOperations();
     char decision;
     scanf(" %c", &decision);
@@ -793,10 +803,9 @@ bool StartOperations(char name) {
             AddAugment(&A);
             RREF(A);
             break;
-			case 'd':
+        case 'd':
 			Matrix D = GLOBAL.matrices[index];
-			PrintMatrix(&D);
-			printf("Det(%c) = %ld\n", ToChar(index), DET(&D));
+			printf("Det(%c) = %ld\n\n", ToChar(index), DET(&D));
 			break;
         case 'i':
             STATE.INVERSE = true;
@@ -816,7 +825,6 @@ bool StartOperations(char name) {
                 name,
                 GLOBAL.matrices[index].rows,
                 GLOBAL.matrices[index].columns);
-            PrintCollection();
             char m = StartSelector();
             if (m == -1) {
                 printf("Invalid matrix.\n");
@@ -851,10 +859,11 @@ bool StartOperations(char name) {
             }
             break;
         default:
-            break;
             return false;
+            break;
     }
     ResetState();
+    return true;
 }
 
 
@@ -874,7 +883,7 @@ bool Start() {
             name = StartSelector();
             if (CheckExists(name) && Confirm()) {
                 //it makes it into this function
-                StartOperations(name);
+                while (StartOperations(name));
             }
             break;
         case 'd':
@@ -887,6 +896,7 @@ bool Start() {
             StartSettings();
             break;
         default:
+            return false;
             break;
     }
     ResetState();
