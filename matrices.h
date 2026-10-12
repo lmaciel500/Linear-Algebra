@@ -2,12 +2,15 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef enum {
     STANDARD,
     AUGMENTED,
     LU,
     INVERSE,
+    REDUCED,
+    ECHELON
 } MatrixType;
 typedef struct {
     bool occupied;
@@ -326,13 +329,39 @@ void PrintMatrix(Matrix *A) {
     printf("\n");
 }
 void PrintCollection() {
+    char types[4][20] = {
+        "(RREF)",
+        "(Augmented)",
+        "(Inverse)",
+        "(LU Factorization)"
+    };
     int offset = 'A';
     if (GLOBAL.amount > 0) {
         for (int i = 0; i < GLOBAL.amount; i++) {
             if (GLOBAL.matrices[i].occupied) {
                 int rows = GLOBAL.matrices[i].rows;
                 int columns = GLOBAL.matrices[i].columns;
-                printf("%c: %dx%d\n", i + offset, rows, columns);
+                printf("%c: %dx%d ", i + offset, rows, columns);
+                char type[20] = "";
+                switch (GLOBAL.matrices[i].type) {
+                    case REDUCED:
+                        strcpy(type, types[0]);
+                        break;
+                    case AUGMENTED:
+                        strcpy(type, types[1]);
+                        break;
+                    case INVERSE:
+                        strcpy(type, types[2]);
+                        break;
+                    case LU:
+                        strcpy(type, types[3]);
+                        break;
+                    default:
+                        //not sure if I need this here lol
+                        break;
+                }
+                printf("%s", type);
+                printf("\n");
             }
         }
     } else {
@@ -347,12 +376,13 @@ void PrintOperations() {
     printf("\n");
     printf("r) Reduced Row Echelon Form\n");
     printf("a) Augmented Matrix\n");
-	printf("d) Determinant\n");
     printf("i) Inverse Matrix\n");
     printf("u) LU Factorization\n");
     printf("m) Matrix Multiplication\n");
+    printf("d) Determinant\n");
+    printf("c) Rank\n");
     printf("\n");
-    printf("Type character (r, a, d, i, u, m): ");
+    printf("Type character: ");
 }
 void PrintMenu() {
     printf("Main Menu...\n");
@@ -363,7 +393,7 @@ void PrintMenu() {
     printf("d) Delete matrix\n");
     printf("s) Settings\n");
     printf("\n");
-    printf("Type Character (c, v, p, d, s): ");
+    printf("Type Character: ");
 }
 void PrintSettings() {
     printf("\n");
@@ -371,7 +401,7 @@ void PrintSettings() {
     printf("\n");
     printf("s) Show steps = %d\n", STATE.SHOW_STEPS);
     printf("\n");
-    printf("Type Character (s; other to leave): ");
+    printf("Type Character: ");
 }
 void PrintLine() {
     int n = 20;
@@ -621,7 +651,6 @@ void RREF(Matrix *A) {
         column++;
         row++;
     }
-    STATE.RREF = true;
     printf("Matrix is in RREF.\n");
     PrintMatrix(A);
 }
@@ -671,7 +700,7 @@ void REF(Matrix *A, Matrix *B) {
     printf("Matrix is in REF.\n");
     PrintMatrices(&L_U);
 }
-double DET(Matrix *A) {
+double Det(Matrix *A) {
 	double determinant = 0;
 
 	int m = (*A).rows;
@@ -706,13 +735,36 @@ double DET(Matrix *A) {
 				}
 			}
 			if (excluded % 2 == 0) {
-				determinant += coefficients[excluded] * DET(&B);
+				determinant += coefficients[excluded] * Det(&B);
 			} else {
-				determinant -= coefficients[excluded] * DET(&B);
+				determinant -= coefficients[excluded] * Det(&B);
 			}
 		}
 	}
     return determinant;
+}
+int Rank(Matrix *A) {
+    int rank = 0;
+    int m = (*A).rows;
+    int n = (*A).columns;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if ((*A).matrix[i][j] == 1) {
+                for (int k = 0; k < m; k++) {
+                    if (k == i) {
+                        continue;
+                    }
+                    if ((*A).matrix[k][j] != 0) {
+                        break;
+                    }
+                    if (k == m - 1) {
+                        rank++;
+                    }
+                }
+            }
+        }
+    }
+    return rank;
 }
 
 
@@ -829,7 +881,7 @@ bool StartOperations(char name) {
         case 'r':
             PrintLine();
             Matrix R = GLOBAL.matrices[index];
-            R.type = STANDARD;
+            R.type = REDUCED;
             RREF(&R);
             StoreMatrix(&R);
             break;
@@ -842,15 +894,11 @@ bool StartOperations(char name) {
             RREF(&A);
             StoreMatrix(&A);
             break;
-        case 'd':
-            PrintLine();
-			Matrix D = GLOBAL.matrices[index];
-			printf("Det(%c) = %ld\n\n", ToChar(index), DET(&D));
-			break;
         case 'i':
             PrintLine();
             STATE.INVERSE = true;
             Matrix I = GLOBAL.matrices[index];
+            I.type = INVERSE;
             PrepareInverse(&I);
             RREF(&I);
             StoreMatrix(&I);
@@ -875,6 +923,9 @@ bool StartOperations(char name) {
                 GLOBAL.matrices[index].rows,
                 GLOBAL.matrices[index].columns);
             char m = StartSelector();
+            if (!Confirm()) {
+                break;
+            }
             if (m == -1) {
                 printf("Invalid matrix.\n");
                 break;
@@ -902,12 +953,23 @@ bool StartOperations(char name) {
                 multiplication.amount = 3;
 
                 STATE.MULT = true;
+                result.type = STANDARD;
 
                 PrintMatrices(&multiplication);
                 StoreMatrix(&result);
             } else {
                 printf("Matrix multiplication is impossible.\n");
             }
+            break;
+        case 'd':
+            PrintLine();
+            Matrix D = GLOBAL.matrices[index];
+            printf("Det(%c) = %lf\n\n", ToChar(index), Det(&D));
+            break;
+        case 'c':
+            PrintLine();
+            Matrix C = GLOBAL.matrices[index];
+            printf("Rank(%c) = %d\n\n", name, Rank(&C));
             break;
         default:
             return false;
