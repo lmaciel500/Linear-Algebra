@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+FILE* inFile = NULL;
+
 typedef enum {
     STANDARD,
     AUGMENTED,
