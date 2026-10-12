@@ -678,7 +678,7 @@ double DET(Matrix *A) {
 	int n = (*A).columns;
 
     if (m != n) {
-		printf("Matrix must be square.");
+		printf("Matrix must be square.\n");
 		return 0;
     }
 
