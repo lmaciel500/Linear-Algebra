@@ -209,53 +209,6 @@ int FindAvailableIndex() {
 }
 
 
-//general
-void GetInput(int *m, int *n) {
-    printf("\n");
-    printf("Enter values for Matrix (m x n): ");
-    scanf(" %d %d", m, n);
-    *m = abs(*m);
-    *n = abs(*n);
-    if (*m == 0 || *n == 0) {
-        *m += 1;
-        *n += 1;
-    }
-    //printf("\n");
-}
-void DeleteMatrix(char name) {
-    int index = ToIndex(name);
-    GLOBAL.matrices[index].occupied = false;
-}
-void AddMatrix(Matrix A) {
-    int index = FindAvailableIndex();
-    if (index == -1) {
-        printf("Collection is full.\n");
-    } else {
-        GLOBAL.matrices[index] = A;
-        GLOBAL.matrices[index].occupied = true;
-        printf("Created matrix %c.\n", ToChar(index));
-        GLOBAL.amount++;
-    }
-}
-void CreateMatrix() {
-    int m, n;
-    GetInput(&m, &n);
-    Matrix A = {0};
-    A.rows = m;
-    A.columns = n;
-    printf("\nEnter matrix row by row...\n");
-    printf("(%d rows, %d columns)\n", m, n);
-    for (int i = 0; i < m; i++) {
-        printf("%d: ", i + 1);
-        for (int j = 0; j < n; j++) {
-            scanf(" %lf", &A.matrix[i][j]);
-        }
-    }
-    AddMatrix(A);
-    printf("\n");
-}
-
-
 //printers
 void PrintSpacing(int row, int number, Collection *collection) {
     int spacing = GreatestRows(collection) - 1;
@@ -406,6 +359,54 @@ void PrintSeparator(Matrix *A) {
         printf("~");
     }
     printf("\n\n");
+}
+
+
+//general
+void GetInput(int *m, int *n) {
+    printf("\n");
+    printf("Enter values for Matrix (m x n): ");
+    scanf(" %d %d", m, n);
+    *m = abs(*m);
+    *n = abs(*n);
+    if (*m == 0 || *n == 0) {
+        *m += 1;
+        *n += 1;
+    }
+    //printf("\n");
+}
+void DeleteMatrix(char name) {
+    int index = ToIndex(name);
+    GLOBAL.matrices[index].occupied = false;
+}
+void AddMatrix(Matrix A) {
+    int index = FindAvailableIndex();
+    if (index == -1) {
+        printf("Collection is full.\n");
+    } else {
+        GLOBAL.matrices[index] = A;
+        GLOBAL.matrices[index].occupied = true;
+        printf("Created matrix %c.\n\n", ToChar(index));
+        PrintMatrix(&A);
+        GLOBAL.amount++;
+    }
+}
+void CreateMatrix() {
+    int m, n;
+    GetInput(&m, &n);
+    Matrix A = {0};
+    A.rows = m;
+    A.columns = n;
+    printf("\nEnter matrix row by row...\n");
+    printf("(%d rows, %d columns)\n", m, n);
+    for (int i = 0; i < m; i++) {
+        printf("%d: ", i + 1);
+        for (int j = 0; j < n; j++) {
+            scanf(" %lf", &A.matrix[i][j]);
+        }
+    }
+    AddMatrix(A);
+    printf("\n");
 }
 
 
