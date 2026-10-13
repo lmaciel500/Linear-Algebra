@@ -88,6 +88,7 @@ void AddAugment(Matrix *A) {
     for (int i = 0; i < m; i++) {
         (*A).matrix[i][(*A).columns - 1] = augment[i];
     }
+    printf("\n");
 }
 Matrix CombineMatrix(Matrix *A, Matrix *B) {
     Matrix combined;
@@ -348,7 +349,6 @@ void PrintCollection() {
 }
 
 void PrintOperations() {
-    printf("\n");
     printf("Select operation...\n");
     printf("\n");
     printf("r) Reduced Row Echelon Form\n");
@@ -792,14 +792,17 @@ void StoreMatrix(Matrix *A) {
     }
 }
 bool Confirm() {
+    bool confirm;
     printf("Are you sure? (y/n): " );
     char decision;
     scanf(" %c", &decision);
     if (decision == 'y') {
-        return true;
+        confirm = true;
     } else {
-        return false;
+        confirm = false;
     }
+    printf("\n");
+    return confirm;
 }
 void ResetState() {
     STATE.AUGMENT = false;
@@ -809,14 +812,18 @@ void ResetState() {
     STATE.REF = false;
     STATE.RREF = false;
 }
+char SelectMenu() {
+    char decision;
+    scanf(" %c", &decision);
+    printf("\n");
+    return decision;
+}
 
 
 void StartSettings() {
     PrintLine();
     PrintSettings();
-    char decision;
-    scanf(" %c", &decision);
-    switch (decision) {
+    switch (SelectMenu()) {
         case 's':
             STATE.SHOW_STEPS = !STATE.SHOW_STEPS;
             printf("Show Steps set to %s.\n\n", STATE.SHOW_STEPS ? "true" : "false");
@@ -828,10 +835,9 @@ void StartSettings() {
 char StartSelector() {
     PrintLine();
     PrintCollection();
-    char decision;
     if (GLOBAL.amount > 0) {
         printf("Select matrix: ");
-        scanf(" %c", &decision);
+        char decision = SelectMenu();
         if (CheckExists(decision)) {
             Matrix A = GLOBAL.matrices[ToIndex(decision)];
             PrintMatrix(&A);
@@ -850,9 +856,7 @@ bool StartOperations(char name) {
     //PrintSeparator(&GLOBAL.matrices[index]);
     PrintMatrix(&GLOBAL.matrices[index]);
     PrintOperations();
-    char decision;
-    scanf(" %c", &decision);
-    switch (decision) {
+    switch (SelectMenu()) {
         case 'r':
             PrintLine();
             Matrix R = GLOBAL.matrices[index];
@@ -907,7 +911,7 @@ bool StartOperations(char name) {
             }
             int other = ToIndex(m);
             if (GLOBAL.matrices[index].columns == GLOBAL.matrices[other].rows) {
-                printf("Multiplying %c with %c...", name, m);
+                printf("Multiplying %c with %c...\n", name, m);
 
                 Matrix A = GLOBAL.matrices[index];
                 Matrix B = GLOBAL.matrices[other];
@@ -971,9 +975,7 @@ bool Start() {
     PrintLine();
     char name;
     PrintMenu();
-    char decision;
-    scanf(" %c", &decision);
-    switch (decision) {
+    switch (SelectMenu()) {
         case 'v':
             StartSelector();
             break;
@@ -1017,6 +1019,10 @@ void ReadData() {
         return;
     }
     fscanf(inFile, "%d ", &GLOBAL.amount);
+    if (GLOBAL.amount == 0) {
+        printf("There are no stored matrices.\n\n");
+        Sleep(500);
+    }
     int steps;
     fscanf(inFile, "%d\n", &steps);
     if (steps) {
