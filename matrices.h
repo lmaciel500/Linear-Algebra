@@ -226,7 +226,7 @@ bool CheckExists(char name) {
     }
 }
 int FindAvailableIndex() {
-    for (int i = 0; i <= GLOBAL.amount; i++) {
+    for (int i = 0; i < 50; i++) {
         if (!GLOBAL.matrices[i].occupied) {
             return i;
         }
@@ -405,7 +405,7 @@ void PrintSettings() {
     printf("\n");
     printf("Settings...\n");
     printf("\n");
-    printf("s) Show steps = %d\n", STATE.SHOW_STEPS);
+    printf("s) Show Steps = %d\n", STATE.SHOW_STEPS);
     printf("\n");
     printf("Type Character: ");
 }
@@ -848,6 +848,7 @@ void StartSettings() {
     switch (decision) {
         case 's':
             STATE.SHOW_STEPS = !STATE.SHOW_STEPS;
+            printf("Show Steps set to %d\n", STATE.SHOW_STEPS ? "true" : "false");
             break;
         default:
             break;
@@ -1036,14 +1037,21 @@ bool Start() {
 
 //data writing and parsing
 void ReadData() {
-    printf("Loading data from disk...\n");
+    printf("Reading data from disk...\n\n");
     Sleep(1000);
     FILE* inFile = fopen("data.txt", "r");
     if (inFile == NULL) {
         printf("Error reading data from disk.\n");
         return;
     }
-    fscanf(inFile, "%d\n", &GLOBAL.amount);
+    fscanf(inFile, "%d ", &GLOBAL.amount);
+    int steps;
+    fscanf(inFile, "%d\n", &steps);
+    if (steps) {
+        STATE.SHOW_STEPS = true;
+    } else {
+        STATE.SHOW_STEPS = false;
+    }
     for (int k = 0; k < GLOBAL.amount; k++) {
         Matrix A;
         int occupied;
@@ -1099,7 +1107,8 @@ void WriteData() {
         printf("Error writing data to disk.\n");
         return;
     }
-    fprintf(inFile, "%d\n", GLOBAL.amount);
+    fprintf(inFile, "%d ", GLOBAL.amount);
+    fprintf(inFile, "%d\n", STATE.SHOW_STEPS);
     for (int k = 0; k < GLOBAL.amount; k++) {
         if (GLOBAL.matrices[k].occupied) {
             fprintf(inFile, "%d ", 1);
