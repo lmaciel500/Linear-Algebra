@@ -1008,9 +1008,10 @@ bool Start() {
 
 //data writing and parsing
 void ReadData() {
+    printf("\n");
     printf("Reading data from disk...\n\n");
     Sleep(1000);
-    FILE* inFile = fopen("C:\\Users\\Luis Maciel\\Documents\\CLion\\C\\Linear-Algebra\\data.txt", "r");
+    FILE* inFile = fopen("data.txt", "r");
     if (inFile == NULL) {
         printf("Error reading data from disk.\n");
         return;
@@ -1071,9 +1072,10 @@ void ReadData() {
     fclose(inFile);
 }
 void WriteData() {
+    printf("\n");
     printf("Writing data to disk...\n");
     Sleep(1000);
-    FILE* inFile = fopen("C:\\Users\\Luis Maciel\\Documents\\CLion\\C\\Linear-Algebra\\data.txt", "w");
+    FILE* inFile = fopen("data.txt", "w");
     if (inFile == NULL) {
         printf("Error writing data to disk.\n");
         return;
