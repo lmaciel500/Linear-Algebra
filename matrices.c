@@ -755,7 +755,6 @@ int Rank(Matrix *A) {
     }
     return rank;
 }
-
 Collection FindVectors(Matrix *A) {
     Collection vectors;
     vectors.type = VECTORS;
@@ -763,11 +762,55 @@ Collection FindVectors(Matrix *A) {
     vectors.amount = (*A).columns - Rank(A);
 
     for (int i = 0; i < vectors.amount; i++) {
-        for (int j = 0; j < rows; j++) {
+        vectors.matrices[i].rows = rows;
+        vectors.matrices[i].columns = 1;
+    }
+    for (int i = 0; i < rows; i++) {
+        int column;
+        if (FindPivotInRow(i, &column, A)) {
+            int index = 0;
+            for (int j = (*A).columns - 1; j > column; j--) {
+                if ((*A).matrix[i][j] != 0) {
+                    vectors.matrices[i].matrix[i][j] = (*A).matrix[i][j];
+                }
+            }
+        } else {
 
         }
+
     }
     return vectors;
+}
+
+Matrix PrepareVectorMatrix(Matrix *A) {
+    Matrix B = {0};
+    B.rows = (*A).columns - 1;
+    B.columns = (*A).columns - Rank(A);
+    int rowIndex = 0;
+    for (int i = 0; i < (*A).rows; i++) {
+        int columnIndex = 0;
+        int column;
+        if (FindPivotInRow(i, &column, A)) {
+            bool augmentedPart = true;
+            for (int j = (*A).columns - 1; j > column; j--) {
+                int c = -1;
+                if (augmentedPart) {
+                    c = 1;
+                    augmentedPart = false;
+                    B.matrix[rowIndex][columnIndex] = c * (*A).matrix[i][j];
+                    columnIndex++;
+                }
+                if ((*A).matrix[i][j] != 0) {
+                    B.matrix[rowIndex][columnIndex] = c * (*A).matrix[i][j];
+                    columnIndex++;
+                }
+            }
+            rowIndex++;
+        } else {
+            continue;
+        }
+    }
+    return B;
 }
 
 
@@ -820,9 +863,12 @@ void StoreMatrix(Matrix *A) {
         AddMatrix(*A);
     }
 }
-bool Confirm() {
+bool Confirm(bool ask) {
     bool confirm;
-    printf("Are you sure? (y/n): " );
+    if (ask) {
+        printf("Are you sure? ");
+    }
+    printf(" (y/n): ");
     char decision;
     scanf(" %c", &decision);
     if (decision == 'y') {
@@ -900,10 +946,16 @@ bool StartOperations(char name) {
             A.type = AUGMENTED;
             AddAugment(&A);
             RREF(&A);
-            if (Rank(&A) < A.columns - 1) {
-                //ask if user wants to see parametric vector form
-            }
             StoreMatrix(&A);
+            /*
+            if (Rank(&A) < A.columns - 1) {
+                printf("View parametric vector form?");
+                if (Confirm(false)) {
+                    Matrix V = PrepareVectorMatrix(&A);
+                    PrintMatrix(&V);
+                }
+            }
+            */
             break;
         case 'i':
             PrintLine();
@@ -934,7 +986,7 @@ bool StartOperations(char name) {
                 GLOBAL.matrices[index].rows,
                 GLOBAL.matrices[index].columns);
             char m = StartSelector();
-            if (!Confirm()) {
+            if (!Confirm(true)) {
                 break;
             }
             if (m == -1) {
@@ -1016,14 +1068,14 @@ bool Start() {
             break;
         case 'p':
             name = StartSelector();
-            if (CheckExists(name) && Confirm()) {
+            if (CheckExists(name) && Confirm(true)) {
                 //it makes it into this function
                 while (StartOperations(name));
             }
             break;
         case 'd':
             name = StartSelector();
-            if (CheckExists(name) && Confirm()) {
+            if (CheckExists(name) && Confirm(true)) {
                 DeleteMatrix(name);
             }
             break;

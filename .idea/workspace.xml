@@ -114,8 +114,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791911817563</updated>
-      <workItem from="1791911819030" duration="2563000" />
+      <workItem from="1791911819030" duration="5454000" />
     </task>
+    <task id="LOCAL-00001" summary="Began working on implementing parametric vector form of an augmented matrix in RREF.">
+      <option name="closed" value="true" />
+      <created>1791914460782</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1791914460783</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,5 +134,9 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Began working on implementing parametric vector form of an augmented matrix in RREF." />
+    <option name="LAST_COMMIT_MESSAGE" value="Began working on implementing parametric vector form of an augmented matrix in RREF." />
   </component>
 </project>
