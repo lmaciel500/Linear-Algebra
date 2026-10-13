@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "matrices.h"
+#include "functions.h"
 
 Collection GLOBAL = {0};
 static State STATE = {true, false, false, false, false, false, false};
@@ -197,13 +198,15 @@ bool FindPivotInRow(int row, int *column, Matrix *A) {
     return false;
 }
 //returns a column
-int FindFreeVariableInRow(int row, Matrix *A) {
+bool FindFreeInRow(int row, int *column, double *value, Matrix *A) {
     for (int i = 0; i < (*A).columns - 1; i++) {
-        if ((*A).matrix[row][i] != 0 || (*A).matrix[row][i] != 1) {
-            return i;
+        if ((*A).matrix[row][i] != 0 && (*A).matrix[row][i] != 1) {
+            *column = i;
+            *value = (*A).matrix[row][i];
+            return true;
         }
     }
-    return 0;
+    return false;;
 }
 
 int GreatestRows(Collection *collection) {
@@ -341,6 +344,9 @@ void PrintMatrix(Matrix *A) {
         }
     }
     printf("\n");
+    if ((*A).type == AUGMENTED) {
+        ParametricForm(A);
+    }
 }
 void PrintCollection() {
     char types[4][20] = {
@@ -761,6 +767,9 @@ int Rank(Matrix *A) {
     int rank = 0;
     int m = (*A).rows;
     int n = (*A).columns;
+    if ((*A).type == AUGMENTED) {
+        n--;
+    }
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if ((*A).matrix[i][j] == 1) {
@@ -782,6 +791,8 @@ int Rank(Matrix *A) {
     }
     return rank;
 }
+
+//parametric
 Collection FindVectors(Matrix *A) {
     Collection vectors;
     vectors.type = VECTORS;
@@ -808,53 +819,36 @@ Collection FindVectors(Matrix *A) {
     }
     return vectors;
 }
-
 Matrix PrepareVectorMatrix(Matrix *A) {
     int rank = Rank(A);
     Matrix B = {0};
     B.rows = (*A).columns - 1;
-    B.columns = (*A).columns - rank;
+    B.columns = 1;
     for (int i = 0; i < (*A).rows; i++) {
-        int column = FindFreeVariableInRow(i, A);
-        if (column) {
-            B.matrix[rank + i][column] = 1;
-        }
+        B.matrix[i][0] = (*A).matrix[i][(*A).columns - 1];
     }
-    return B;
-}
-
-/*
-Matrix PrepareVectorMatrix(Matrix *A) {
-    Matrix B = {0};
-    B.rows = (*A).columns - 1;
-    B.columns = (*A).columns - Rank(A);
-    int rowIndex = 0;
-    for (int i = 0; i < (*A).rows; i++) {
-        int columnIndex = 0;
+    int free = 0;
+    for (int row = 0; row < (*A).rows; row++) {
         int column;
-        if (FindPivotInRow(i, &column, A)) {
-            bool augmentedPart = true;
-            for (int j = (*A).columns - 1; j > column; j--) {
-                int c = -1;
-                if (augmentedPart) {
-                    c = 1;
-                    augmentedPart = false;
-                    B.matrix[rowIndex][columnIndex] = c * (*A).matrix[i][j];
-                    columnIndex++;
-                }
-                if ((*A).matrix[i][j] != 0) {
-                    B.matrix[rowIndex][columnIndex] = c * (*A).matrix[i][j];
-                    columnIndex++;
-                }
-            }
-            rowIndex++;
-        } else {
-            continue;
+        double value;
+        if (FindFreeInRow(row, &column, &value, A)) {
+            free++;
+            B.matrix[column][free] = 1;
+            B.matrix[row][free] = -1 * value;
+            B.columns = free + 1;
         }
     }
     return B;
 }
-*/
+void ParametricForm(Matrix *A) {
+    if (Rank(A) < (*A).columns - 1) {
+        printf("View parametric vector form?");
+        if (Confirm(false)) {
+            Matrix V = PrepareVectorMatrix(A);
+            PrintMatrix(&V);
+        }
+    }
+}
 
 
 //arithmetic
@@ -936,17 +930,144 @@ char SelectMenu() {
     printf("\n");
     return decision;
 }
-void ParametricForm(Matrix *A) {
-    if (Rank(A) < (*A).columns - 1) {
-        printf("View parametric vector form?");
-        if (Confirm(false)) {
-            Matrix V = PrepareVectorMatrix(A);
-            PrintMatrix(&V);
+
+//hehe
+char StartSelector() {
+    PrintLine();
+    PrintCollection();
+    if (GLOBAL.amount > 0) {
+        printf("Select matrix: ");
+        char decision = SelectMenu();
+        if (CheckExists(decision)) {
+            Matrix A = GLOBAL.matrices[ToIndex(decision)];
+            PrintMatrix(&A);
+            return decision;
+        } else {
+            printf("Matrix does not exist.\n");
+            return -1;
         }
     }
+    return -1;
+}
+
+//operations
+void Reduce(int index) {
+    PrintLine();
+    Matrix R = GLOBAL.matrices[index];
+    R.type = REDUCED;
+    RREF(&R);
+    StoreMatrix(&R);
+}
+void Augment(int index) {
+    PrintLine();
+    STATE.AUGMENT = true;
+    Matrix A = GLOBAL.matrices[index];
+    A.type = AUGMENTED;
+    AddAugment(&A);
+    PrintMatrix(&A);
+    StoreMatrix(&A);
+    printf("Proceed with row reduction?");
+    if (Confirm(false)) {
+        RREF(&A);
+        StoreMatrix(&A);
+        ParametricForm(&A);
+    }
+}
+void Inverse(int index) {
+    PrintLine();
+    STATE.INVERSE = true;
+    Matrix I = GLOBAL.matrices[index];
+    I.type = INVERSE;
+    PrepareInverse(&I);
+    RREF(&I);
+    StoreMatrix(&I);
+}
+void FactorLU(int index) {
+    PrintLine();
+    STATE.LU = true;
+    Matrix L;
+    L.rows = GLOBAL.matrices[index].rows;
+    L.columns = GLOBAL.matrices[index].columns;
+    DiagonalOnes(&L);
+    Matrix U = GLOBAL.matrices[index];
+    REF(&U, &L);
+    Matrix combinedLU = CombineMatrix(&L, &U);
+    combinedLU.type = LU;
+    StoreMatrix(&combinedLU);
+}
+void Multiply(int index) {
+    char name = ToChar(index);
+    PrintLine();
+    printf("Select matrix to multiply with %c (%dx%d)...\n\n",
+        name,
+        GLOBAL.matrices[index].rows,
+        GLOBAL.matrices[index].columns);
+    char m = StartSelector();
+    if (!Confirm(true)) {
+        return;
+    }
+    if (m == -1) {
+        printf("Invalid matrix.\n");
+        return;
+    }
+    int other = ToIndex(m);
+    if (GLOBAL.matrices[index].columns == GLOBAL.matrices[other].rows) {
+        printf("Multiplying %c with %c...\n", name, m);
+
+        Matrix A = GLOBAL.matrices[index];
+        Matrix B = GLOBAL.matrices[other];
+
+        Matrix result;
+        result.type = STANDARD;
+        result.rows = A.rows;
+        result.columns = B.columns;
+        ZeroMatrix(&result);
+
+        MultMatrix(&A, &B, &result);
+        static Collection multiplication;
+
+        multiplication.matrices[0] = A;
+        multiplication.matrices[1] = B;
+        multiplication.matrices[2] = result;
+
+        multiplication.amount = 3;
+
+        STATE.MULT = true;
+        result.type = STANDARD;
+
+        PrintMatrices(&multiplication);
+        StoreMatrix(&result);
+    } else {
+        printf("Matrix multiplication is impossible.\n");
+    }
+}
+void Scale(int index) {
+    char name = ToChar(index);
+    PrintLine();
+    Matrix S = GLOBAL.matrices[index];
+    double scalar;
+    printf("Enter scalar (c): ");
+    scanf(" %lf", &scalar);
+    if (STATE.SHOW_STEPS) {
+        printf("Scaled %c by %.2lf\n", name, scalar);
+    }
+    ScaleMatrix(scalar, &S);
+    StoreMatrix(&S);
+}
+void Determinant(int index) {
+    PrintLine();
+    Matrix D = GLOBAL.matrices[index];
+    printf("Det(%c) = %lf\n\n", ToChar(index), Det(&D));
+}
+void DoRank(int index) {
+    char name = ToChar(index);
+    PrintLine();
+    Matrix C = GLOBAL.matrices[index];
+    printf("Rank(%c) = %d\n\n", name, Rank(&C));
 }
 
 
+//main logic
 void StartSettings() {
     PrintLine();
     PrintSettings();
@@ -959,24 +1080,6 @@ void StartSettings() {
             break;
     }
 }
-char StartSelector() {
-    PrintLine();
-    PrintCollection();
-    if (GLOBAL.amount > 0) {
-        printf("Select matrix: ");
-        char decision = SelectMenu();
-        if (CheckExists(decision)) {
-            Matrix A = GLOBAL.matrices[ToIndex(decision)];
-            PrintMatrix(&A);
-            ParametricForm(&A);
-            return decision;
-        } else {
-            printf("Matrix does not exist.\n");
-            return -1;
-        }
-    }
-    return -1;
-}
 bool StartOperations(char name) {
     PrintLine();
     printf("Current matrix: %c\n\n", name);
@@ -986,114 +1089,28 @@ bool StartOperations(char name) {
     PrintOperations();
     switch (SelectMenu()) {
         case 'r':
-            PrintLine();
-            Matrix R = GLOBAL.matrices[index];
-            R.type = REDUCED;
-            RREF(&R);
-            StoreMatrix(&R);
+            Reduce(index);
             break;
         case 'a':
-            PrintLine();
-            STATE.AUGMENT = true;
-            Matrix A = GLOBAL.matrices[index];
-            A.type = AUGMENTED;
-            AddAugment(&A);
-            StoreMatrix(&A);
-            printf("Proceed with row reduction?");
-            if (Confirm(false)) {
-                RREF(&A);
-                StoreMatrix(&A);
-                ParametricForm(&A);
-            }
+            Augment(index);
             break;
         case 'i':
-            PrintLine();
-            STATE.INVERSE = true;
-            Matrix I = GLOBAL.matrices[index];
-            I.type = INVERSE;
-            PrepareInverse(&I);
-            RREF(&I);
-            StoreMatrix(&I);
+            Inverse(index);
             break;
         case 'u':
-            PrintLine();
-            STATE.LU = true;
-            Matrix L;
-            L.rows = GLOBAL.matrices[index].rows;
-            L.columns = GLOBAL.matrices[index].columns;
-            DiagonalOnes(&L);
-            Matrix U = GLOBAL.matrices[index];
-            REF(&U, &L);
-            Matrix combinedLU = CombineMatrix(&L, &U);
-            combinedLU.type = LU;
-            StoreMatrix(&combinedLU);
+            FactorLU(index);
             break;
         case 'm':
-            PrintLine();
-            printf("Select matrix to multiply with %c (%dx%d)...\n\n",
-                name,
-                GLOBAL.matrices[index].rows,
-                GLOBAL.matrices[index].columns);
-            char m = StartSelector();
-            if (!Confirm(true)) {
-                break;
-            }
-            if (m == -1) {
-                printf("Invalid matrix.\n");
-                break;
-            }
-            int other = ToIndex(m);
-            if (GLOBAL.matrices[index].columns == GLOBAL.matrices[other].rows) {
-                printf("Multiplying %c with %c...\n", name, m);
-
-                Matrix A = GLOBAL.matrices[index];
-                Matrix B = GLOBAL.matrices[other];
-
-                Matrix result;
-                result.type = STANDARD;
-                result.rows = A.rows;
-                result.columns = B.columns;
-                ZeroMatrix(&result);
-
-                MultMatrix(&A, &B, &result);
-                static Collection multiplication;
-
-                multiplication.matrices[0] = A;
-                multiplication.matrices[1] = B;
-                multiplication.matrices[2] = result;
-
-                multiplication.amount = 3;
-
-                STATE.MULT = true;
-                result.type = STANDARD;
-
-                PrintMatrices(&multiplication);
-                StoreMatrix(&result);
-            } else {
-                printf("Matrix multiplication is impossible.\n");
-            }
+            Multiply(index);
             break;
         case 's':
-            PrintLine();
-            Matrix S = GLOBAL.matrices[index];
-            double scalar;
-            printf("Enter scalar (c): ");
-            scanf(" %lf", &scalar);
-            if (STATE.SHOW_STEPS) {
-                printf("Scaled %c by %.2lf\n", name, scalar);
-            }
-            ScaleMatrix(scalar, &S);
-            StoreMatrix(&S);
+            Scale(index);
             break;
         case 'd':
-            PrintLine();
-            Matrix D = GLOBAL.matrices[index];
-            printf("Det(%c) = %lf\n\n", ToChar(index), Det(&D));
+            Determinant(index);
             break;
         case 'c':
-            PrintLine();
-            Matrix C = GLOBAL.matrices[index];
-            printf("Rank(%c) = %d\n\n", name, Rank(&C));
+            DoRank(index);
             break;
         default:
             return false;
@@ -1102,8 +1119,6 @@ bool StartOperations(char name) {
     ResetState();
     return true;
 }
-
-
 bool Start() {
     PrintLine();
     char name;
@@ -1131,13 +1146,15 @@ bool Start() {
         case 's':
             StartSettings();
             break;
+        case '/':
+            WriteData();
+            break;
         default:
             return false;
             break;
     }
     ResetState();
     return true;
-
 }
 
 
@@ -1212,7 +1229,7 @@ void ReadData() {
 }
 void WriteData() {
     printf("\n");
-    printf("Writing data to disk...\n");
+    printf("Writing data to disk...\n\n");
     sleep(1);
     FILE* inFile = fopen("data.txt", "w");
     if (inFile == NULL) {
