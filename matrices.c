@@ -12,13 +12,13 @@
 
 Collection GLOBAL = {0};
 static State STATE = {true, false, false, false, false, false, false};
-
+static int matrixSize = 50;
 
 //helper
 void ZeroMatrix(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -29,7 +29,7 @@ void ZeroMatrix(Matrix *A) {
 int FindLargestEntry(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     double largest = 0;
 
@@ -52,7 +52,7 @@ int FindLargestEntry(Matrix *A) {
 void DiagonalOnes(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -68,7 +68,7 @@ void PrepareInverse(Matrix *A) {
     (*A).columns *= 2;
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
         for (int j = n / 2; j < n; j++) {
@@ -112,6 +112,20 @@ Matrix CombineMatrix(Matrix *A, Matrix *B) {
     }
     return combined;
 }
+Collection ChopMatrix(Matrix *A) {
+    int m = (*A).rows;
+    int n = (*A).columns;
+    Collection vectors = {n, PARAMETRIC};
+    for (int i = 0; i < n; i++) {
+        Matrix V = {true, VECTOR, m, 1};
+        ZeroMatrix(&V);
+        for (int j = 0; j < m; j++) {
+            V.matrix[j][0] = (*A).matrix[j][i];
+        }
+        vectors.matrices[i] = V;
+    }
+    return vectors;
+}
 
 
 //finders
@@ -125,7 +139,7 @@ char ToChar(int index) {
 int ZeroRowsCount(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     int zeroRows = 0;
     for (int i = 0; i < m; i++) {
@@ -143,7 +157,7 @@ int ZeroRowsCount(Matrix *A) {
 int FindPivot(int column, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
         if (matrix[i][column] == 1) {
@@ -160,7 +174,7 @@ int FindPivot(int column, Matrix *A) {
 bool ZeroColumn(int column, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
         if (matrix[i][column] != 0) {
@@ -172,7 +186,7 @@ bool ZeroColumn(int column, Matrix *A) {
 bool CheckZerosBelow(int row, int column, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = row; i < m; i++) {
         if (matrix[i][column] != 0) {
@@ -248,7 +262,7 @@ int FindAvailableIndex() {
 
 
 //printers
-void PrintSpacing(int row, int number, Collection *collection) {
+void PrintSpacing(int row, int number, char *parameter, Collection *collection) {
     int spacing = GreatestRows(collection) - 1;
     if (STATE.MULT) {
         if (row == spacing && number == 0) {
@@ -259,11 +273,19 @@ void PrintSpacing(int row, int number, Collection *collection) {
             printf("   ");
         }
     }
+    if ((*collection).type == PARAMETRIC) {
+        if (row == spacing && number < (*collection).amount - 1) {
+            printf("  + %c", *parameter);
+            (*parameter)++;
+        } else {
+            printf("     ");
+        }
+    }
 }
 void PrintMatrixRow(int row, int s, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     printf(" %c", '|');
     for (int i = 0; i < n; i++) {
@@ -291,7 +313,7 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
 void PrintBlankRow(int s, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     printf(" %c", ' ');
     for (int i = 0; i < n; i++) {
@@ -310,7 +332,7 @@ void PrintMatrices(Collection *collection) {
         }
     }
     s += scale;
-
+    char parameter = 's';
     int height = GreatestRows(collection);
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < collection->amount; j++) {
@@ -320,7 +342,7 @@ void PrintMatrices(Collection *collection) {
             } else {
                 PrintMatrixRow(i - offset, s, &collection->matrices[j]);
             }
-            PrintSpacing(i, j, collection);
+            PrintSpacing(i, j, &parameter, collection);
         }
         if (i + 1 == height && STATE.LU) {
             printf(" = [L][U]");
@@ -344,9 +366,6 @@ void PrintMatrix(Matrix *A) {
         }
     }
     printf("\n");
-    if ((*A).type == AUGMENTED) {
-        ParametricForm(A);
-    }
 }
 void PrintCollection() {
     char types[4][20] = {
@@ -483,7 +502,7 @@ void CreateMatrix() {
 void ScaleRow(int toScale, double c, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     if (STATE.SHOW_STEPS) {
         printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
@@ -499,7 +518,7 @@ void ScaleRow(int toScale, double c, Matrix *A) {
 void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     if (STATE.SHOW_STEPS) {
         printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
@@ -515,7 +534,7 @@ void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
 void SwapRows(int row1, int row2, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     if (STATE.SHOW_STEPS) {
         printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
@@ -539,7 +558,7 @@ void SwapRows(int row1, int row2, Matrix *A) {
 void ScaleMatrix(double c, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -556,7 +575,7 @@ void ScaleMatrix(double c, Matrix *A) {
 bool CheckRREF(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     int staircase = -1;
     for (int i = 0; i < m; i++) {
@@ -598,7 +617,7 @@ bool CheckRREF(Matrix *A) {
 bool CheckREF(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
 
     int staircase = -1;
     for (int i = 0; i < m; i++) {
@@ -637,7 +656,7 @@ bool CheckREF(Matrix *A) {
 void RREF(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[100] = (*A).matrix;
+    double (*matrix)[matrixSize] = (*A).matrix;
     printf("Gaussian Elimination...\n");
     PrintMatrix(A);
     int row = 0;
@@ -677,8 +696,8 @@ void RREF(Matrix *A) {
 void REF(Matrix *A, Matrix *B) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrixU)[100] = (*A).matrix;
-    double (*matrixL)[100] = (*B).matrix;
+    double (*matrixU)[matrixSize] = (*A).matrix;
+    double (*matrixL)[matrixSize] = (*B).matrix;
 
     bool possibleLU = true;
     printf("Begin REF operations...\n");
@@ -844,8 +863,9 @@ void ParametricForm(Matrix *A) {
     if (Rank(A) < (*A).columns - 1) {
         printf("View parametric vector form?");
         if (Confirm(false)) {
-            Matrix V = PrepareVectorMatrix(A);
-            PrintMatrix(&V);
+            Matrix B = PrepareVectorMatrix(A);
+            Collection parametricForm = ChopMatrix(&B);
+            PrintMatrices(&parametricForm);
         }
     }
 }
@@ -855,13 +875,13 @@ void ParametricForm(Matrix *A) {
 void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix1)[100] = (*A).matrix;
+    double (*matrix1)[matrixSize] = (*A).matrix;
 
     int o = (*B).rows;
     int p = (*B).columns;
-    double (*matrix2)[100] = (*B).matrix;
+    double (*matrix2)[matrixSize] = (*B).matrix;
 
-    double (*result)[100] = (*C).matrix;
+    double (*result)[matrixSize] = (*C).matrix;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < p; j++) {
             for (int k = 0; k < n; k++) {
@@ -1125,7 +1145,11 @@ bool Start() {
     PrintMenu();
     switch (SelectMenu()) {
         case 'v':
-            StartSelector();
+            char name = StartSelector();
+            Matrix A = GLOBAL.matrices[ToIndex(name)];
+            if (A.type == AUGMENTED) {
+                ParametricForm(&A);
+            }
             break;
         case 'c':
             CreateMatrix();

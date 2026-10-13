@@ -28,10 +28,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="">
+    <list default="true" id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="We're cooking.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matrices.c" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,6 +160,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Began working on implementing parametric vector form of an augmented matrix in RREF." />
     <MESSAGE value="Bugs." />
-    <option name="LAST_COMMIT_MESSAGE" value="Bugs." />
+    <MESSAGE value="We're cooking." />
+    <option name="LAST_COMMIT_MESSAGE" value="We're cooking." />
   </component>
 </project>

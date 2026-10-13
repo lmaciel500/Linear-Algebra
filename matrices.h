@@ -10,23 +10,25 @@ typedef enum {
     LU,
     INVERSE,
     REDUCED,
-    ECHELON
+    ECHELON,
+    VECTOR
 } MatrixType;
 typedef struct {
     bool occupied;
     MatrixType type;
     int rows;
     int columns;
-    double matrix[100][100];
+    double matrix[50][50];
 } Matrix;
 typedef enum {
     STORAGE,
-    VECTORS
+    VECTORS,
+    PARAMETRIC
 } CollectionType;
 typedef struct {
     int amount;
     CollectionType type;
-    Matrix matrices[50];
+    Matrix matrices[26];
 } Collection;
 typedef struct {
     bool SHOW_STEPS;
