@@ -6,11 +6,10 @@
   <component name="BackendCodeEditorMiscSettings">
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/RefactoringsMru/CppRenameRefactoring/DoRenameRelatedFiles/@EntryValue" value="false" type="bool" />
   </component>
-  <component name="CMakePresetLoader">{
-  &quot;useNewFormat&quot;: true
-}</component>
+  <component name="CMakePresetLoader"><![CDATA[{
+  "useNewFormat": true
+}]]></component>
   <component name="CMakeProjectFlavorService">
     <option name="flavorId" value="CMakePlainProjectFlavor" />
   </component>
@@ -24,14 +23,11 @@
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Release" ENABLED="true" CONFIG_NAME="Release" />
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="First release.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrices.c" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.c" afterDir="false" />
-    </list>
+    <list default="true" id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,109 +36,85 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="CurrentDebugProfile">
-    <option name="debugProfileId" value="ee461948-edca-497d-8fdd-aaa0037c60ab" />
-  </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="HARD" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;lmaciel500&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "lmaciel500"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/lmaciel500/Linear-Algebra&quot;,
-    &quot;accountId&quot;: &quot;0b16aa5a-4538-4265-a7d8-37ebf1df1167&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/lmaciel500/Linear-Algebra.git",
+    "accountId": "2b8b65e4-a571-4d33-82b1-a0058047df01"
   }
-}</component>
+}]]></component>
   <component name="MacroExpansionManager">
-    <option name="directoryName" value="hARyBTgd" />
+    <option name="directoryName" value="zEVtWEii" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
-    <option name="majorVersion" value="2026" />
-    <option name="minorVersion" value="2.0.1" />
+    <option name="majorVersion" value="2025" />
+    <option name="minorVersion" value="3.1.1" />
     <option name="productBranch" value="Classic" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
-}</component>
-  <component name="ProjectId" id="3KQbDDpfJSuWB7O5E93lrMd34GE" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="3KeIsvbu4nlb07fbx1dXvTwHjdk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;C/C++ File.main.c.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.main.executor&quot;: &quot;Run&quot;,
-    &quot;CidrDebugProfileConversion&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Luis Maciel/Documents/CLion/C/Linear-Algebra&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.main.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "org.rust.first.attach.projects": "true",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Luis Maciel\Documents\CLion\C\Linear-Algebra" />
-    </key>
-  </component>
-  <component name="RunManager" selected="CMake Application.main">
-    <configuration name="main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="main" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Linear-Algebra" RUN_TARGET_NAME="main">
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="main.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="main.c" CONFIG_NAME="main.c">
-      <option name="sourceFile" value="main.c" />
+    <configuration name="main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="main" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Linear-Algebra" RUN_TARGET_NAME="main">
       <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="matrices.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="matrices.c" CONFIG_NAME="matrices.c">
-      <option name="sourceFile" value="matrices.c" />
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="C/C++ File.matrices.c" />
-      <item itemvalue="C/C++ File.main.c" />
-      <item itemvalue="CMake Application.main" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="C/C++ File.main.c" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="44b0a4a4-b3d3-4bd1-92df-6ca8e1dc9a19" name="Changes" comment="" />
-      <created>1791492617878</created>
+      <changelist id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="" />
+      <created>1791911817563</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1791492617878</updated>
+      <updated>1791911817563</updated>
+      <workItem from="1791911819030" duration="2563000" />
     </task>
     <servers />
   </component>
@@ -153,45 +125,5 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
-    <isAutomaticBootstrapAfterUpdate value="false" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Pretty stable now." />
-    <MESSAGE value="Very unstable." />
-    <MESSAGE value="Nice." />
-    <MESSAGE value="Refactoring. I'm leaving this commit as a marker of the most stable version before the refactor." />
-    <MESSAGE value="Refactor starts here." />
-    <MESSAGE value="It's coming together." />
-    <MESSAGE value="Can now delete matrices." />
-    <MESSAGE value="Improvements. Menu works with multiplication." />
-    <MESSAGE value="I made a lot of progress." />
-    <MESSAGE value="Stick it in main, I guess." />
-    <MESSAGE value="Refactoring done." />
-    <MESSAGE value="Wow." />
-    <MESSAGE value="Designed a det() function while at work. Pasted it in now." />
-    <MESSAGE value="Removed debugging printf's." />
-    <MESSAGE value="Can now store produced matrices." />
-    <MESSAGE value="Matrix metadata." />
-    <MESSAGE value="Polish!" />
-    <MESSAGE value="Polish." />
-    <MESSAGE value="Began implementing persistent data." />
-    <MESSAGE value="Storage is now persistent." />
-    <MESSAGE value="Fixes." />
-    <MESSAGE value="Organization." />
-    <MESSAGE value="Clean." />
-    <MESSAGE value="File system fix." />
-    <MESSAGE value="First release." />
-    <option name="LAST_COMMIT_MESSAGE" value="First release." />
   </component>
 </project>

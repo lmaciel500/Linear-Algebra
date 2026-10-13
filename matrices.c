@@ -3,7 +3,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
+
+//#include <windows.h>
+#include <unistd.h>
+
 #include "matrices.h"
 
 Collection GLOBAL = {0};
@@ -165,9 +168,21 @@ bool ZeroColumn(int column, Matrix *A) {
     }
     return true;
 }
-Collection FindVectors(Matrix *A) {
-    Collection vectors;
-    return vectors;
+bool FindPivotInRow(int row, int *column, Matrix *A) {
+    int n = (*A).columns - 1;
+    for (int i = 0; i < n; i++) {
+        if ((*A).matrix[row][i] == 0) {
+            continue;
+        }
+        if ((*A).matrix[row][i] != 1) {
+            return false;
+        }
+        if ((*A).matrix[row][i] == 1) {
+            *column = i;
+            return true;
+        }
+    }
+    return false;
 }
 
 int GreatestRows(Collection *collection) {
@@ -425,15 +440,15 @@ void CreateMatrix() {
     A.rows = m;
     A.columns = n;
     printf("\nEnter matrix row by row...\n");
-    printf("(%d rows, %d columns)\n", m, n);
+    printf("(%d rows, %d columns)\n\n", m, n);
     for (int i = 0; i < m; i++) {
         printf("%d: ", i + 1);
         for (int j = 0; j < n; j++) {
             scanf(" %lf", &A.matrix[i][j]);
         }
     }
-    AddMatrix(A);
     printf("\n");
+    AddMatrix(A);
 }
 
 
@@ -741,6 +756,20 @@ int Rank(Matrix *A) {
     return rank;
 }
 
+Collection FindVectors(Matrix *A) {
+    Collection vectors;
+    vectors.type = VECTORS;
+    int rows = (*A).columns - 1;
+    vectors.amount = (*A).columns - Rank(A);
+
+    for (int i = 0; i < vectors.amount; i++) {
+        for (int j = 0; j < rows; j++) {
+
+        }
+    }
+    return vectors;
+}
+
 
 //arithmetic
 void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
@@ -871,6 +900,9 @@ bool StartOperations(char name) {
             A.type = AUGMENTED;
             AddAugment(&A);
             RREF(&A);
+            if (Rank(&A) < A.columns - 1) {
+                //ask if user wants to see parametric vector form
+            }
             StoreMatrix(&A);
             break;
         case 'i':
@@ -1012,7 +1044,7 @@ bool Start() {
 void ReadData() {
     printf("\n");
     printf("Reading data from disk...\n\n");
-    Sleep(1000);
+    sleep(1);
     FILE* inFile = fopen("data.txt", "r");
     if (inFile == NULL) {
         printf("Error reading data from disk.\n");
@@ -1021,7 +1053,7 @@ void ReadData() {
     fscanf(inFile, "%d ", &GLOBAL.amount);
     if (GLOBAL.amount == 0) {
         printf("There are no stored matrices.\n\n");
-        Sleep(500);
+        sleep(1);
     }
     int steps;
     fscanf(inFile, "%d\n", &steps);
@@ -1080,7 +1112,7 @@ void ReadData() {
 void WriteData() {
     printf("\n");
     printf("Writing data to disk...\n");
-    Sleep(1000);
+    sleep(1);
     FILE* inFile = fopen("data.txt", "w");
     if (inFile == NULL) {
         printf("Error writing data to disk.\n");

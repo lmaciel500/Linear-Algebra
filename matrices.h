@@ -19,8 +19,13 @@ typedef struct {
     int columns;
     double matrix[100][100];
 } Matrix;
+typedef enum {
+    STORAGE,
+    VECTORS
+} CollectionType;
 typedef struct {
     int amount;
+    CollectionType type;
     Matrix matrices[50];
 } Collection;
 typedef struct {
