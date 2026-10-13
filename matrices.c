@@ -168,6 +168,18 @@ bool ZeroColumn(int column, Matrix *A) {
     }
     return true;
 }
+bool CheckZerosBelow(int row, int column, Matrix *A) {
+    int m = (*A).rows;
+    int n = (*A).columns;
+    double (*matrix)[100] = (*A).matrix;
+
+    for (int i = row; i < m; i++) {
+        if (matrix[i][column] != 0) {
+            return false;
+        }
+    }
+    return true;
+}
 bool FindPivotInRow(int row, int *column, Matrix *A) {
     int n = (*A).columns - 1;
     for (int i = 0; i < n; i++) {
@@ -183,6 +195,15 @@ bool FindPivotInRow(int row, int *column, Matrix *A) {
         }
     }
     return false;
+}
+//returns a column
+int FindFreeVariableInRow(int row, Matrix *A) {
+    for (int i = 0; i < (*A).columns - 1; i++) {
+        if ((*A).matrix[row][i] != 0 || (*A).matrix[row][i] != 1) {
+            return i;
+        }
+    }
+    return 0;
 }
 
 int GreatestRows(Collection *collection) {
@@ -621,8 +642,12 @@ void RREF(Matrix *A) {
             continue;
         }
         if (matrix[row][column] == 0) {
-            int newRow = FindPivot(column, A);
-            SwapRows(row, newRow, A);
+            if (CheckZerosBelow(row, column, A)) {
+                column++;
+            } else {
+                int newRow = FindPivot(column, A);
+                SwapRows(row, newRow, A);
+            }
         }
         if (matrix[row][column] != 1) {
             double c = 1 / matrix[row][column];
@@ -748,10 +773,12 @@ int Rank(Matrix *A) {
                     }
                     if (k == m - 1) {
                         rank++;
+                        goto increase;
                     }
                 }
             }
         }
+        increase:
     }
     return rank;
 }
@@ -783,6 +810,21 @@ Collection FindVectors(Matrix *A) {
 }
 
 Matrix PrepareVectorMatrix(Matrix *A) {
+    int rank = Rank(A);
+    Matrix B = {0};
+    B.rows = (*A).columns - 1;
+    B.columns = (*A).columns - rank;
+    for (int i = 0; i < (*A).rows; i++) {
+        int column = FindFreeVariableInRow(i, A);
+        if (column) {
+            B.matrix[rank + i][column] = 1;
+        }
+    }
+    return B;
+}
+
+/*
+Matrix PrepareVectorMatrix(Matrix *A) {
     Matrix B = {0};
     B.rows = (*A).columns - 1;
     B.columns = (*A).columns - Rank(A);
@@ -812,6 +854,7 @@ Matrix PrepareVectorMatrix(Matrix *A) {
     }
     return B;
 }
+*/
 
 
 //arithmetic
@@ -893,6 +936,15 @@ char SelectMenu() {
     printf("\n");
     return decision;
 }
+void ParametricForm(Matrix *A) {
+    if (Rank(A) < (*A).columns - 1) {
+        printf("View parametric vector form?");
+        if (Confirm(false)) {
+            Matrix V = PrepareVectorMatrix(A);
+            PrintMatrix(&V);
+        }
+    }
+}
 
 
 void StartSettings() {
@@ -916,6 +968,7 @@ char StartSelector() {
         if (CheckExists(decision)) {
             Matrix A = GLOBAL.matrices[ToIndex(decision)];
             PrintMatrix(&A);
+            ParametricForm(&A);
             return decision;
         } else {
             printf("Matrix does not exist.\n");
@@ -945,17 +998,13 @@ bool StartOperations(char name) {
             Matrix A = GLOBAL.matrices[index];
             A.type = AUGMENTED;
             AddAugment(&A);
-            RREF(&A);
             StoreMatrix(&A);
-            /*
-            if (Rank(&A) < A.columns - 1) {
-                printf("View parametric vector form?");
-                if (Confirm(false)) {
-                    Matrix V = PrepareVectorMatrix(&A);
-                    PrintMatrix(&V);
-                }
+            printf("Proceed with row reduction?");
+            if (Confirm(false)) {
+                RREF(&A);
+                StoreMatrix(&A);
+                ParametricForm(&A);
             }
-            */
             break;
         case 'i':
             PrintLine();
