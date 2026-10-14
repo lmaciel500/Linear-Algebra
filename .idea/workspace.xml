@@ -28,10 +28,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="We're cooking.">
+    <list default="true" id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="Can now display solutions in parametric vector form.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrices.c" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matrices.c" beforeDir="false" afterPath="$PROJECT_DIR$/control.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +60,9 @@
     &quot;accountId&quot;: &quot;2b8b65e4-a571-4d33-82b1-a0058047df01&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/algorithms.c" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="zEVtWEii" />
   </component>
@@ -93,8 +96,10 @@
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "org.rust.first.attach.projects": "true",
     "vue.rearranger.settings.migration": "true"
@@ -107,6 +112,11 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Luis Maciel\Documents\CLion\C\Linear-Algebra" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
@@ -161,6 +171,7 @@
     <MESSAGE value="Began working on implementing parametric vector form of an augmented matrix in RREF." />
     <MESSAGE value="Bugs." />
     <MESSAGE value="We're cooking." />
-    <option name="LAST_COMMIT_MESSAGE" value="We're cooking." />
+    <MESSAGE value="Can now display solutions in parametric vector form." />
+    <option name="LAST_COMMIT_MESSAGE" value="Can now display solutions in parametric vector form." />
   </component>
 </project>
