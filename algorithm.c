@@ -492,7 +492,6 @@ bool CheckConsistent(Matrix *A) {
     if (A->type == AUGMENTED) {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                Debugger(i, j, "");
                 if (A->matrix[i][j] != 0) {
                     goto nextRow;
                 }
