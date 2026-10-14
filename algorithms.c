@@ -491,9 +491,9 @@ bool CheckConsistent(Matrix *A) {
     int n = A->columns - 1;
     if (A->type == AUGMENTED) {
         for (int i = 0; i < m; i++) {
-            bool zeroRow = true;
             for (int j = 0; j < n; j++) {
-                if (A->matrix[m][n] != 0) {
+                Debugger(i, j, "");
+                if (A->matrix[i][j] != 0) {
                     goto nextRow;
                 }
             }
@@ -503,9 +503,8 @@ bool CheckConsistent(Matrix *A) {
             }
             nextRow:
         }
-    } else {
-        return true;
     }
+    return true;
 }
 
 

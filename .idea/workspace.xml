@@ -169,7 +169,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791991671572</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Need to fix inconsistent check.">
+      <option name="closed" value="true" />
+      <created>1791992687514</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1791992687514</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,7 +209,8 @@
     <MESSAGE value="Fixes." />
     <MESSAGE value="Fixed." />
     <MESSAGE value="Refactored matrix multiplication." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored matrix multiplication." />
+    <MESSAGE value="Need to fix inconsistent check." />
+    <option name="LAST_COMMIT_MESSAGE" value="Need to fix inconsistent check." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

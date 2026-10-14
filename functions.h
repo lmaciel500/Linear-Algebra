@@ -76,5 +76,6 @@ void NewRREF(bool reduced, Matrix *A);
 void WipeData();
 bool FindFreeInColumn(int *row, int column, double *value, Matrix *A);
 bool CheckConsistent(Matrix *A);
+void Debugger(int m, int n, char step[]);
 
 #endif

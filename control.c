@@ -23,6 +23,11 @@ int ToIndex(char name) {
 char ToChar(int index) {
     return index + 'A';
 }
+void Debugger(int m, int n, char message[]) {
+    printf("Row: %d\n", m);
+    printf("Column: %d\n", n);
+    printf("%s\n", message);
+}
 
 
 //general
