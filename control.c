@@ -55,17 +55,19 @@ Matrix CreateMatrix() {
     printf("\n");
     return A;
 }
-int AddMatrix(Matrix A) {
+char AddMatrix(Matrix A) {
     int index = FindAvailableIndex();
     if (index == -1) {
         printf("Collection is full.\n");
     } else {
         GLOBAL.matrices[index] = A;
         GLOBAL.matrices[index].occupied = true;
+        GLOBAL.matrices[index].name = ToChar(index);
         printf("Created matrix %c.\n\n", ToChar(index));
         PrintMatrix(&A);
         GLOBAL.amount++;
     }
+    return ToChar(index);
 }
 void DeleteMatrix(char name) {
     int index = ToIndex(name);
@@ -73,9 +75,8 @@ void DeleteMatrix(char name) {
 }
 void StoreMatrix(Matrix *A) {
     char decision;
-    printf("Store this matrix? (y/n): ");
-    scanf(" %c", &decision);
-    if (decision == 'y') {
+    printf("Store this matrix?");
+    if (Confirm(false)) {
         AddMatrix(*A);
     }
 }
@@ -397,7 +398,8 @@ bool Start() {
             break;
         case 'c':
             Matrix N = CreateMatrix();
-            AddMatrix(N);
+            char temp = AddMatrix(N);
+            StartOperations(temp);
             break;
         case 'p':
             name = StartSelector();
@@ -451,6 +453,7 @@ void ReadData() {
     }
     for (int k = 0; k < GLOBAL.amount; k++) {
         Matrix A;
+        fscanf(inFile, "%c ", &A.name);
         int occupied;
         fscanf(inFile, "%d ", &occupied);
         if (occupied) {
@@ -477,18 +480,12 @@ void ReadData() {
                 A.type = STANDARD;
                 break;
         }
-        int rows, columns;
-        fscanf(inFile, "%d ", &rows);
-        fscanf(inFile, "%d ", &columns);
+        fscanf(inFile, "%d ", &A.rows);
+        fscanf(inFile, "%d ", &A.columns);
 
-        A.rows = rows;
-        A.columns = columns;
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                double temp;
-                fscanf(inFile, "%lf ", &temp);
-                A.matrix[i][j] = temp;
+        for (int i = 0; i < A.rows; i++) {
+            for (int j = 0; j < A.columns; j++) {
+                fscanf(inFile, "%lf ", &A.matrix[i][j]);
             }
         }
         GLOBAL.matrices[k] = A;
@@ -508,6 +505,7 @@ void WriteData() {
     fprintf(inFile, "%d ", GLOBAL.amount);
     fprintf(inFile, "%d\n", STATE.SHOW_STEPS);
     for (int k = 0; k < GLOBAL.amount; k++) {
+        fprintf(inFile, "%c ", GLOBAL.matrices[k].name);
         if (GLOBAL.matrices[k].occupied) {
             fprintf(inFile, "%d ", 1);
         } else {

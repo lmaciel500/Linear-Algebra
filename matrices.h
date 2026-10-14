@@ -14,6 +14,7 @@ typedef enum {
     VECTOR
 } MatrixType;
 typedef struct {
+    char name;
     bool occupied;
     MatrixType type;
     int rows;
