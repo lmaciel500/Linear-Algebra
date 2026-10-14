@@ -12,7 +12,8 @@ typedef enum {
     REDUCED,
     ECHELON,
     VECTOR,
-    INVALID
+    INVALID,
+    INCONSISTENT,
 } MatrixType;
 typedef struct {
     char name;
@@ -21,6 +22,7 @@ typedef struct {
     int rows;
     int columns;
     double matrix[50][50];
+    bool reduced;
 } Matrix;
 typedef enum {
     STORAGE,

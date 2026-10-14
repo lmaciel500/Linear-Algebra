@@ -75,5 +75,6 @@ bool ZerosColumn(int row, int column, Matrix *A);
 void NewRREF(bool reduced, Matrix *A);
 void WipeData();
 bool FindFreeInColumn(int *row, int column, double *value, Matrix *A);
+bool CheckConsistent(Matrix *A);
 
 #endif

@@ -323,7 +323,7 @@ Matrix PrepareVectorMatrix(Matrix *A) {
     return B;
 }
 void ParametricForm(Matrix *A) {
-    if (Rank(A) < (*A).columns - 1) {
+    if (Rank(A) < (*A).columns - 1 && A->type == AUGMENTED && A->reduced) {
         printf("View parametric vector form?");
         if (Confirm(false)) {
             Matrix B = PrepareVectorMatrix(A);
@@ -486,6 +486,27 @@ bool CheckREF(Matrix *A) {
     }
     return true;
 }
+bool CheckConsistent(Matrix *A) {
+    int m = A->rows;
+    int n = A->columns - 1;
+    if (A->type == AUGMENTED) {
+        for (int i = 0; i < m; i++) {
+            bool zeroRow = true;
+            for (int j = 0; j < n; j++) {
+                if (A->matrix[m][n] != 0) {
+                    goto nextRow;
+                }
+            }
+            if (A->matrix[i][n] != 0) {
+                A->type = INCONSISTENT;
+                return false;
+            }
+            nextRow:
+        }
+    } else {
+        return true;
+    }
+}
 
 
 //rref
@@ -564,7 +585,12 @@ void RREF(Matrix *A) {
         row++;
         column++;
     }
-    printf("Matrix is in RREF.\n");
+    if (!CheckConsistent(A)) {
+        printf("Inconsistent matrix...\n");
+    } else {
+        printf("Matrix is in RREF.\n");
+    }
+    A->reduced = true;
     PrintMatrix(A);
 }
 

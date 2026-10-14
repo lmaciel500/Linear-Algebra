@@ -110,7 +110,7 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
 
     printf(" %c", '|');
     for (int i = 0; i < n; i++) {
-        if ((*A).type == AUGMENTED && i == n - 1) {
+        if ((A->type == INCONSISTENT || (*A).type == AUGMENTED) && i == n - 1) {
             printf(" %c ", '|');
             //s += 1;
         }
@@ -189,11 +189,12 @@ void PrintMatrix(Matrix *A) {
     printf("\n");
 }
 void PrintCollection() {
-    char types[4][20] = {
+    char types[5][20] = {
         "(RREF)",
         "(Augmented)",
         "(Inverse)",
-        "(LU Factorization)"
+        "(LU Factorization)",
+        "(Inconsistent)",
     };
     int offset = 'A';
     if (GLOBAL.amount > 0) {
@@ -215,6 +216,9 @@ void PrintCollection() {
                         break;
                     case LU:
                         strcpy(type, types[3]);
+                        break;
+                    case INCONSISTENT:
+                        strcpy(type, types[4]);
                         break;
                     default:
                         break;
