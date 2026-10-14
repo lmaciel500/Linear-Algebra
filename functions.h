@@ -48,7 +48,7 @@ double Det(Matrix *A);
 int Rank(Matrix *A);
 Collection FindVectors(Matrix *A);
 Matrix PrepareVectorMatrix(Matrix *A);
-void MultMatrix(Matrix *A, Matrix *B, Matrix *C);
+Matrix MultMatrix(Matrix *A, Matrix *B);
 void StoreMatrix(Matrix *A);
 bool Confirm(bool ask);
 void ResetState(void);

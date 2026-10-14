@@ -756,13 +756,11 @@ void Multiply(int index) {
         Matrix A = GLOBAL.matrices[index];
         Matrix B = GLOBAL.matrices[other];
 
-        Matrix result;
-        result.type = STANDARD;
-        result.rows = A.rows;
-        result.columns = B.columns;
-        ZeroMatrix(&result);
+        Matrix result = MultMatrix(&A, &B);
+        if (result.type == INVALID) {
+            return;
+        }
 
-        MultMatrix(&A, &B, &result);
         static Collection multiplication;
 
         multiplication.matrices[0] = A;
@@ -776,8 +774,6 @@ void Multiply(int index) {
 
         PrintMatrices(&multiplication);
         StoreMatrix(&result);
-    } else {
-        printf("Matrix multiplication is impossible.\n");
     }
 }
 void Scale(int index) {
@@ -806,7 +802,16 @@ void DoRank(int index) {
 }
 
 //arithmetic
-void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
+Matrix MultMatrix(Matrix *A, Matrix *B) {
+    Matrix result;
+    if (A->columns != B->rows || (A->type != STANDARD && B->type != STANDARD)) {
+        printf("Matrix multiplication is impossible.\n");
+        result.type = INVALID;
+        return result;
+    }
+    result.rows = A->columns;
+    result.columns = B->rows;
+
     int m = (*A).rows;
     int n = (*A).columns;
     double (*matrix1)[matrixSize] = (*A).matrix;
@@ -815,19 +820,19 @@ void MultMatrix(Matrix *A, Matrix *B, Matrix *C) {
     int p = (*B).columns;
     double (*matrix2)[matrixSize] = (*B).matrix;
 
-    double (*result)[matrixSize] = (*C).matrix;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < p; j++) {
             for (int k = 0; k < n; k++) {
-                result[i][j] += matrix1[i][k] * matrix2[k][j];
+                result.matrix[i][j] += matrix1[i][k] * matrix2[k][j];
             }
         }
     }
     //PrintMatrix();
     printf("\n");
+    return result;
 }
 /*
-void AddMatrix(int n, double matrix1[n][n], double matrix2[n][n], double result[n][n]) {
+void AddMatrix(Matrix *A, Matrix *B) {
     PrintMatrix(n, matrix1);
     printf("+\n");
     PrintMatrix(n, matrix2);

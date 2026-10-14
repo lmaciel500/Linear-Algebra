@@ -11,7 +11,8 @@ typedef enum {
     INVERSE,
     REDUCED,
     ECHELON,
-    VECTOR
+    VECTOR,
+    INVALID
 } MatrixType;
 typedef struct {
     char name;
