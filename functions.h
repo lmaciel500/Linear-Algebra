@@ -1,0 +1,79 @@
+#ifndef MATRIX_FUNCTION_PROTOTYPES_H
+#define MATRIX_FUNCTION_PROTOTYPES_H
+
+#include "matrices.h"
+
+void ZeroMatrix(Matrix *A);
+int FindLargestEntry(Matrix *A);
+void DiagonalOnes(Matrix *A);
+void PrepareInverse(Matrix *A);
+void AddAugment(Matrix *A);
+Matrix CombineMatrix(Matrix *A, Matrix *B);
+int ToIndex(char name);
+char ToChar(int index);
+int ZeroRowsCount(Matrix *A);
+int FindPivot(int column, Matrix *A);
+bool ZeroColumn(int column, Matrix *A);
+bool CheckZerosBelow(int row, int column, Matrix *A);
+bool FindPivotInRow(int row, int *column, Matrix *A);
+bool FindFreeInRow(int row, int *column, double *value, Matrix *A);
+int GreatestRows(Collection *collection);
+int SmallestRows(void);
+bool CheckExists(char name);
+int FindAvailableIndex(void);
+void ParametricForm(Matrix *A);
+void PrintSpacing(int row, int number, char *parameter, Collection *collection);
+void PrintMatrixRow(int row, int s, Matrix *A);
+void PrintBlankRow(int s, Matrix *A);
+void PrintMatrices(Collection *collection);
+void PrintMatrix(Matrix *A);
+void PrintCollection(void);
+void PrintOperations(void);
+void PrintMenu(void);
+void PrintSettings(void);
+void PrintLine(void);
+void GetInput(int *m, int *n);
+void DeleteMatrix(char name);
+char AddMatrix(Matrix A);
+Matrix CreateMatrix(void);
+void ScaleRow(int toScale, double c, Matrix *A);
+void ReplaceRow(int toReplace, int replacer, double c, Matrix *A);
+void SwapRows(int row1, int row2, Matrix *A);
+void ScaleMatrix(double c, Matrix *A);
+bool CheckRREF(Matrix *A);
+bool CheckREF(Matrix *A);
+void RREF(Matrix *A);
+void REF(Matrix *A, Matrix *B);
+double Det(Matrix *A);
+int Rank(Matrix *A);
+Collection FindVectors(Matrix *A);
+Matrix PrepareVectorMatrix(Matrix *A);
+void MultMatrix(Matrix *A, Matrix *B, Matrix *C);
+void StoreMatrix(Matrix *A);
+bool Confirm(bool ask);
+void ResetState(void);
+char SelectMenu(void);
+char StartSelector(void);
+void Reduce(int index);
+void Augment(int index);
+void Inverse(int index);
+void FactorLU(int index);
+void Multiply(int index);
+void Scale(int index);
+void Determinant(int index);
+void DoRank(int index);
+void StartSettings(void);
+bool StartOperations(char name);
+bool Start(void);
+void ReadData(void);
+void WriteData(void);
+Collection ChopMatrix(Matrix *A);
+int SearchPivotInColumn(int row, int column, Matrix *A);
+int SearchPivotInRow(int row, int column, Matrix *A);
+bool ZerosBelow(int row, int column, Matrix *A);
+bool ZerosColumn(int row, int column, Matrix *A);
+void NewRREF(bool reduced, Matrix *A);
+void WipeData();
+bool FindFreeInColumn(int *row, int column, double *value, Matrix *A);
+
+#endif
