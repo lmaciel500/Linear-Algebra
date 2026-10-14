@@ -124,11 +124,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="main" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Linear-Algebra" RUN_TARGET_NAME="main">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -144,6 +139,9 @@
       <updated>1791911817563</updated>
       <workItem from="1791911819030" duration="6158000" />
       <workItem from="1791919431646" duration="1570000" />
+      <workItem from="1792007665575" duration="51000" />
+      <workItem from="1792007839352" duration="63000" />
+      <workItem from="1792007927630" duration="424000" />
     </task>
     <task id="LOCAL-00001" summary="Began working on implementing parametric vector form of an augmented matrix in RREF.">
       <option name="closed" value="true" />
@@ -177,7 +175,23 @@
       <option name="project" value="LOCAL" />
       <updated>1791992687514</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed consistency checker.">
+      <option name="closed" value="true" />
+      <created>1791994544852</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1791994544852</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Polish.">
+      <option name="closed" value="true" />
+      <created>1792007946652</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1792007946652</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,13 +224,15 @@
     <MESSAGE value="Fixed." />
     <MESSAGE value="Refactored matrix multiplication." />
     <MESSAGE value="Need to fix inconsistent check." />
-    <option name="LAST_COMMIT_MESSAGE" value="Need to fix inconsistent check." />
+    <MESSAGE value="Fixed consistency checker." />
+    <MESSAGE value="Polish." />
+    <option name="LAST_COMMIT_MESSAGE" value="Polish." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/algorithms.c</url>
+          <url>file://$PROJECT_DIR$/algorithm.c</url>
           <line>1</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>

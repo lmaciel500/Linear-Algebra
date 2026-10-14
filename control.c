@@ -254,6 +254,7 @@ void PrintMenu() {
     printf("p) Perform operation on matrix\n");
     printf("d) Delete matrix\n");
     printf("s) Settings\n");
+    printf("-) Exit\n");
     printf("\n");
     printf("Type Character: ");
 }
@@ -268,6 +269,7 @@ void PrintOperations() {
     printf("s) Scale Matrix\n");
     printf("d) Determinant\n");
     printf("c) Rank\n");
+    printf("-) Back\n");
     printf("\n");
     printf("Type character: ");
 }
@@ -275,8 +277,9 @@ void PrintSettings() {
     printf("Settings...\n");
     printf("\n");
     printf("o) Show Steps = %s\n", STATE.SHOW_STEPS ? "True" : "False");
-    printf("d) Save Data\n");
+    printf("s) Save Data\n");
     printf("d) Delete All\n");
+    printf("-) Back\n");
     printf("\n");
     printf("Type Character: ");
 }
@@ -315,7 +318,7 @@ char SelectMenu() {
 }
 
 //main logic
-void StartSettings() {
+bool StartSettings() {
     PrintLine();
     PrintSettings();
     switch (SelectMenu()) {
@@ -330,9 +333,13 @@ void StartSettings() {
             if (Confirm(true)) {
                 WipeData();
             }
+        case '-':
+            return false;
         default:
+            printf("Invalid input.\n");
             break;
     }
+    return true;
 }
 char StartSelector() {
     PrintLine();
@@ -383,8 +390,10 @@ bool StartOperations(char name) {
         case 'c':
             DoRank(index);
             break;
-        default:
+        case '-':
             return false;
+        default:
+            printf("Invalid input.\n");
             break;
     }
     ResetState();
@@ -408,7 +417,7 @@ bool Start() {
         case 'c':
             Matrix N = CreateMatrix();
             char temp = AddMatrix(N);
-            StartOperations(temp);
+            while (StartOperations(temp));
             break;
         case 'p':
             name = StartSelector();
@@ -429,8 +438,11 @@ bool Start() {
         case '/':
             WriteData();
             break;
-        default:
+        case '-':
             return false;
+            break;
+        default:
+            printf("Invalid input.\n");
             break;
     }
     ResetState();

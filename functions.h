@@ -62,7 +62,7 @@ void Multiply(int index);
 void Scale(int index);
 void Determinant(int index);
 void DoRank(int index);
-void StartSettings(void);
+bool StartSettings(void);
 bool StartOperations(char name);
 bool Start(void);
 void ReadData(void);
