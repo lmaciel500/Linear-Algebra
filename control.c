@@ -240,6 +240,7 @@ void AddMatrix(Matrix A) {
         PrintMatrix(&A);
         GLOBAL.amount++;
     }
+    StartOperations(ToChar(index));
 }
 void CreateMatrix() {
     PrintLine();
@@ -259,67 +260,6 @@ void CreateMatrix() {
     printf("\n");
     AddMatrix(A);
 }
-
-//parametric
-Collection FindVectors(Matrix *A) {
-    Collection vectors;
-    vectors.type = VECTORS;
-    int rows = (*A).columns - 1;
-    vectors.amount = (*A).columns - Rank(A);
-
-    for (int i = 0; i < vectors.amount; i++) {
-        vectors.matrices[i].rows = rows;
-        vectors.matrices[i].columns = 1;
-    }
-    for (int i = 0; i < rows; i++) {
-        int column;
-        if (FindPivotInRow(i, &column, A)) {
-            int index = 0;
-            for (int j = (*A).columns - 1; j > column; j--) {
-                if ((*A).matrix[i][j] != 0) {
-                    vectors.matrices[i].matrix[i][j] = (*A).matrix[i][j];
-                }
-            }
-        } else {
-
-        }
-
-    }
-    return vectors;
-}
-Matrix PrepareVectorMatrix(Matrix *A) {
-    int rank = Rank(A);
-    Matrix B = {0};
-    B.rows = (*A).columns - 1;
-    B.columns = 1;
-    for (int i = 0; i < (*A).rows; i++) {
-        B.matrix[i][0] = (*A).matrix[i][(*A).columns - 1];
-    }
-    int free = 0;
-    for (int row = 0; row < (*A).rows; row++) {
-        int column;
-        double value;
-        if (FindFreeInRow(row, &column, &value, A)) {
-            free++;
-            B.matrix[column][free] = 1;
-            B.matrix[row][free] = -1 * value;
-            B.columns = free + 1;
-        }
-    }
-    return B;
-}
-void ParametricForm(Matrix *A) {
-    if (Rank(A) < (*A).columns - 1) {
-        printf("View parametric vector form?");
-        if (Confirm(false)) {
-            Matrix B = PrepareVectorMatrix(A);
-            Collection parametricForm = ChopMatrix(&B);
-            PrintMatrices(&parametricForm);
-        }
-    }
-}
-
-//logic
 void StoreMatrix(Matrix *A) {
     char decision;
     printf("Store this matrix? (y/n): ");
@@ -328,6 +268,8 @@ void StoreMatrix(Matrix *A) {
         AddMatrix(*A);
     }
 }
+
+//logic
 bool Confirm(bool ask) {
     bool confirm;
     if (ask) {
@@ -359,7 +301,19 @@ char SelectMenu() {
     return decision;
 }
 
-//hehe
+//main logic
+void StartSettings() {
+    PrintLine();
+    PrintSettings();
+    switch (SelectMenu()) {
+        case 's':
+            STATE.SHOW_STEPS = !STATE.SHOW_STEPS;
+            printf("Show Steps set to %s.\n\n", STATE.SHOW_STEPS ? "true" : "false");
+            break;
+        default:
+            break;
+    }
+}
 char StartSelector() {
     PrintLine();
     PrintCollection();
@@ -376,137 +330,6 @@ char StartSelector() {
         }
     }
     return -1;
-}
-
-//operations
-void Reduce(int index) {
-    PrintLine();
-    Matrix R = GLOBAL.matrices[index];
-    R.type = REDUCED;
-    RREF(&R);
-    StoreMatrix(&R);
-}
-void Augment(int index) {
-    PrintLine();
-    STATE.AUGMENT = true;
-    Matrix A = GLOBAL.matrices[index];
-    A.type = AUGMENTED;
-    AddAugment(&A);
-    PrintMatrix(&A);
-    StoreMatrix(&A);
-    printf("Proceed with row reduction?");
-    if (Confirm(false)) {
-        RREF(&A);
-        StoreMatrix(&A);
-        ParametricForm(&A);
-    }
-}
-void Inverse(int index) {
-    PrintLine();
-    STATE.INVERSE = true;
-    Matrix I = GLOBAL.matrices[index];
-    I.type = INVERSE;
-    PrepareInverse(&I);
-    RREF(&I);
-    StoreMatrix(&I);
-}
-void FactorLU(int index) {
-    PrintLine();
-    STATE.LU = true;
-    Matrix L;
-    L.rows = GLOBAL.matrices[index].rows;
-    L.columns = GLOBAL.matrices[index].columns;
-    DiagonalOnes(&L);
-    Matrix U = GLOBAL.matrices[index];
-    REF(&U, &L);
-    Matrix combinedLU = CombineMatrix(&L, &U);
-    combinedLU.type = LU;
-    StoreMatrix(&combinedLU);
-}
-void Multiply(int index) {
-    char name = ToChar(index);
-    PrintLine();
-    printf("Select matrix to multiply with %c (%dx%d)...\n\n",
-        name,
-        GLOBAL.matrices[index].rows,
-        GLOBAL.matrices[index].columns);
-    char m = StartSelector();
-    if (!Confirm(true)) {
-        return;
-    }
-    if (m == -1) {
-        printf("Invalid matrix.\n");
-        return;
-    }
-    int other = ToIndex(m);
-    if (GLOBAL.matrices[index].columns == GLOBAL.matrices[other].rows) {
-        printf("Multiplying %c with %c...\n", name, m);
-
-        Matrix A = GLOBAL.matrices[index];
-        Matrix B = GLOBAL.matrices[other];
-
-        Matrix result;
-        result.type = STANDARD;
-        result.rows = A.rows;
-        result.columns = B.columns;
-        ZeroMatrix(&result);
-
-        MultMatrix(&A, &B, &result);
-        static Collection multiplication;
-
-        multiplication.matrices[0] = A;
-        multiplication.matrices[1] = B;
-        multiplication.matrices[2] = result;
-
-        multiplication.amount = 3;
-
-        STATE.MULT = true;
-        result.type = STANDARD;
-
-        PrintMatrices(&multiplication);
-        StoreMatrix(&result);
-    } else {
-        printf("Matrix multiplication is impossible.\n");
-    }
-}
-void Scale(int index) {
-    char name = ToChar(index);
-    PrintLine();
-    Matrix S = GLOBAL.matrices[index];
-    double scalar;
-    printf("Enter scalar (c): ");
-    scanf(" %lf", &scalar);
-    if (STATE.SHOW_STEPS) {
-        printf("Scaled %c by %.2lf\n", name, scalar);
-    }
-    ScaleMatrix(scalar, &S);
-    StoreMatrix(&S);
-}
-void Determinant(int index) {
-    PrintLine();
-    Matrix D = GLOBAL.matrices[index];
-    printf("Det(%c) = %lf\n\n", ToChar(index), Det(&D));
-}
-void DoRank(int index) {
-    char name = ToChar(index);
-    PrintLine();
-    Matrix C = GLOBAL.matrices[index];
-    printf("Rank(%c) = %d\n\n", name, Rank(&C));
-}
-
-
-//main logic
-void StartSettings() {
-    PrintLine();
-    PrintSettings();
-    switch (SelectMenu()) {
-        case 's':
-            STATE.SHOW_STEPS = !STATE.SHOW_STEPS;
-            printf("Show Steps set to %s.\n\n", STATE.SHOW_STEPS ? "true" : "false");
-            break;
-        default:
-            break;
-    }
 }
 bool StartOperations(char name) {
     PrintLine();
