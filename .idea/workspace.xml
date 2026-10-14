@@ -107,6 +107,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -143,6 +144,8 @@
       <workItem from="1792007839352" duration="63000" />
       <workItem from="1792007927630" duration="424000" />
       <workItem from="1792009968423" duration="97000" />
+      <workItem from="1792010149781" duration="12000" />
+      <workItem from="1792022307668" duration="11000" />
     </task>
     <task id="LOCAL-00001" summary="Began working on implementing parametric vector form of an augmented matrix in RREF.">
       <option name="closed" value="true" />
@@ -192,7 +195,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792007946652</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Polish.">
+      <option name="closed" value="true" />
+      <created>1792010156823</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1792010156823</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
