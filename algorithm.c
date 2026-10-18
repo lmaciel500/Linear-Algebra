@@ -1,9 +1,8 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
-#include <string.h>
+
 
 #include "matrices.h"
 #include "functions.h"
@@ -250,6 +249,7 @@ int FindAvailableIndex() {
     return -1;
 }
 
+
 //parametric
 bool FindFreeInColumn(int *row, int column, double *value, Matrix *A) {
     for (int i = *row; i < (*A).rows; i++) {
@@ -333,6 +333,7 @@ void ParametricForm(Matrix *A) {
     }
 }
 
+
 //elementary operations
 void ScaleRow(int toScale, double c, Matrix *A) {
     int m = (*A).rows;
@@ -404,6 +405,7 @@ void ScaleMatrix(double c, Matrix *A) {
         PrintMatrix(A);
     }
 }
+
 
 //algorithms
 bool CheckRREF(Matrix *A) {
@@ -592,7 +594,6 @@ void RREF(Matrix *A) {
     PrintMatrix(A);
 }
 
-
 void REF(Matrix *A, Matrix *B) {
     int m = (*A).rows;
     int n = (*A).columns;
@@ -711,6 +712,7 @@ int Rank(Matrix *A) {
     return rank;
 }
 
+
 //operations
 void Reduce(int index) {
     PrintLine();
@@ -780,7 +782,7 @@ void Multiply(int index) {
         Matrix A = GLOBAL.matrices[index];
         Matrix B = GLOBAL.matrices[other];
 
-        Matrix result = MultMatrix(&A, &B);
+        Matrix result = MultiplyMatrices(&A, &B);
         if (result.type == INVALID) {
             return;
         }
@@ -825,8 +827,9 @@ void DoRank(int index) {
     printf("Rank(%c) = %d\n\n", name, Rank(&C));
 }
 
+
 //arithmetic
-Matrix MultMatrix(Matrix *A, Matrix *B) {
+Matrix MultiplyMatrices(Matrix *A, Matrix *B) {
     Matrix result;
     if (A->columns != B->rows || (A->type != STANDARD && B->type != STANDARD)) {
         printf("Matrix multiplication is impossible.\n");
@@ -855,20 +858,20 @@ Matrix MultMatrix(Matrix *A, Matrix *B) {
     printf("\n");
     return result;
 }
-/*
-void AddMatrix(Matrix *A, Matrix *B) {
-    PrintMatrix(n, matrix1);
-    printf("+\n");
-    PrintMatrix(n, matrix2);
-    printf("=\n");
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            result[i][j] = matrix1[i][j] + matrix2[i][j];
+Matrix AddMatrices(Matrix *A, Matrix *B) {
+    Matrix result;
+    if (A->rows != B->rows || A->columns != B->columns) {
+        printf("Matrix addition is impossible.\n");
+        result.type = INVALID;
+        return result;
+    }
+    result.rows = A->rows;
+    result.columns = B->columns;
+    for (int i = 0; i < result.rows; i++) {
+        for (int j = 0; j < result.columns; j++) {
+            result.matrix[i][j] = A->matrix[i][j] + B->matrix[i][j];
         }
     }
-
-    PrintMatrix(n, result);
+    return result;
     printf("\n");
 }
-*/

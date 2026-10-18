@@ -48,7 +48,7 @@ double Det(Matrix *A);
 int Rank(Matrix *A);
 Collection FindVectors(Matrix *A);
 Matrix PrepareVectorMatrix(Matrix *A);
-Matrix MultMatrix(Matrix *A, Matrix *B);
+Matrix MultiplyMatrices(Matrix *A, Matrix *B);
 void StoreMatrix(Matrix *A);
 bool Confirm(bool ask);
 void ResetState(void);
@@ -77,5 +77,6 @@ void WipeData();
 bool FindFreeInColumn(int *row, int column, double *value, Matrix *A);
 bool CheckConsistent(Matrix *A);
 void Debugger(int m, int n, char step[]);
+Matrix AddMatrices(Matrix *A, Matrix *B);
 
 #endif

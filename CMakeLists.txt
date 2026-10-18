@@ -3,4 +3,9 @@ project(Linear-Algebra C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(main main.c control.c algorithm.c scratch.c)
+add_executable(main
+        main.c
+        control.c
+        algorithm.c
+        scratch.c parser.c
+        interpreter.c)
