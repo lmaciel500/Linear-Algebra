@@ -47,12 +47,15 @@ Matrix CreateMatrix() {
     Matrix A = {0};
     A.rows = m;
     A.columns = n;
+
+    double *data = malloc(m * n * sizeof(double));
+    A.data = data;
     printf("\nEnter matrix row by row...\n");
     printf("(%d rows, %d columns)\n\n", m, n);
     for (int i = 0; i < m; i++) {
         printf("%d: ", i + 1);
         for (int j = 0; j < n; j++) {
-            scanf(" %lf", &A.matrix[i][j]);
+            scanf(" %lf", &A.data[j + i * n]);
         }
     }
     printf("\n");
@@ -83,6 +86,11 @@ void StoreMatrix(Matrix *A) {
         AddMatrix(*A);
     }
 }
+void MemoryInterface(int row, double array[], Matrix *A) {
+    for (int i = 0; i < A->columns; i++) {
+        array[i] = A->data[A->columns * row + i];
+    }
+}
 
 
 //printers
@@ -111,6 +119,9 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
     int n = (*A).columns;
     double (*matrix)[matrixSize] = (*A).matrix;
 
+    double array[A->columns];
+    MemoryInterface(row, array, A);
+
     printf(" %c", '|');
     for (int i = 0; i < n; i++) {
         if ((A->type == INCONSISTENT || (*A).type == AUGMENTED) && i == n - 1) {
@@ -125,7 +136,7 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
             printf(" %c", '|');
         }
 
-        double x = matrix[row][i];
+        double x = array[i];
         if (x == (int) x) {
             printf("%*d", s, (int) x);
         } else {

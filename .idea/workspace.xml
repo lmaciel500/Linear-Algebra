@@ -29,8 +29,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="Fixed.">
+    <list default="true" id="6ab78260-9e79-4b76-b3ad-683769fbc756" name="Changes" comment="Me when I realize that I just committed to another huge refactor.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/control.c" beforeDir="false" afterPath="$PROJECT_DIR$/control.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matrices.h" beforeDir="false" afterPath="$PROJECT_DIR$/matrices.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +106,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "dynamic-memory",
     "git.auto.fetch.suggestion.counter": "3",
+    "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/Luis Maciel/Documents/CLion/C/Linear-Algebra",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.jshint": "true",
@@ -129,11 +132,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="main" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Linear-Algebra" RUN_TARGET_NAME="main">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -237,7 +235,8 @@
     <MESSAGE value="Need to fix inconsistent check." />
     <MESSAGE value="Fixed consistency checker." />
     <MESSAGE value="Polish." />
-    <option name="LAST_COMMIT_MESSAGE" value="Polish." />
+    <MESSAGE value="Me when I realize that I just committed to another huge refactor." />
+    <option name="LAST_COMMIT_MESSAGE" value="Me when I realize that I just committed to another huge refactor." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

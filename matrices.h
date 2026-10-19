@@ -22,7 +22,7 @@ typedef struct {
     int rows;
     int columns;
     double matrix[50][50];
-    double *newMatrix;
+    double *data;
     bool reduced;
 } Matrix;
 typedef enum {
