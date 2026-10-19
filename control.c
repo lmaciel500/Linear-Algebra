@@ -119,8 +119,7 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
     int n = (*A).columns;
     double (*matrix)[matrixSize] = (*A).matrix;
 
-    double array[A->columns];
-    MemoryInterface(row, array, A);
+    double *array = A->data + row * A->columns;
 
     printf(" %c", '|');
     for (int i = 0; i < n; i++) {
