@@ -204,7 +204,23 @@
       <option name="project" value="LOCAL" />
       <updated>1792007946652</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="refactor underway finally">
+      <option name="closed" value="true" />
+      <created>1793816374602</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1793816374602</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Memory interface adaptations.">
+      <option name="closed" value="true" />
+      <created>1793816559333</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1793816559333</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,7 +230,6 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
-    <isAutomaticBootstrapAfterUpdate value="false" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="RECENT_FILTERS">
@@ -280,7 +295,9 @@
     <MESSAGE value="Me when I realize that I just committed to another huge refactor." />
     <MESSAGE value="Yeah this is going to be a lot of work." />
     <MESSAGE value="Progress." />
-    <option name="LAST_COMMIT_MESSAGE" value="Progress." />
+    <MESSAGE value="refactor underway finally" />
+    <MESSAGE value="Memory interface adaptations." />
+    <option name="LAST_COMMIT_MESSAGE" value="Memory interface adaptations." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

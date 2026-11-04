@@ -15,8 +15,12 @@ void ZeroMatrix(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
 
+    /*
     double *matrix[A->rows];
     MemoryInterface(matrix, A);
+    */
+
+    double **matrix = A->data;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -28,8 +32,7 @@ int FindLargestEntry(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
 
-    double *matrix[A->rows];
-    MemoryInterface(matrix, A);
+    double **matrix = A->data;
 
     double largest = 0;
 
@@ -53,8 +56,7 @@ void DiagonalOnes(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
 
-    double *matrix[A->rows];
-    MemoryInterface(matrix, A);
+    double **matrix = A->data;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -71,8 +73,7 @@ void PrepareInverse(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
 
-    double *matrix[A->rows];
-    MemoryInterface(matrix, A);
+    double **matrix = A->data;
 
     for (int i = 0; i < m; i++) {
         for (int j = n / 2; j < n; j++) {
@@ -88,8 +89,7 @@ void AddAugment(Matrix *A) {
     int m = (*A).rows;
     double augment[m];
 
-    double *matrix[A->rows];
-    MemoryInterface(matrix, A);
+    double **matrix = A->data;
 
     printf("Enter augment...\n");
     printf("(%d values): ", m);
@@ -109,15 +109,17 @@ Matrix CombineMatrix(Matrix *A, Matrix *B) {
     combined.rows = rows;
     combined.columns = columns;
 
-    double *matrixA[A->rows];
-    MemoryInterface(matrixA, A);
+    double **matrixA = A->data;
+    double **matrixB = A->data;
 
-    double *matrixB[B->rows];
-    MemoryInterface(matrixB, B);
+    combined.data = malloc(rows * sizeof(double *));
+    for (int i = 0; i < rows; i++) {
+        combined.data[i] = malloc(columns * sizeof(double));
+    }
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < (*A).columns; j++) {
-            combined.matrix[i][j] = matrixA[i][j];
+            combined.data[i][j] = matrixA[i][j];
         }
     }
     for (int i = 0; i < rows; i++) {
@@ -136,7 +138,7 @@ Collection ChopMatrix(Matrix *A) {
         Matrix V = {name, true, VECTOR, m, 1};
         ZeroMatrix(&V);
         for (int j = 0; j < m; j++) {
-            V.data[j][0] = (*A).matrix[j][i];
+            V.data[j][0] = (*A).data[j][i];
         }
         vectors.matrices[i] = V;
         name++;
@@ -147,12 +149,11 @@ Collection ChopMatrix(Matrix *A) {
 int ZeroRowsCount(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     int zeroRows = 0;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            if (matrix[i][j] != 0) {
+            if (A->data[i][j] != 0) {
                 break;
             }
             if (j == n - 1) {
@@ -165,15 +166,14 @@ int ZeroRowsCount(Matrix *A) {
 int FindPivot(int column, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
-        if (matrix[i][column] == 1) {
+        if (A->data[i][column] == 1) {
             return i;
         }
     }
     for (int i = 0; i < m; i++) {
-        if (matrix[i][column] != 0) {
+        if (A->data[i][column] != 0) {
             return i;
         }
     }
@@ -182,9 +182,8 @@ int FindPivot(int column, Matrix *A) {
 bool ZeroColumn(int column, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
     for (int i = 0; i < m; i++) {
-        if (matrix[i][column] != 0) {
+        if (A->data[i][column] != 0) {
             return false;
         }
     }
@@ -193,9 +192,8 @@ bool ZeroColumn(int column, Matrix *A) {
 bool ZeroRow(int row, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
     for (int i = 0; i < m; i++) {
-        if (matrix[row][i] != 0) {
+        if (A->data[row][i] != 0) {
             return false;
         }
     }
@@ -204,10 +202,9 @@ bool ZeroRow(int row, Matrix *A) {
 bool CheckZerosBelow(int row, int column, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = row; i < m; i++) {
-        if (matrix[i][column] != 0) {
+        if (A->data[i][column] != 0) {
             return false;
         }
     }
@@ -216,13 +213,13 @@ bool CheckZerosBelow(int row, int column, Matrix *A) {
 bool FindPivotInRow(int row, int *column, Matrix *A) {
     int n = (*A).columns - 1;
     for (int i = 0; i < n; i++) {
-        if ((*A).matrix[row][i] == 0) {
+        if ((*A).data[row][i] == 0) {
             continue;
         }
-        if ((*A).matrix[row][i] != 1) {
+        if ((*A).data[row][i] != 1) {
             return false;
         }
-        if ((*A).matrix[row][i] == 1) {
+        if ((*A).data[row][i] == 1) {
             *column = i;
             return true;
         }
@@ -272,9 +269,9 @@ int FindAvailableIndex() {
 //parametric
 bool FindFreeInColumn(int *row, int column, double *value, Matrix *A) {
     for (int i = *row; i < (*A).rows; i++) {
-        if ((*A).matrix[i][column] != 0 && (*A).matrix[i][column] != 1) {
+        if ((*A).data[i][column] != 0 && (*A).data[i][column] != 1) {
             *row = i;
-            *value = (*A).matrix[i][column];
+            *value = (*A).data[i][column];
             return true;
         }
     }
@@ -282,9 +279,9 @@ bool FindFreeInColumn(int *row, int column, double *value, Matrix *A) {
 }
 bool FindFreeInRow(int row, int *column, double *value, Matrix *A) {
     for (int i = 0; i < (*A).columns - 1; i++) {
-        if ((*A).matrix[row][i] != 0 && (*A).matrix[row][i] != 1) {
+        if ((*A).data[row][i] != 0 && (*A).data[row][i] != 1) {
             *column = i;
-            *value = (*A).matrix[row][i];
+            *value = (*A).data[row][i];
             return true;
         }
     }
@@ -305,8 +302,8 @@ Collection FindVectors(Matrix *A) {
         if (FindPivotInRow(i, &column, A)) {
             int index = 0;
             for (int j = (*A).columns - 1; j > column; j--) {
-                if ((*A).matrix[i][j] != 0) {
-                    vectors.matrices[i].matrix[i][j] = (*A).matrix[i][j];
+                if ((*A).data[i][j] != 0) {
+                    vectors.matrices[i].data[i][j] = (*A).data[i][j];
                 }
             }
         } else {
@@ -322,7 +319,7 @@ Matrix PrepareVectorMatrix(Matrix *A) {
     B.rows = (*A).columns - 1;
     B.columns = 1;
     for (int i = 0; i < (*A).rows; i++) {
-        B.matrix[i][0] = (*A).matrix[i][(*A).columns - 1];
+        B.data[i][0] = (*A).data[i][(*A).columns - 1];
     }
     int free = 0;
     for (int column = 0; column < (*A).columns - 1; column++) {
@@ -330,11 +327,11 @@ Matrix PrepareVectorMatrix(Matrix *A) {
         double value = 0;
         if (FindFreeInColumn(&row, column, &value, A)) {
             free++;
-            B.matrix[column][free] = 1;
+            B.data[column][free] = 1;
             for (int i = row; i < (*A).rows - free; i++) {
                 row = i;
                 FindFreeInColumn(&row, column, &value, A);
-                B.matrix[row][free] = -1 * value;
+                B.data[row][free] = -1 * value;
             }
             B.columns = free + 1;
         }
@@ -357,14 +354,13 @@ void ParametricForm(Matrix *A) {
 void ScaleRow(int toScale, double c, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     if (STATE.SHOW_STEPS) {
         printf("R%d —> (%.2lf)R%d\n", toScale + 1, c, toScale + 1);
         //getchar();
     }
     for (int i = 0; i < n; i++) {
-        matrix[toScale][i] = (double) matrix[toScale][i] * c;
+        A->data[toScale][i] = (double) A->data[toScale][i] * c;
     }
     if (STATE.SHOW_STEPS) {
         PrintMatrix(A);
@@ -373,14 +369,13 @@ void ScaleRow(int toScale, double c, Matrix *A) {
 void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     if (STATE.SHOW_STEPS) {
         printf("R%d —> R%d + (%.1lf)R%d\n", toReplace + 1, toReplace + 1, c, replacer + 1);
         //getchar();
     }
     for (int i = 0; i < n; i++) {
-        matrix[toReplace][i] += matrix[replacer][i] * c;
+        A->data[toReplace][i] += A->data[replacer][i] * c;
     }
     if (STATE.SHOW_STEPS) {
         PrintMatrix(A);
@@ -389,7 +384,6 @@ void ReplaceRow(int toReplace, int replacer, double c, Matrix *A) {
 void SwapRows(int row1, int row2, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     if (STATE.SHOW_STEPS) {
         printf("R%d <—> R%d\n", row1 + 1, row2 + 1);
@@ -398,13 +392,13 @@ void SwapRows(int row1, int row2, Matrix *A) {
     double temp[n];
 
     for (int i = 0; i < n; i++) {
-        temp[i] = matrix[row1][i];
+        temp[i] = A->data[row1][i];
     }
     for (int i = 0; i < n; i++) {
-        matrix[row1][i] = matrix[row2][i];
+        A->data[row1][i] = A->data[row2][i];
     }
     for (int i = 0; i < n; i++) {
-        matrix[row2][i] = temp[i];
+        A->data[row2][i] = temp[i];
     }
     if (STATE.SHOW_STEPS) {
         PrintMatrix(A);
@@ -413,11 +407,10 @@ void SwapRows(int row1, int row2, Matrix *A) {
 void ScaleMatrix(double c, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            matrix[i][j] *= c;
+            A->data[i][j] *= c;
         }
     }
     if (STATE.SHOW_STEPS) {
@@ -430,16 +423,15 @@ void ScaleMatrix(double c, Matrix *A) {
 bool CheckRREF(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     int staircase = -1;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            if (matrix[i][j] != 0 && matrix[i][j] != 1) {
+            if (A->data[i][j] != 0 && A->data[i][j] != 1) {
                 //printf("Not RREF...\n");
                 return false;
             }
-            if (matrix[i][j] == 1) {
+            if (A->data[i][j] == 1) {
                 if (j <= staircase) {
                     //printf("Not RREF...\n");
                     return false;
@@ -448,7 +440,7 @@ bool CheckRREF(Matrix *A) {
                     if (i == k) {
                         continue;
                     }
-                    if (matrix[k][j] != 0) {
+                    if (A->data[k][j] != 0) {
                         //printf("Not RREF...\n");
                         return false;
                     }
@@ -461,7 +453,7 @@ bool CheckRREF(Matrix *A) {
     int zeroRows = ZeroRowsCount(A);
     for (int i = m - 1; i >= m - zeroRows; i--) {
         for (int j = 0; j < n; j++) {
-            if (matrix[i][j] != 0) {
+            if (A->data[i][j] != 0) {
                 //printf("Not RREF...\n");
                 return false;
             }
@@ -472,12 +464,11 @@ bool CheckRREF(Matrix *A) {
 bool CheckREF(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     int staircase = -1;
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            if (matrix[i][j] != 0) {
+            if (A->data[i][j] != 0) {
                 if (j <= staircase) {
                     //printf("Not REF...\n");
                     return false;
@@ -486,7 +477,7 @@ bool CheckREF(Matrix *A) {
                     if (i == k) {
                         continue;
                     }
-                    if (matrix[k][j] != 0) {
+                    if (A->data[k][j] != 0) {
                         //printf("Not REF...\n");
                         return false;
                     }
@@ -499,7 +490,7 @@ bool CheckREF(Matrix *A) {
     int zeroRows = ZeroRowsCount(A);
     for (int i = m - 1; i >= m - zeroRows; i--) {
         for (int j = 0; j < n; j++) {
-            if (matrix[i][j] != 0) {
+            if (A->data[i][j] != 0) {
                 //printf("Not REF...\n");
                 return false;
             }
@@ -513,11 +504,11 @@ bool CheckConsistent(Matrix *A) {
     if (A->type == AUGMENTED) {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (A->matrix[i][j] != 0) {
+                if (A->data[i][j] != 0) {
                     goto nextRow;
                 }
             }
-            if (A->matrix[i][n] != 0) {
+            if (A->data[i][n] != 0) {
                 A->type = INCONSISTENT;
                 return false;
             }
@@ -531,7 +522,7 @@ bool CheckConsistent(Matrix *A) {
 //rref
 int SearchPivotInColumn(int row, int column, Matrix *A) {
     for (int i = row; i < A->rows; i++) {
-        if (A->matrix[i][column] != 0) {
+        if (A->data[i][column] != 0) {
             return i;
         }
     }
@@ -539,7 +530,7 @@ int SearchPivotInColumn(int row, int column, Matrix *A) {
 }
 int SearchPivotInRow(int row, int column, Matrix *A) {
     for (int i = column; i < A->columns; i++) {
-        if (A->matrix[row][i] != 0) {
+        if (A->data[row][i] != 0) {
             return i;
         }
     }
@@ -547,7 +538,7 @@ int SearchPivotInRow(int row, int column, Matrix *A) {
 }
 bool ZerosBelow(int row, int column, Matrix *A) {
     for (int i = row + 1; i < A->rows; i++) {
-        if (A->matrix[i][column] != 0) {
+        if (A->data[i][column] != 0) {
             return false;
         }
     }
@@ -557,7 +548,7 @@ bool ZerosColumn(int row, int column, Matrix *A) {
     for (int i = 0; i < A->rows; i++) {
         if (i == row) {
             continue;
-        } else if (A->matrix[i][column] != 0) {
+        } else if (A->data[i][column] != 0) {
             return false;
         }
     }
@@ -574,7 +565,7 @@ void RREF(Matrix *A) {
     PrintMatrix(A);
 
     while (row < m && column < n) {
-        if (A->matrix[row][column] == 0) {
+        if (A->data[row][column] == 0) {
             if (!ZerosBelow(row, column, A)) {
                 int newPivot = SearchPivotInColumn(row, column, A);
                 if (newPivot != -1) {
@@ -587,8 +578,8 @@ void RREF(Matrix *A) {
                 continue;
             }
         }
-        if (A->matrix[row][column] != 1) {
-            double c = 1 / A->matrix[row][column];
+        if (A->data[row][column] != 1) {
+            double c = 1 / A->data[row][column];
             ScaleRow(row, c, A);
         }
         if (!ZerosColumn(row, column, A)) {
@@ -597,7 +588,7 @@ void RREF(Matrix *A) {
                 if (i == row) {
                     continue;
                 }
-                c = - A->matrix[i][column] / A->matrix[row][column];
+                c = - A->data[i][column] / A->data[row][column];
                 ReplaceRow(i, row, c, A);
             }
         }
@@ -616,8 +607,9 @@ void RREF(Matrix *A) {
 void REF(Matrix *A, Matrix *B) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrixU)[matrixSize] = (*A).matrix;
-    double (*matrixL)[matrixSize] = (*B).matrix;
+
+    double **matrixU = (*A).data;
+    double **matrixL = (*B).data;
 
     bool possibleLU = true;
     printf("Begin REF operations...\n");
@@ -671,11 +663,11 @@ double Det(Matrix *A) {
     }
 
 	if (m == 2) {
-		determinant = (*A).matrix[0][0] * (*A).matrix[1][1] - (*A).matrix[0][1] * (*A).matrix[1][0];
+		determinant = (*A).data[0][0] * (*A).data[1][1] - (*A).data[0][1] * (*A).data[1][0];
 	} else {
 		double coefficients[n];
 		for(int i = 0; i < n; i++) {
-			coefficients[i] = (*A).matrix[0][i];
+			coefficients[i] = (*A).data[0][i];
 		}
 		for (int excluded = 0; excluded < n; excluded++) {
 			Matrix B = {0};
@@ -690,7 +682,7 @@ double Det(Matrix *A) {
 					if (!(j < excluded)) {
 						shift++;
 					}
-					B.matrix[i][j] = (*A).matrix[i + 1][j + shift];
+					B.data[i][j] = (*A).data[i + 1][j + shift];
 				}
 			}
 			if (excluded % 2 == 0) {
@@ -711,12 +703,12 @@ int Rank(Matrix *A) {
     }
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            if ((*A).matrix[i][j] == 1) {
+            if ((*A).data[i][j] == 1) {
                 for (int k = 0; k < m; k++) {
                     if (k == i) {
                         continue;
                     }
-                    if ((*A).matrix[k][j] != 0) {
+                    if ((*A).data[k][j] != 0) {
                         break;
                     }
                     if (k == m - 1) {
@@ -860,16 +852,16 @@ Matrix MultiplyMatrices(Matrix *A, Matrix *B) {
 
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix1)[matrixSize] = (*A).matrix;
+    double (*matrix1)[matrixSize] = (*A).data;
 
     int o = (*B).rows;
     int p = (*B).columns;
-    double (*matrix2)[matrixSize] = (*B).matrix;
+    double (*matrix2)[matrixSize] = (*B).data;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < p; j++) {
             for (int k = 0; k < n; k++) {
-                result.matrix[i][j] += matrix1[i][k] * matrix2[k][j];
+                result.data[i][j] += matrix1[i][k] * matrix2[k][j];
             }
         }
     }
@@ -888,7 +880,7 @@ Matrix AddMatrices(Matrix *A, Matrix *B) {
     result.columns = B->columns;
     for (int i = 0; i < result.rows; i++) {
         for (int j = 0; j < result.columns; j++) {
-            result.matrix[i][j] = A->matrix[i][j] + B->matrix[i][j];
+            result.data[i][j] = A->data[i][j] + B->data[i][j];
         }
     }
     return result;

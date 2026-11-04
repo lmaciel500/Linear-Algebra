@@ -21,7 +21,6 @@ typedef struct {
     MatrixType type;
     int rows;
     int columns;
-    double matrix[50][50];
     double **data;
     bool reduced;
 } Matrix;
@@ -33,7 +32,7 @@ typedef enum {
 typedef struct {
     int amount;
     CollectionType type;
-    Matrix matrices[26];
+    Matrix *matrices;
 } Collection;
 typedef struct {
     bool SHOW_STEPS;

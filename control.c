@@ -480,6 +480,7 @@ void ReadData() {
     } else {
         STATE.SHOW_STEPS = false;
     }
+    GLOBAL.matrices = malloc(GLOBAL.amount * sizeof(Matrix));
     for (int k = 0; k < GLOBAL.amount; k++) {
         Matrix A;
         fscanf(inFile, "%c ", &A.name);
