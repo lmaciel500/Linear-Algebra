@@ -122,7 +122,7 @@ Matrix CombineMatrix(Matrix *A, Matrix *B) {
     }
     for (int i = 0; i < rows; i++) {
         for (int j = (*A).columns; j < columns; j++) {
-            combined.data[i * columns + j] = matrixB[i][j - (*A).columns];
+            combined.data[i][j] = matrixB[i][j - (*A).columns];
         }
     }
     return combined;
@@ -136,7 +136,7 @@ Collection ChopMatrix(Matrix *A) {
         Matrix V = {name, true, VECTOR, m, 1};
         ZeroMatrix(&V);
         for (int j = 0; j < m; j++) {
-            V.data[j] = (*A).matrix[j][i];
+            V.data[j][0] = (*A).matrix[j][i];
         }
         vectors.matrices[i] = V;
         name++;
