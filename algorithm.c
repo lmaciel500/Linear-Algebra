@@ -14,7 +14,9 @@ extern int matrixSize;
 void ZeroMatrix(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
+
+    double *matrix[A->rows];
+    MemoryInterface(matrix, A);
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -25,7 +27,9 @@ void ZeroMatrix(Matrix *A) {
 int FindLargestEntry(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
+
+    double *matrix[A->rows];
+    MemoryInterface(matrix, A);
 
     double largest = 0;
 
@@ -48,7 +52,9 @@ int FindLargestEntry(Matrix *A) {
 void DiagonalOnes(Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
+
+    double *matrix[A->rows];
+    MemoryInterface(matrix, A);
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -64,7 +70,9 @@ void PrepareInverse(Matrix *A) {
     (*A).columns *= 2;
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
+
+    double *matrix[A->rows];
+    MemoryInterface(matrix, A);
 
     for (int i = 0; i < m; i++) {
         for (int j = n / 2; j < n; j++) {
@@ -79,6 +87,10 @@ void PrepareInverse(Matrix *A) {
 void AddAugment(Matrix *A) {
     int m = (*A).rows;
     double augment[m];
+
+    double *matrix[A->rows];
+    MemoryInterface(matrix, A);
+
     printf("Enter augment...\n");
     printf("(%d values): ", m);
     for (int i = 0; i < m; i++) {
@@ -86,7 +98,7 @@ void AddAugment(Matrix *A) {
     }
     (*A).columns++;
     for (int i = 0; i < m; i++) {
-        (*A).matrix[i][(*A).columns - 1] = augment[i];
+        matrix[i][(*A).columns - 1] = augment[i];
     }
     printf("\n");
 }
@@ -96,14 +108,21 @@ Matrix CombineMatrix(Matrix *A, Matrix *B) {
     int rows = (*A).rows;
     combined.rows = rows;
     combined.columns = columns;
+
+    double *matrixA[A->rows];
+    MemoryInterface(matrixA, A);
+
+    double *matrixB[B->rows];
+    MemoryInterface(matrixB, B);
+
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < (*A).columns; j++) {
-            combined.matrix[i][j] = (*A).matrix[i][j];
+            combined.matrix[i][j] = matrixA[i][j];
         }
     }
     for (int i = 0; i < rows; i++) {
         for (int j = (*A).columns; j < columns; j++) {
-            combined.matrix[i][j] = (*B).matrix[i][j - (*A).columns];
+            combined.data[i * columns + j] = matrixB[i][j - (*A).columns];
         }
     }
     return combined;
@@ -117,7 +136,7 @@ Collection ChopMatrix(Matrix *A) {
         Matrix V = {name, true, VECTOR, m, 1};
         ZeroMatrix(&V);
         for (int j = 0; j < m; j++) {
-            V.matrix[j][0] = (*A).matrix[j][i];
+            V.data[j] = (*A).matrix[j][i];
         }
         vectors.matrices[i] = V;
         name++;

@@ -26,6 +26,11 @@ void Debugger(int m, int n, char message[]) {
     printf("Column: %d\n", n);
     printf("%s\n", message);
 }
+void MemoryInterface(double *matrix[], Matrix *A) {
+    for (int i = 0; i < A->rows; i++) {
+        matrix[i] = &A->data[i * A->columns];
+    }
+}
 
 
 //general
@@ -80,15 +85,9 @@ void DeleteMatrix(char name) {
     GLOBAL.matrices[index].occupied = false;
 }
 void StoreMatrix(Matrix *A) {
-    char decision;
     printf("Store this matrix?");
     if (Confirm(false)) {
         AddMatrix(*A);
-    }
-}
-void MemoryInterface(int row, double array[], Matrix *A) {
-    for (int i = 0; i < A->columns; i++) {
-        array[i] = A->data[A->columns * row + i];
     }
 }
 
@@ -117,9 +116,8 @@ void PrintSpacing(int row, int number, char *parameter, Collection *collection) 
 void PrintMatrixRow(int row, int s, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
-
-    double *array = A->data + row * A->columns;
+    double *matrix[A->rows];
+    MemoryInterface(matrix, A);
 
     printf(" %c", '|');
     for (int i = 0; i < n; i++) {
@@ -135,7 +133,7 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
             printf(" %c", '|');
         }
 
-        double x = array[i];
+        double x = matrix[row][i];
         if (x == (int) x) {
             printf("%*d", s, (int) x);
         } else {
@@ -147,7 +145,6 @@ void PrintMatrixRow(int row, int s, Matrix *A) {
 void PrintBlankRow(int s, Matrix *A) {
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix)[matrixSize] = (*A).matrix;
 
     printf(" %c", ' ');
     for (int i = 0; i < n; i++) {
@@ -481,7 +478,7 @@ void ReadData() {
         STATE.SHOW_STEPS = false;
     }
     for (int k = 0; k < GLOBAL.amount; k++) {
-        Matrix A;
+        Matrix A = {0};
         fscanf(inFile, "%c ", &A.name);
         int occupied;
         fscanf(inFile, "%d ", &occupied);
@@ -489,6 +486,9 @@ void ReadData() {
             A.occupied = true;
         } else {
             A.occupied = false;
+            GLOBAL.matrices[k] = A;
+            fscanf(inFile, "\n");
+            continue;
         }
         char type;
         fscanf(inFile, "%c ", &type);
@@ -512,9 +512,13 @@ void ReadData() {
         fscanf(inFile, "%d ", &A.rows);
         fscanf(inFile, "%d ", &A.columns);
 
+        A.data = malloc(A.rows * A.columns * sizeof(double));
+        double *matrix[A.rows];
+        MemoryInterface(matrix, &A);
+
         for (int i = 0; i < A.rows; i++) {
             for (int j = 0; j < A.columns; j++) {
-                fscanf(inFile, "%lf ", &A.matrix[i][j]);
+                fscanf(inFile, "%lf ", &matrix[i][j]);
             }
         }
         GLOBAL.matrices[k] = A;
@@ -534,13 +538,15 @@ void WriteData() {
     fprintf(inFile, "%d ", GLOBAL.amount);
     fprintf(inFile, "%d\n", STATE.SHOW_STEPS);
     for (int k = 0; k < GLOBAL.amount; k++) {
-        fprintf(inFile, "%c ", GLOBAL.matrices[k].name);
-        if (GLOBAL.matrices[k].occupied) {
+        Matrix *A = &GLOBAL.matrices[k];
+        fprintf(inFile, "%c ", A->name);
+        if (A->occupied) {
             fprintf(inFile, "%d ", 1);
         } else {
-            fprintf(inFile, "%d ", 0);
+            fprintf(inFile, "%d\n", 0);
+            continue;
         }
-        switch (GLOBAL.matrices[k].type) {
+        switch (A->type) {
             case REDUCED:
                 fprintf(inFile, "%c ", 'r');
                 break;
@@ -557,11 +563,15 @@ void WriteData() {
                 fprintf(inFile, "%c ", 's');
                 break;
         }
-        fprintf(inFile, "%d ", GLOBAL.matrices[k].rows);
-        fprintf(inFile, "%d ", GLOBAL.matrices[k].columns);
-        for (int i = 0; i < GLOBAL.matrices[k].rows; i++) {
-            for (int j = 0; j < GLOBAL.matrices[k].columns; j++) {
-                fprintf(inFile, "%lf ", GLOBAL.matrices[k].matrix[i][j]);
+        fprintf(inFile, "%d ", A->rows);
+        fprintf(inFile, "%d ", A->columns);
+
+        double *matrix[A->rows];
+        MemoryInterface(matrix, A);
+
+        for (int i = 0; i < A->rows; i++) {
+            for (int j = 0; j < A->columns; j++) {
+                fprintf(inFile, "%lf ", matrix[i][j]);
             }
         }
         fprintf(inFile, "\n");
