@@ -163,7 +163,7 @@
       <workItem from="1792007839352" duration="63000" />
       <workItem from="1792007927630" duration="424000" />
       <workItem from="1792009968423" duration="97000" />
-      <workItem from="1793838159813" duration="1471000" />
+      <workItem from="1793838159813" duration="1812000" />
     </task>
     <task id="LOCAL-00001" summary="Began working on implementing parametric vector form of an augmented matrix in RREF.">
       <option name="closed" value="true" />
@@ -237,7 +237,15 @@
       <option name="project" value="LOCAL" />
       <updated>1793817697558</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Got a working version with dynamic memory, but there are still a few details to work out.">
+      <option name="closed" value="true" />
+      <created>1793839679299</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1793839679299</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,7 +322,8 @@
     <MESSAGE value="refactor underway finally" />
     <MESSAGE value="Memory interface adaptations." />
     <MESSAGE value="Progress." />
-    <option name="LAST_COMMIT_MESSAGE" value="Progress." />
+    <MESSAGE value="Got a working version with dynamic memory, but there are still a few details to work out." />
+    <option name="LAST_COMMIT_MESSAGE" value="Got a working version with dynamic memory, but there are still a few details to work out." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
