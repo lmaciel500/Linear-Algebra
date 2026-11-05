@@ -27,6 +27,21 @@ void Debugger(int m, int n, char message[]) {
     printf("%s\n", message);
 }
 
+bool CheckExists(char name) {
+    if (ToIndex(name) >= 0 && ToIndex(name) < GLOBAL.amount && GLOBAL.matrices[ToIndex(name)].occupied) {
+        return true;
+    } else {
+        return false;
+    }
+}
+int FindAvailableIndex() {
+    for (int i = 0; i < 50; i++) {
+        if (!GLOBAL.matrices[i].occupied) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 //general
 void GetInput(int *m, int *n) {
@@ -65,17 +80,20 @@ Matrix CreateMatrix() {
     printf("\n");
     return A;
 }
-char AddMatrix(Matrix A) {
-    int index = FindAvailableIndex();
+char AddMatrix(Matrix *A) {
+    //int index = FindAvailableIndex();
+    int index;
     if (index == -1) {
         printf("Collection is full.\n");
     } else {
-        GLOBAL.matrices[index] = A;
+        GLOBAL.matrices = realloc(GLOBAL.matrices, sizeof(GLOBAL.amount + 1) * sizeof(Matrix));
+        GLOBAL.amount++;
+        index = GLOBAL.amount - 1;
+        GLOBAL.matrices[index] = *A;
         GLOBAL.matrices[index].occupied = true;
         GLOBAL.matrices[index].name = ToChar(index);
         printf("Created matrix %c.\n\n", ToChar(index));
-        PrintMatrix(&A);
-        GLOBAL.amount++;
+        PrintMatrix(A);
     }
     return ToChar(index);
 }
@@ -84,10 +102,9 @@ void DeleteMatrix(char name) {
     GLOBAL.matrices[index].occupied = false;
 }
 void StoreMatrix(Matrix *A) {
-    char decision;
     printf("Store this matrix?");
     if (Confirm(false)) {
-        AddMatrix(*A);
+        AddMatrix(A);
     }
 }
 /*
@@ -424,7 +441,7 @@ bool Start() {
             break;
         case 'c':
             Matrix N = CreateMatrix();
-            char temp = AddMatrix(N);
+            char temp = AddMatrix(&N);
             while (StartOperations(temp));
             break;
         case 'p':

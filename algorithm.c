@@ -249,22 +249,6 @@ int SmallestRows() {
     return smallest;
 }
 
-bool CheckExists(char name) {
-    if (ToIndex(name) >= 0 && ToIndex(name) < GLOBAL.amount && GLOBAL.matrices[ToIndex(name)].occupied) {
-        return true;
-    } else {
-        return false;
-    }
-}
-int FindAvailableIndex() {
-    for (int i = 0; i < 50; i++) {
-        if (!GLOBAL.matrices[i].occupied) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 
 //parametric
 bool FindFreeInColumn(int *row, int column, double *value, Matrix *A) {
@@ -513,6 +497,7 @@ bool CheckConsistent(Matrix *A) {
                 return false;
             }
             nextRow:
+            ;
         }
     }
     return true;
@@ -719,6 +704,7 @@ int Rank(Matrix *A) {
             }
         }
         increase:
+        ;
     }
     return rank;
 }
@@ -849,19 +835,21 @@ Matrix MultiplyMatrices(Matrix *A, Matrix *B) {
     }
     result.rows = A->columns;
     result.columns = B->rows;
+    result.data = malloc(result.rows * sizeof(double *));
+    for (int i = 0; i < result.rows; i++) {
+        result.data[i] = malloc(result.columns * sizeof(double));
+    }
 
     int m = (*A).rows;
     int n = (*A).columns;
-    double (*matrix1)[matrixSize] = (*A).data;
 
     int o = (*B).rows;
     int p = (*B).columns;
-    double (*matrix2)[matrixSize] = (*B).data;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < p; j++) {
             for (int k = 0; k < n; k++) {
-                result.data[i][j] += matrix1[i][k] * matrix2[k][j];
+                result.data[i][j] += A->data[i][k] * B->data[k][j];
             }
         }
     }

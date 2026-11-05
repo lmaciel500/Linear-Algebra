@@ -34,7 +34,7 @@ void PrintSettings(void);
 void PrintLine(void);
 void GetInput(int *m, int *n);
 void DeleteMatrix(char name);
-char AddMatrix(Matrix A);
+char AddMatrix(Matrix *A);
 Matrix CreateMatrix(void);
 void ScaleRow(int toScale, double c, Matrix *A);
 void ReplaceRow(int toReplace, int replacer, double c, Matrix *A);

@@ -65,12 +65,15 @@
     &quot;assignee&quot;: &quot;lmaciel500&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/lmaciel500/Linear-Algebra&quot;,
-    &quot;accountId&quot;: &quot;0b16aa5a-4538-4265-a7d8-37ebf1df1167&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/lmaciel500/Linear-Algebra.git",
+    "accountId": "2b8b65e4-a571-4d33-82b1-a0058047df01"
   }
-}</component>
+}]]></component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/algorithm.c" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="zEVtWEii" />
   </component>
@@ -136,6 +139,11 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Linear-Algebra" TARGET_NAME="main" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Linear-Algebra" RUN_TARGET_NAME="main">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -155,6 +163,7 @@
       <workItem from="1792007839352" duration="63000" />
       <workItem from="1792007927630" duration="424000" />
       <workItem from="1792009968423" duration="97000" />
+      <workItem from="1793838159813" duration="1471000" />
     </task>
     <task id="LOCAL-00001" summary="Began working on implementing parametric vector form of an augmented matrix in RREF.">
       <option name="closed" value="true" />
@@ -220,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1793816559333</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Progress.">
+      <option name="closed" value="true" />
+      <created>1793817697558</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1793817697558</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,10 +311,10 @@
     <MESSAGE value="Polish." />
     <MESSAGE value="Me when I realize that I just committed to another huge refactor." />
     <MESSAGE value="Yeah this is going to be a lot of work." />
-    <MESSAGE value="Progress." />
     <MESSAGE value="refactor underway finally" />
     <MESSAGE value="Memory interface adaptations." />
-    <option name="LAST_COMMIT_MESSAGE" value="Memory interface adaptations." />
+    <MESSAGE value="Progress." />
+    <option name="LAST_COMMIT_MESSAGE" value="Progress." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
