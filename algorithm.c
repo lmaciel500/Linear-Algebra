@@ -85,8 +85,9 @@ void PrepareInverse(Matrix *A) {
         }
     }
 }
+
 void AddAugment(Matrix *A) {
-    int m = (*A).rows;
+    int m = A->rows;
     double augment[m];
 
     double **matrix = A->data;
@@ -96,9 +97,10 @@ void AddAugment(Matrix *A) {
     for (int i = 0; i < m; i++) {
         scanf(" %lf", &augment[i]);
     }
-    (*A).columns++;
+    A->columns++;
     for (int i = 0; i < m; i++) {
-        matrix[i][(*A).columns - 1] = augment[i];
+        A->data[i] = realloc(A->data[i], A->columns * sizeof(double));
+        matrix[i][A->columns - 1] = augment[i];
     }
     printf("\n");
 }
@@ -750,6 +752,7 @@ void FactorLU(int index) {
     Matrix L;
     L.rows = GLOBAL.matrices[index].rows;
     L.columns = GLOBAL.matrices[index].columns;
+    InitMatrix(&L);
     DiagonalOnes(&L);
     Matrix U = GLOBAL.matrices[index];
     REF(&U, &L);

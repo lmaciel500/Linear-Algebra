@@ -44,6 +44,12 @@ int FindAvailableIndex() {
 }
 
 //general
+void InitMatrix(Matrix *A) {
+    A->data = malloc(A->rows * sizeof(double *));
+    for (int i = 0; i < A->rows; i++) {
+        A->data[i] = malloc(A->columns * sizeof(double));
+    }
+}
 void GetInput(int *m, int *n) {
     printf("Enter values for Matrix (m x n): ");
     scanf(" %d %d", m, n);

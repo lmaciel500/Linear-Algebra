@@ -79,5 +79,6 @@ bool CheckConsistent(Matrix *A);
 void Debugger(int m, int n, char step[]);
 Matrix AddMatrices(Matrix *A, Matrix *B);
 void MemoryInterface(double *matrix[], Matrix *A);
+void InitMatrix(Matrix *A);
 
 #endif
